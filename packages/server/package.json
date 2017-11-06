@@ -16,5 +16,13 @@
   ],
   "author": "Felipe Bergamin <felipebergamin6@gmail.com>",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/felipebergamin/zeus#readme"
+  "homepage": "https://bitbucket.org/felipebergamin/zeus#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.19.1",
+    "mongoose": "^4.13.0"
+  }
 }
