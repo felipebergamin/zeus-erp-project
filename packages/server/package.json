@@ -1,0 +1,20 @@
+{
+  "name": "zeus",
+  "version": "0.0.0",
+  "description": "sistema zeus",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/felipebergamin/zeus.git"
+  },
+  "keywords": [
+    "gerencia",
+    "provedor"
+  ],
+  "author": "Felipe Bergamin <felipebergamin6@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/felipebergamin/zeus#readme"
+}
