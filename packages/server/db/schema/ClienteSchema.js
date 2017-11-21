@@ -17,10 +17,10 @@ module.exports = new Schema({
     telefone_fixo: require('../fields/telefone_fixo'),
 
     /* informações de conexão */
-    ip: require('../fields/ip_address'),
+    ip_address: require('../fields/ip_address'),
     login: require('../fields/login'),
     passwd: require('../fields/passwd'),
-    mac: String,
+    mac_address: String,
     auto_atrelar_mac: require('../fields/auto_atrelar_mac'),
     mac_onu: String,
     olt: String,
@@ -31,7 +31,7 @@ module.exports = new Schema({
     
     /* informações de endereço */
     endereco_residencial: require('./Endereco'),
-
+    
     endereco_correspondencia: require('./Endereco'),
 
     /* informações financeiras */
