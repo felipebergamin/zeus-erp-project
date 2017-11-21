@@ -1,9 +1,9 @@
-const Client = require('../../db/model/Client');
+const SignaturePlan = require('../../db/model/Plano');
 
 module.exports = {
     create: async (req, res)=>{
         try {
-            res.json(await Client.create(req.body));
+            res.send(await SignaturePlan.create(req.body));
         }
         catch (err) {
             res.status(500).send(err);
@@ -11,11 +11,7 @@ module.exports = {
     },
     get: async (req, res)=>{
         try {
-            res.send(
-                await Client.findById(req.params.id)
-                    .populate('signature_plan')
-                    .exec()
-            );
+            res.json(await SignaturePlan.findById(req.params.id).exec());
         }
         catch (err) {
             res.status(500).send(err);
@@ -23,20 +19,24 @@ module.exports = {
     },
     getAll: async (req, res)=>{
         try {
-            res.json(await Client.find({}).exec());
+            res.json(await SignaturePlan.find({}).exec());
         }
         catch (err) {
-            res.json(err);
+            res.status(500).send(err);
         }
     },
     update: async (req, res)=>{
-        
         try {
-            res.json(
-                await Client.findByIdAndUpdate(
+            const values = {
+                alterado_em: Date.now()
+            };
+            Object.assign(values, req.body);
+
+            res.json (
+                await SignaturePlan.findByIdAndUpdate(
                     req.params.id, 
-                    {$set: req.body}, 
-                    {new: true, runValidators: true})
+                    {$set: values}, 
+                    {new: true, runValidator: true})
                     .exec()
             );
         }
@@ -46,8 +46,8 @@ module.exports = {
     },
     remove: async (req, res)=>{
         try {
-            res.send(await Client.findByIdAndRemove(req.params.id).exec());
-        } 
+            res.json(await SignaturePlan.findByIdAndRemove(req.params.id).exec());
+        }
         catch (err) {
             res.status(500).send(err);
         }

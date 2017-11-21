@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const SignaturePlanController = require('../controllers/SignaturePlanController');
+const SignaturePlanController = require('../controllers/PlanoController');
 
 router.route('/')
     .get(SignaturePlanController.getAll)
