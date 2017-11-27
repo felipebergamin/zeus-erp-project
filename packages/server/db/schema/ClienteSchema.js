@@ -27,7 +27,7 @@ module.exports = new Schema({
     pon_no: Number,
     slot_no: Number,
     
-    // plano: require('../fields/plano')
+    plano: require('../fields/plano'),
     
     /* informações de endereço */
     endereco_residencial: require('./Endereco'),
