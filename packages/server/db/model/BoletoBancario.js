@@ -1,4 +1,4 @@
 const mongoose = require('mongoose');
-const BoletoBancarioSchema = require('../schema/BoletoBancarioSchema');
+const schema = require('../schema/BoletoBancarioSchema');
 
-module.exports = mongoose.model('BoletoBancario', BoletoBancarioSchema);
+module.exports = mongoose.model('BoletoBancario', schema);

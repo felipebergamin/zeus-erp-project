@@ -1,5 +1,3 @@
-module.exports = numero=>{
-    return numero.replace(/\(/g, '')
-        .replace(/\)/g, '')
-        .replace(/-/g, '');
-}
+module.exports = numero => numero.replace(/\(/g, '')
+  .replace(/\)/g, '')
+  .replace(/-/g, '');

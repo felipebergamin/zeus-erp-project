@@ -1,3 +1,3 @@
 const moment = require('moment');
 
-module.exports = date=>moment.isDate(date);
+module.exports = date => moment.isDate(date);

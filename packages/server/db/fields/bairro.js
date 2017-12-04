@@ -1,4 +1,4 @@
 module.exports = {
-    type: String,
-    required: [true, 'Por favor, informe um bairro!']
-}
+  type: String,
+  required: [true, 'Por favor, informe um bairro!'],
+};

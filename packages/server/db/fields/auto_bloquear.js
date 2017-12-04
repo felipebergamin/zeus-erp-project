@@ -1,4 +1,4 @@
 module.exports = {
-    type: Boolean,
-    default: true
-}
+  type: Boolean,
+  default: true,
+};

@@ -1,5 +1,5 @@
 const alterado_em = {
-    type: Date
+  type: Date,
 };
 
 module.exports = alterado_em;
