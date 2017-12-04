@@ -23,14 +23,20 @@ module.exports = {
     },
     getAll: async (req, res)=>{
         try {
-            res.json(await Client.find({}).exec());
+            res.json(await Client.find({ excluido_em: { $exists: false } }).populate('plano').exec());
         }
         catch (err) {
             res.json(err);
         }
     },
+    getRemoved: async (req, res) => {
+      try {
+        res.json(await Client.find({ excluido_em: { $exists: true } }).exec());
+      } catch (err) {
+        res.status(400).send(err);
+      }
+    },
     update: async (req, res)=>{
-        
         try {
             res.json(
                 await Client.findByIdAndUpdate(
@@ -46,10 +52,22 @@ module.exports = {
     },
     remove: async (req, res)=>{
         try {
-            res.send(await Client.findByIdAndRemove(req.params.id).exec());
+            res.send(await Client.findByIdAndUpdate(req.params.id, { $set: { excluido_em: Date.now() } }).exec());
         } 
         catch (err) {
-            res.status(500).send(err);
+          res.status(500).send(err);
         }
+    },
+  undelete: async (req, res) => {
+    try {
+      const updateQuery = {
+        $unset: { excluido_em: '' },
+        $set: { alterado_em: Date.now() },
+      };
+
+      res.json(await Client.findByIdAndUpdate(req.params.id, updateQuery).exec());
+    } catch (err) {
+      res.status(400).json(err);
     }
+  },
 }

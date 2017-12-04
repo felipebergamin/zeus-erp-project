@@ -1,3 +1,3 @@
 const validator = require('ipv4-calculator/dist/validators');
 
-module.exports = ip=>validator.isIpValid(ip);
+module.exports = ip => ip === null || validator.isIpValid(ip);

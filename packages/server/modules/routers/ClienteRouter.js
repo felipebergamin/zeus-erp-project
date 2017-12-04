@@ -5,6 +5,12 @@ router.route('/')
     .get(ClientController.getAll)
     .post(ClientController.create);
 
+router.route('/removed/:id')
+  .get(ClientController.undelete);
+
+router.route('/removed')
+  .get(ClientController.getRemoved);
+
 router.route('/:id')
     .get(ClientController.get)
     .delete(ClientController.remove)

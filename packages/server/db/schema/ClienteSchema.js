@@ -5,6 +5,7 @@ module.exports = new Schema({
     cpf_cnpj: require('../fields/cpf_cnpj'),
     criado_em: require('../fields/criado_em'),
     alterado_em: require('../fields/alterado_em'),
+    excluido_em: require('../fields/excluido_em'),
     data_nascimento: require('../fields/data_nascimento'),
     nome: require('../fields/nome_pessoa'),
     rg_ie: require('../fields/rg_ie'),
