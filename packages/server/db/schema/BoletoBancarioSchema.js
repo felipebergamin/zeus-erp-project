@@ -10,12 +10,11 @@ const BoletoSchema = new Schema({
     data_pagamento: require('../fields/data_pagamento'),
     criado_em: require('../fields/criado_em'),
     alterado_em: require('../fields/alterado_em'),
-    //criado_por,
+    excluido_em: require('../fields/excluido_em'),
     descricao: require('../fields/descricao'),
-    //conta_bancaria,
+    conta_bancaria: require('../fields/conta_bancaria'),
     enviado_remessa: require('../fields/enviado_remessa'),
-    pagador: require('../fields/pagador')
-    //remessa
+    cliente: require('../fields/cliente'),
 });
 
 BoletoSchema.plugin(autoIncrement.plugin, { model: 'BoletoBancario', field: 'numero_boleto', startAt: 1 });

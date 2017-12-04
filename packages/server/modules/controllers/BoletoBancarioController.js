@@ -27,11 +27,16 @@ module.exports = {
     },
     update: async (req, res)=>{
         try {
+            const newData = {
+              alterado_em: Date.now(),
+              ...req.body,
+            };
+
             res.json(
                 await BoletoBancario.findByIdAndUpdate (
                     req.params.id, 
-                    {$set: req.body}, 
-                    {new: true, runValidator: true}
+                    {$set: newData}, 
+                    {new: true, runValidator: true},
                 ).exec()
             );
         }
@@ -41,10 +46,17 @@ module.exports = {
     },
     remove: async (req, res)=>{
         try {
-            res.send(
-                await BoletoBancario.findByIdAndRemove(req.params.id)
-                    .exec()
-            );
+          const newData = {
+            excluido_em: Date.now(),
+          };
+
+          res.json(
+              await BoletoBancario.findByIdAndUpdate (
+                  req.params.id, 
+                  {$set: newData}, 
+                  {new: true, runValidator: true},
+              ).exec()
+          );
         }
         catch (err) {
             res.status(500).send(err);
