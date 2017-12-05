@@ -1,0 +1,35 @@
+import debug = require('./debug');
+import bodyparser = require('body-parser');
+import express = require('express');
+import mongoose = require('./db/connection');
+
+import apiCliente = require('./modules/routers/ClienteRouter');
+import apiPlanoRouter = require('./modules/routers/PlanoRouter');
+import apiBoletoRouter = require('./modules/routers/BoletoBancarioRouter');
+import apiTecnicoRouter = require('./modules/routers/TecnicoRouter');
+import apiInstalacaoRouter = require('./modules/routers/InstalacaoRouter');
+
+const app = express().disable('x-powered-by');
+
+app.use((req, res, next) => {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Pass to next layer of middleware
+  next();
+});
+
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
+
+app.use('/api/cliente', apiCliente);
+app.use('/api/plano', apiPlanoRouter);
+app.use('/api/boleto', apiBoletoRouter);
+app.use('/api/instalacao', apiInstalacaoRouter);
+app.use('/api/tecnico', apiTecnicoRouter);
+
+app.listen(3000, () => debug('server listening'));
