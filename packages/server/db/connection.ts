@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import debug = require('../debug');
 
-(<any>mongoose).Promise = global.Promise;
+(mongoose as any).Promise = global.Promise;
 mongoose.connect('mongodb://localhost/zeus', { useMongoClient: true });
 
 mongoose.connection.on('error', (err) => {
