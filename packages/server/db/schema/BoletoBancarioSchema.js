@@ -4,18 +4,18 @@ const autoIncrement = require('../plugins/auto-increment');
 autoIncrement.initialize(connection);
 
 const BoletoSchema = new Schema({
-  valor: require('../fields/valor_boleto'),
-  valor_pago: Number,
-  data_vencimento: require('../fields/data_vencimento'),
-  data_pagamento: require('../fields/data_pagamento'),
-  criado_em: require('../fields/criado_em'),
-  alterado_em: require('../fields/alterado_em'),
-  excluido_em: require('../fields/excluido_em'),
+  valorCobranca: require('../fields/valor_boleto'),
+  valorPago: Number,
+  dataVencimento: require('../fields/data_vencimento'),
+  dataPagamento: require('../fields/data_pagamento'),
+  criadoEm: require('../fields/criado_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  excluidoEm: require('../fields/excluido_em'),
   descricao: require('../fields/descricao'),
-  conta_bancaria: require('../fields/conta_bancaria'),
-  enviado_remessa: require('../fields/enviado_remessa'),
+  contaBancaria: require('../fields/conta_bancaria'),
+  enviadoRemessa: require('../fields/enviado_remessa'),
   cliente: require('../fields/cliente'),
 });
 
-BoletoSchema.plugin(autoIncrement.plugin, { model: 'BoletoBancario', field: 'numero_boleto', startAt: 1 });
+BoletoSchema.plugin(autoIncrement.plugin, { model: 'BoletoBancario', field: 'numeroBoleto', startAt: 1 });
 module.exports = BoletoSchema;
