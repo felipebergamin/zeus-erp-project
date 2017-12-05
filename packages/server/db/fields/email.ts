@@ -1,10 +1,10 @@
-const regexValidate = require('../validators/email');
+import regexValidate = require('../validators/email');
 
-module.exports = {
-  type: String,
+export = {
   set: (email: string) => email.trim().toLowerCase(),
+  type: String,
   validate: {
-    validator: regexValidate,
     message: 'Por favor, informe um e-mail válido!',
+    validator: regexValidate,
   },
 };
