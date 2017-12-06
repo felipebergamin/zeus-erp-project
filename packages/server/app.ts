@@ -19,10 +19,18 @@ app.use((req, res, next) => {
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'content-type,x-access-token');
 
   // Pass to next layer of middleware
   next();
+});
+
+app.use((req, res, next) => {
+  if (req.header('Access-Control-Request-Method') && req.header('Access-Control-Request-Headers')) {
+    res.status(200).send();
+  } else {
+    next();
+  }
 });
 
 app.use(bodyparser.urlencoded({ extended: true }));
