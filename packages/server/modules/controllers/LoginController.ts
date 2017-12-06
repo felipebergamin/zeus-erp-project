@@ -16,11 +16,7 @@ export class LoginController {
       const usuario: any = await Usuario.findOne({login}).exec();
 
       if (usuario) {
-        usuario.checkPasswd(passwd, (match: boolean) => {
-          if (!match) {
-            return res.status(401).send();
-          }
-
+        if (usuario.checkPasswd(passwd)) {
           const expires = moment().add(3, 'days').valueOf();
           const token = jwt.encode({
             expires,
@@ -35,11 +31,11 @@ export class LoginController {
             token,
             user,
           });
-        });
+        }
       }
-    } else {
-      res.status(401).send();
     }
+
+    res.status(401).send();
   }
 
   private static secret = '4PP_S3CR3T_JWT';

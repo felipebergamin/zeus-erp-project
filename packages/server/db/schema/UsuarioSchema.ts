@@ -28,7 +28,13 @@ UsuarioSchema.pre('save', function preSave(next: (arg?: any) => void) {
     return next();
   }
 
-  bcrypt.genSalt(5, (genSaltError: Error, salt: string) => {
+  const SALT = bcrypt.genSaltSync(5);
+  const PASSWD_HASH = bcrypt.hashSync(user.passwd, SALT);
+  user.passwd = PASSWD_HASH;
+
+  next();
+
+  /* bcrypt.genSalt(5, (genSaltError: Error, salt: string) => {
     if (genSaltError) {
       return next(genSaltError);
     }
@@ -41,16 +47,13 @@ UsuarioSchema.pre('save', function preSave(next: (arg?: any) => void) {
       user.passwd = hash;
       next();
     });
-  });
+  }); */
 });
 
-UsuarioSchema.methods.checkPasswd = (password: string, next: (arg?: any) => void) => {
-  bcrypt.compare(password, this.passwd, (err, isMatch) => {
-    if (err) {
-      return next(err);
-    }
-    next(isMatch);
-  });
+UsuarioSchema.methods.checkPasswd = function checkPasswd(password: string, callback: (match: boolean) => void) {
+  const match = bcrypt.compareSync(password, this.passwd);
+
+  return match;
 };
 
 export = UsuarioSchema;
