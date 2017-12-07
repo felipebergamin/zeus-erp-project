@@ -1,9 +1,9 @@
-import ContaBancaria = require('../../db/model/ContaBancaria');
 import { Request, Response } from 'express';
+import ContaBancaria = require('../../db/model/ContaBancaria');
 
 export class ContaBancariaController {
-  
-  static async create (req: Request, res: Response) {
+
+  public static async create(req: Request, res: Response) {
     try {
       res.json(await ContaBancaria.create(req.body));
     } catch (err) {
@@ -11,7 +11,7 @@ export class ContaBancariaController {
     }
   }
 
-  static async get (req: Request, res: Response) {
+  public static async get(req: Request, res: Response) {
     try {
       res.json(await ContaBancaria.findById(req.params.id).exec());
     } catch (err) {
@@ -19,7 +19,7 @@ export class ContaBancariaController {
     }
   }
 
-  static async getAll (req: Request, res: Response) {
+  public static async getAll(req: Request, res: Response) {
     try {
       res.json(await ContaBancaria.find({}).exec());
     } catch (err) {
@@ -27,13 +27,13 @@ export class ContaBancariaController {
     }
   }
 
-  static async update (req: Request, res: Response) {
+  public static async update(req: Request, res: Response) {
     try {
       const newData = {
         alterado_em: Date.now(),
         ...req.body,
       };
-  
+
       res.json(await ContaBancaria.findByIdAndUpdate(
         req.params.id,
         { $set: newData },
@@ -44,12 +44,12 @@ export class ContaBancariaController {
     }
   }
 
-  static async remove (req: Request, res: Response) {
+  public static async remove(req: Request, res: Response) {
     try {
       const newData = {
         excluido_em: Date.now(),
       };
-  
+
       res.json(await ContaBancaria.findByIdAndUpdate(
         req.params.id,
         { $set: newData },
