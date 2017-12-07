@@ -38,7 +38,7 @@ export = new Schema({
   /* informações financeiras */
   dia_vencimento: require('../fields/dia_vencimento'),
   auto_bloquear: require('../fields/auto_bloquear'),
-  // conta_boletos: ContaBancaria,
+  conta_bancaria: require('../fields/conta_bancaria'),
   observacoes: String,
 
 });

@@ -4,11 +4,11 @@ export = new Schema({
   agencia: new Schema({
     digito: {
       required: [true, 'O dígito da agência deve ser informado'],
-      type: Number,
+      type: String,
     },
     numero: {
       required: [true, 'O número da agência deve ser informado'],
-      type: Number,
+      type: String,
     },
   }),
   carteira: {
