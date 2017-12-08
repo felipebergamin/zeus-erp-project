@@ -11,6 +11,7 @@ import apiInstalacaoRouter = require('./modules/routers/InstalacaoRouter');
 import apiUsuarioRouter = require('./modules/routers/UsuarioRouter');
 import apiLoginRouter = require('./modules/routers/LoginRouter');
 import apiContaBancariaRouter = require('./modules/routers/ContaBancariaRouter');
+import apiCarneRouter = require('./modules/routers/CarneRouter');
 import authMiddleware = require('./modules/http_middleware/isAuth');
 const app = express().disable('x-powered-by');
 
@@ -45,6 +46,7 @@ app.use('/api/instalacao', apiInstalacaoRouter);
 app.use('/api/tecnico', apiTecnicoRouter);
 app.use('/api/usuario', apiUsuarioRouter);
 app.use('/api/contabancaria', apiContaBancariaRouter);
+app.use('/api/carne', apiCarneRouter);
 app.use('/auth', apiLoginRouter);
 
 app.listen(3000, () => debug('server listening'));

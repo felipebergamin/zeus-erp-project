@@ -1,16 +1,17 @@
 import { Schema } from 'mongoose';
 
 export = new Schema({
-  boletos: {
-    type: [Schema.Types.ObjectId],
-    ref: 'BoletoBancario',
-    required: [true, 'Um carnê deve conter boletos'],
+  cliente: {
+    ref: 'Cliente',
+    required: [true, 'Um carnê deve ter um cliente associado'],
+    type: Schema.Types.ObjectId,
   },
   descricao: {
-    type: String,
     required: [true, 'Uma descrição é obrigatória'],
+    type: String,
   },
-  criadoEm: require('../fields/criado_em'),
-  alteradoEm: require('../fields/alterado_em'),
-  excluidoEm: require('../fields/excluido_em'),
+
+  alterado_em: require('../fields/alterado_em'),
+  criado_em: require('../fields/criado_em'),
+  excluido_em: require('../fields/excluido_em'),
 });

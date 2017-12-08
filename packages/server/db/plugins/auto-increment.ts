@@ -204,4 +204,4 @@ export function plugin(schema: mongoose.Schema, options: string|object) {
       next();
     }
   });
-};
+}
