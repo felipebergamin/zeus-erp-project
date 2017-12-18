@@ -18,6 +18,10 @@ const BoletoSchema = new Schema({
   dataVencimento: require('../fields/data_vencimento'),
   enviadoRemessa: require('../fields/enviado_remessa'),
   excluido_em: require('../fields/excluido_em'),
+  pago: {
+    default: false,
+    type: Boolean,
+  },
   valorCobranca: require('../fields/valor_boleto'),
   valorPago: Number,
 });
