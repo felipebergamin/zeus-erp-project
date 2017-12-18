@@ -7,6 +7,9 @@ router.route('/')
   .get(CarneController.getAll)
   .post(CarneController.create);
 
+router.route('/query')
+  .post(CarneController.query);
+
 router.route('/:id')
   .get(CarneController.get)
   .delete(CarneController.remove);

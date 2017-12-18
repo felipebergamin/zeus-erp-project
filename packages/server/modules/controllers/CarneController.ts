@@ -92,4 +92,12 @@ export class CarneController {
       res.status(400).json(err);
     }
   }
+
+  public static async query(req: Request, res: Response) {
+    try {
+      res.json(await Carne.find(req.body).exec());
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
 }
