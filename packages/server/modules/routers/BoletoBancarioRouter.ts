@@ -12,4 +12,7 @@ router.route('/:id')
   .put(BoletoBancarioController.update)
   .delete(BoletoBancarioController.remove);
 
+router.route('/query')
+  .post(BoletoBancarioController.query);
+
 export = router;

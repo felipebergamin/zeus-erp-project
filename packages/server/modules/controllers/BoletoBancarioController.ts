@@ -1,8 +1,8 @@
-import BoletoBancario = require('../../db/model/BoletoBancario');
 import { Request, Response } from 'express';
+import BoletoBancario = require('../../db/model/BoletoBancario');
 
 export class BoletoBancarioController {
-  static async create (req: Request, res: Response) {
+  public static async create(req: Request, res: Response) {
     try {
       res.json(await BoletoBancario.create(req.body));
     } catch (err) {
@@ -10,7 +10,7 @@ export class BoletoBancarioController {
     }
   }
 
-  static async get (req: Request, res: Response) {
+  public static async get(req: Request, res: Response) {
     try {
       res.json(await BoletoBancario.findById(req.params.id).exec());
     } catch (err) {
@@ -18,7 +18,7 @@ export class BoletoBancarioController {
     }
   }
 
-  static async getAll (req: Request, res: Response) {
+  public static async getAll(req: Request, res: Response) {
     try {
       res.json(await BoletoBancario.find({}).exec());
     } catch (err) {
@@ -26,7 +26,7 @@ export class BoletoBancarioController {
     }
   }
 
-  static async update (req: Request, res: Response) {
+  public static async update(req: Request, res: Response) {
     try {
       const newData = {
         alterado_em: Date.now(),
@@ -43,7 +43,7 @@ export class BoletoBancarioController {
     }
   }
 
-  static async remove (req: Request, res: Response) {
+  public static async remove(req: Request, res: Response) {
     try {
       const newData = {
         excluido_em: Date.now(),
@@ -58,4 +58,12 @@ export class BoletoBancarioController {
       res.status(500).send(err);
     }
   }
-};
+
+  public static async query(req: Request, res: Response) {
+    try {
+      res.json(await BoletoBancario.find(req.body).exec());
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+}
