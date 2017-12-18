@@ -36,7 +36,10 @@ export = new Schema({
   endereco_correspondencia: require('./Endereco'),
 
   /* informações financeiras */
-  dia_vencimento: require('../fields/dia_vencimento'),
+  dia_vencimento: {
+    required: [true, 'O dia de vencimento deve ser informado'],
+    type: Number,
+  },
   auto_bloquear: require('../fields/auto_bloquear'),
   conta_bancaria: require('../fields/conta_bancaria'),
   observacoes: String,
