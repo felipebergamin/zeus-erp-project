@@ -1,11 +1,15 @@
 import Plano = require('../../db/model/Plano');
 import { Request, Response } from 'express';
+import { LogService as log } from "../services/LogService";
 
 export class PlanoController {
 
   static async create (req: Request, res: Response) {
     try {
-      res.send(await Plano.create(req.body));
+      const plano = await new Plano(req.body).save();
+      res.json(plano);
+
+      log.info(`criou o plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`, req.user._id, plano.id);
     } catch (err) {
       res.status(500).send(err);
     }
@@ -34,11 +38,16 @@ export class PlanoController {
       };
       Object.assign(values, req.body);
 
-      res.json(await Plano.findByIdAndUpdate(
-        req.params.id,
-        { $set: values },
-        { new: true, runValidators: true },
-      ).exec());
+      const plano = await Plano.findById(req.params.id).exec();
+      plano.set(req.body);
+      const modificado = plano.modifiedPaths().join(",");
+      plano.set("alterado_em", new Date());
+      await plano.save();
+
+      res.json(plano);
+
+      log.info(`modificou ${modificado} no plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`,
+        req.user._id, plano.id);
     } catch (err) {
       res.status(500).send(err);
     }
