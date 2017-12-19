@@ -1,10 +1,10 @@
-import Plano = require('../../db/model/Plano');
 import { Request, Response } from 'express';
+import Plano = require('../../db/model/Plano');
 import { LogService as log } from "../services/LogService";
 
 export class PlanoController {
 
-  static async create (req: Request, res: Response) {
+  public static async create(req: Request, res: Response) {
     try {
       const plano = await new Plano(req.body).save();
       res.json(plano);
@@ -15,7 +15,7 @@ export class PlanoController {
     }
   }
 
-  static async get (req: Request, res: Response) {
+  public static async get(req: Request, res: Response) {
     try {
       res.json(await Plano.findById(req.params.id).exec());
     } catch (err) {
@@ -23,7 +23,7 @@ export class PlanoController {
     }
   }
 
-  static async getAll (req: Request, res: Response) {
+  public static async getAll(req: Request, res: Response) {
     try {
       res.json(await Plano.find({}).exec());
     } catch (err) {
@@ -31,7 +31,7 @@ export class PlanoController {
     }
   }
 
-  static async update (req: Request, res: Response) {
+  public static async update(req: Request, res: Response) {
     try {
       const values = {
         alterado_em: Date.now(),
@@ -53,7 +53,7 @@ export class PlanoController {
     }
   }
 
-  static async remove (req: Request, res: Response) {
+  public static async remove(req: Request, res: Response) {
     try {
       res.json(await Plano.findByIdAndRemove(req.params.id).exec());
     } catch (err) {
