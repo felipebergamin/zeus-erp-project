@@ -3,8 +3,9 @@ import { Schema } from 'mongoose';
 import email = require('../fields/email');
 
 const UsuarioSchema = new Schema({
-  dataAniversario: {
-    type: Date,
+  ativo: {
+    default: true,
+    type: Boolean,
   },
   email,
   login: {
@@ -19,6 +20,10 @@ const UsuarioSchema = new Schema({
     required: [true, 'A senha para o usuário é necessária'],
     type: String,
   },
+
+  alterado_em: require('../fields/alterado_em'),
+  criado_em: require('../fields/criado_em'),
+  excluido_em: require('../fields/excluido_em'),
 });
 
 UsuarioSchema.pre('save', function preSave(next: (arg?: any) => void) {
