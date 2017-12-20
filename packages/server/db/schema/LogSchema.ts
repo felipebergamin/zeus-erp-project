@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-export = new Schema({
+const schema = new Schema({
   dataHora: {
     required: true,
     type: Date,
@@ -22,3 +22,8 @@ export = new Schema({
     type: Schema.Types.ObjectId,
   },
 });
+
+schema.index({ texto: "text" });
+schema.index({ dataHora: -1 });
+
+export = schema;
