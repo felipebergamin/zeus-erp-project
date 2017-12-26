@@ -7,4 +7,9 @@ router.route('/')
   .get(UsuarioController.getAll)
   .post(UsuarioController.create);
 
+router.route('/:id')
+  .delete(UsuarioController.delete)
+  .get(UsuarioController.getById)
+  .put(UsuarioController.update);
+
 export = router;

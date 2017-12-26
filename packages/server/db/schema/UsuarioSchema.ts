@@ -17,7 +17,6 @@ const UsuarioSchema = new Schema({
     type: String,
   },
   passwd: {
-    required: [true, 'A senha para o usuário é necessária'],
     type: String,
   },
 
