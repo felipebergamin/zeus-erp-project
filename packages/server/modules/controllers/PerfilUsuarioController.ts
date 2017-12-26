@@ -52,6 +52,7 @@ export class PerfilUsuarioController {
     try {
       const perfil = await PerfilUsuario.findById(req.params.id).exec();
       perfil.remove();
+      res.json(perfil);
       log.info(`removeu o perfil ${perfil.get('nome')}, IP: ${req.ip}`, req.user._id, perfil.id);
     } catch (err) {
       res.status(400).json(err);
