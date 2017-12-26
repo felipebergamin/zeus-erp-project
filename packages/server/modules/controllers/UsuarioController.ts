@@ -60,7 +60,9 @@ export class UsuarioController {
       });
 
       res.json(await usuario.save());
-      log.info(`desativou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
+      log.info(`${(usuario.get('ativo') ? 'ativou' : 'desativou')} o usuário ${usuario.get('login')}, IP: ${req.ip}`,
+        req.user._id,
+        usuario.id);
     } catch (err) {
       res.status(400).json(err);
     }
