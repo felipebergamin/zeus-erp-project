@@ -13,7 +13,9 @@ export class LoginController {
     const { login, passwd } = req.body;
 
     if (login && passwd) {
-      const usuario: any = await Usuario.findOne({login}).exec();
+      const usuario: any = await Usuario.findOne({login})
+        .populate("perfil")
+        .exec();
 
       if (usuario) {
         if (usuario.checkPasswd(passwd)) {
