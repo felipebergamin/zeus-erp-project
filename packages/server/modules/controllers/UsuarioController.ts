@@ -26,7 +26,6 @@ export class UsuarioController {
     try {
       const usuario = await Usuario.findById(req.params.id).select('-passwd').exec();
       res.json(usuario);
-      log.info(`visualizou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
     } catch (err) {
       res.status(400).json(err);
     }
