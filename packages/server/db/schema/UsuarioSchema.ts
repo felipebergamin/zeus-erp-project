@@ -19,6 +19,11 @@ const UsuarioSchema = new Schema({
   passwd: {
     type: String,
   },
+  perfil: {
+    ref: "PerfilUsuario",
+    required: [true, "É necessário um perfil para o usuário"],
+    type: Schema.Types.ObjectId,
+  },
 
   alterado_em: require('../fields/alterado_em'),
   criado_em: require('../fields/criado_em'),
