@@ -36,7 +36,7 @@ export class PerfilUsuarioController {
 
       if (perfil) {
         perfil.set(req.body);
-        const modified = perfil.modifiedPaths();
+        const modified = perfil.modifiedPaths().join(', ');
 
         await perfil.save();
         log.info(`alterou ${modified} no perfil ${perfil.get('nome')}, IP: ${req.ip}`, req.user._id, perfil.id);
