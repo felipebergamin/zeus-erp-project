@@ -15,6 +15,7 @@ import apiCarneRouter = require('./modules/routers/CarneRouter');
 import perfilUsuarioRouter = require('./modules/routers/PerfilUsuarioRouter');
 import authMiddleware = require('./modules/http_middleware/isAuth');
 import logRouter = require('./modules/routers/LogRouter');
+import oltRouter = require('./modules/routers/OLTRouter');
 const app = express().disable('x-powered-by');
 
 app.use((req, res, next) => {
@@ -51,6 +52,7 @@ app.use('/api/contabancaria', apiContaBancariaRouter);
 app.use('/api/carne', apiCarneRouter);
 app.use('/api/log', logRouter);
 app.use('/api/perfilusuario', perfilUsuarioRouter);
+app.use('/api/olt', oltRouter);
 app.use('/auth', apiLoginRouter);
 
 app.listen(3000, () => debug('server listening'));
