@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export = new Schema({
+const schema = new Schema({
   /* informações pessoa */
   cpf_cnpj: require('../fields/cpf_cnpj'),
   criado_em: require('../fields/criado_em'),
@@ -45,3 +45,8 @@ export = new Schema({
   observacoes: String,
 
 });
+
+schema.index({ nome: "text" });
+schema.index({ login: "text" });
+
+export = schema;
