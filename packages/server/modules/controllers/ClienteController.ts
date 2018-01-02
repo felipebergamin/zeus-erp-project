@@ -1,75 +1,94 @@
-import Client = require('../../db/model/Cliente');
 import { Request, Response } from 'express';
 
+import { Document, DocumentQuery } from '../../db/connection';
+import Cliente = require('../../db/model/Cliente');
+import { LogService as log } from "../services/LogService";
+
 export class ClienteController {
-  
-  static async create (req: Request, res: Response) {
+  public static async create(req: Request, res: Response) {
     try {
-      res.json(await Client.create(req.body));
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
-
-  static async get (req: Request, res: Response) {
-    try {
-      res.send(await Client.findById(req.params.id)
-        .populate('signature_plan')
-        .exec());
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
-
-  static async getAll (req: Request, res: Response) {
-    try {
-      res.json(await Client.find({ excluido_em: { $exists: false } }).populate('plano').exec());
-    } catch (err) {
-      res.json(err);
-    }
-  }
-
-  static async getRemoved (req: Request, res: Response) {
-    try {
-      res.json(await Client.find({ excluido_em: { $exists: true } }).exec());
+      const cliente = await new Cliente(req.body).save();
+      res.json(cliente);
+      log.info(`cadastrou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
       res.status(400).send(err);
     }
   }
 
-  static async update (req: Request, res: Response) {
+  public static async get(req: Request, res: Response) {
     try {
-      res.json(await Client.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true, runValidators: true },
-      ).exec());
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
-
-  static async remove (req: Request, res: Response) {
-    try {
-      res.send(await Client.findByIdAndUpdate(
-        req.params.id,
-        { $set: { excluido_em: Date.now() } },
-      ).exec());
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
-
-  static async undelete (req: Request, res: Response) {
-    try {
-      const updateQuery = {
-        $unset: { excluido_em: '' },
-        $set: { alterado_em: Date.now() },
-      };
-
-      res.json(await Client.findByIdAndUpdate(req.params.id, updateQuery).exec());
+      const query = Cliente.findById(req.params.id);
+      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      res.send(await query.exec());
     } catch (err) {
       res.status(400).json(err);
     }
   }
-};
+
+  public static async getAll(req: Request, res: Response) {
+    try {
+      const query = Cliente.find({ excluido_em: { $exists: false } });
+      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      res.send(await query.exec());
+    } catch (err) {
+      res.json(err);
+    }
+  }
+
+  public static async getRemoved(req: Request, res: Response) {
+    try {
+      const query = Cliente.find({ excluido_em: { $exists: true } });
+      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+
+  public static async update(req: Request, res: Response) {
+    try {
+      const cliente = await Cliente.findById(req.params.id).exec();
+      cliente.set(req.body);
+      const modified = cliente.modifiedPaths().join(", ");
+      cliente.set("alterado_em", new Date());
+      res.json(await cliente.save());
+      log.info(`modificou ${modified} no cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+
+  public static async remove(req: Request, res: Response) {
+    try {
+      const cliente = await Cliente.findById(req.params.id).exec();
+      cliente.set("excluido_em", Date.now());
+      res.send(await cliente.save());
+      log.info(`excluiu o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+
+  public static async undelete(req: Request, res: Response) {
+    try {
+      const cliente = await Cliente.findById(req.params.id);
+      cliente.set("excluido_em", undefined);
+
+      res.json(await cliente.save());
+      log.info(`restaurou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+
+  private static aplyGetRequestOptionsToQuery(req: Request, query: DocumentQuery<Document|Document[], Document>) {
+    const { fields, populate } = req.query;
+
+    if (fields) {
+      query.select(fields.replace(/,/g, " "));
+    }
+    if (populate) {
+      query.populate(populate.split(",").split(" "));
+    }
+  }
+}

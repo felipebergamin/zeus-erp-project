@@ -7,8 +7,8 @@ router.route('/')
   .get(ClienteController.getAll)
   .post(ClienteController.create);
 
-router.route('/removed/:id')
-  .get(ClienteController.undelete);
+router.route('/recover/:id')
+  .post(ClienteController.undelete);
 
 router.route('/removed')
   .get(ClienteController.getRemoved);
