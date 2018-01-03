@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 const schema = new Schema({
   dataHora: {
-    required: true,
+    default: Date.now,
     type: Date,
   },
   level: {
@@ -12,13 +12,14 @@ const schema = new Schema({
   objectToken: {
     type: Schema.Types.ObjectId,
   },
+  systemOutput: {
+    type: String,
+  },
   texto: {
-    required: true,
     type: String,
   },
   usuario: {
     ref: 'Usuario',
-    required: true,
     type: Schema.Types.ObjectId,
   },
 });

@@ -3,6 +3,9 @@ import bodyparser = require('body-parser');
 import express = require('express');
 import mongoose = require('./db/connection');
 
+import { FiberhomeService } from "./modules/services/FiberhomeService";
+FiberhomeService.instance();
+
 import apiCliente = require('./modules/routers/ClienteRouter');
 import apiPlanoRouter = require('./modules/routers/PlanoRouter');
 import apiBoletoRouter = require('./modules/routers/BoletoBancarioRouter');
@@ -16,6 +19,7 @@ import perfilUsuarioRouter = require('./modules/routers/PerfilUsuarioRouter');
 import authMiddleware = require('./modules/http_middleware/isAuth');
 import logRouter = require('./modules/routers/LogRouter');
 import oltRouter = require('./modules/routers/OLTRouter');
+import fiberhomeServicesRouter = require('./modules/routers/FiberhomeServicesRouter');
 const app = express().disable('x-powered-by');
 
 app.use((req, res, next) => {
@@ -53,6 +57,7 @@ app.use('/api/carne', apiCarneRouter);
 app.use('/api/log', logRouter);
 app.use('/api/perfilusuario', perfilUsuarioRouter);
 app.use('/api/olt', oltRouter);
+app.use('/api/fiberhome', fiberhomeServicesRouter);
 app.use('/auth', apiLoginRouter);
 
 app.listen(3000, () => debug('server listening'));
