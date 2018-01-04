@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { Document, DocumentQuery } from '../../db/connection';
 import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../services/LogService";
+import { aplyGetRequestOptionsToQuery } from "../utils/HttpControllers";
 
 export class ClienteController {
   public static async create(req: Request, res: Response) {
@@ -18,7 +19,7 @@ export class ClienteController {
   public static async get(req: Request, res: Response) {
     try {
       const query = Cliente.findById(req.params.id);
-      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      aplyGetRequestOptionsToQuery(req, query);
       res.send(await query.exec());
     } catch (err) {
       res.status(400).json(err);
@@ -28,7 +29,7 @@ export class ClienteController {
   public static async getAll(req: Request, res: Response) {
     try {
       const query = Cliente.find({ excluido_em: { $exists: false } });
-      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      aplyGetRequestOptionsToQuery(req, query);
       res.send(await query.exec());
     } catch (err) {
       res.json(err);
@@ -38,7 +39,7 @@ export class ClienteController {
   public static async getRemoved(req: Request, res: Response) {
     try {
       const query = Cliente.find({ excluido_em: { $exists: true } });
-      ClienteController.aplyGetRequestOptionsToQuery(req, query);
+      aplyGetRequestOptionsToQuery(req, query);
       res.json(await query.exec());
     } catch (err) {
       res.status(400).send(err);
@@ -78,17 +79,6 @@ export class ClienteController {
       log.info(`restaurou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
       res.status(400).json(err);
-    }
-  }
-
-  private static aplyGetRequestOptionsToQuery(req: Request, query: DocumentQuery<Document|Document[], Document>) {
-    const { fields, populate } = req.query;
-
-    if (fields) {
-      query.select(fields.replace(/,/g, " "));
-    }
-    if (populate) {
-      query.populate(populate.split(",").split(" "));
     }
   }
 }
