@@ -1,3 +1,3 @@
-export = (cpf_cnpj: string) => cpf_cnpj.replace(/\./g, '')
+export = (cpfCnpj: string) => cpfCnpj.replace(/\./g, '')
   .replace(/-/g, '')
   .replace(/\//g, '');

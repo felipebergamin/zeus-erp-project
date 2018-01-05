@@ -1,4 +1,4 @@
-import regexValidate = require('../validators/email');
+import regexValidate = require('../validators/isValidEmail');
 
 export = {
   set: (email: string) => email.trim().toLowerCase(),

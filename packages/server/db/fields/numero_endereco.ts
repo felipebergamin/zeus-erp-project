@@ -1,8 +1,8 @@
-module.exports = {
-  type: String,
+export = {
   required: [true, 'Por favor, informe um número!'],
+  type: String,
   validate: {
-    validator: require('../validators/numeroEndereco'),
     message: 'O número não é válido!',
+    validator: require('../validators/numeroEndereco'),
   },
 };

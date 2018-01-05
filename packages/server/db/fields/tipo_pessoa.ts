@@ -1,8 +1,8 @@
-module.exports = {
-  type: String,
+export = {
   required: [true, 'Por favor, informe se é pessoa física/jurídica!'],
+  type: String,
   validate: {
-    validator: (tipo: string) => /(fisica|juridica)/i.test(tipo),
     message: 'Pessoa deve ser apenas física ou jurídica!',
+    validator: (tipo: string) => /(fisica|juridica)/i.test(tipo),
   },
 };

@@ -1,14 +1,14 @@
-module.exports = {
-  type: String,
+export = {
   required: [true, 'Uma descrição é necessária!'],
+  type: String,
   validate: [
     {
-      validator: (desc: string) => desc.length > 0,
       message: 'Descricao vazia!',
+      validator: (desc: string) => desc.length > 0,
     },
     {
-      validator: (desc: string) => desc.length <= 140,
       message: 'O máximo permitido é 140 caracteres!',
+      validator: (desc: string) => desc.length <= 140,
     },
   ],
 };

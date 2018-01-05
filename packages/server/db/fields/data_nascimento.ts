@@ -1,19 +1,17 @@
-const isValidDate = require('../validators/isValidDate');
-const isOfAge = require('../validators/isOfAge');
+import { isOfAge } from "../validators/isOfAge";
+import { isDate } from "../validators/isValidDate";
 
-const data_nascimento = {
-  type: Date,
+export = {
   required: [true, 'Está faltando a data de nascimento!'],
+  type: Date,
   validate: [
     {
-      validator: isValidDate,
       message: 'A data é inválida!',
+      validator: isDate,
     },
     {
-      validator: isOfAge,
       message: 'Menor de 18 anos!',
+      validator: isOfAge,
     },
   ],
 };
-
-module.exports = data_nascimento;

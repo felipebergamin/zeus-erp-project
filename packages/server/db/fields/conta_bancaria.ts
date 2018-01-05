@@ -1,7 +1,7 @@
 import mongoose = require('../connection');
 
-module.exports = {
-  type: mongoose.Schema.Types.ObjectId,
+export = {
   ref: 'ContaBancaria',
   required: [true, 'Especifique a conta bancária'],
+  type: mongoose.Schema.Types.ObjectId,
 };

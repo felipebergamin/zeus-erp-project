@@ -1,4 +1,4 @@
-module.exports = (strCPF: string) => {
+export function validateCPF(strCPF: string) {
   let soma = 0;
   let resto;
 
@@ -29,4 +29,4 @@ module.exports = (strCPF: string) => {
     return false;
   }
   return true;
-};
+}

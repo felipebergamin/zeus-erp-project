@@ -1,7 +1,7 @@
 import set = require('../setters/setRgIe');
 
-module.exports = {
-  type: String,
+export = {
   required: [true, 'O RG/IE não foi informado!'],
   set,
+  type: String,
 };

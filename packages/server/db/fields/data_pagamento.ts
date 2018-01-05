@@ -1,1 +1,2 @@
-module.exports = require('./generic_date');
+import genericDate = require("./generic_date");
+export = genericDate;

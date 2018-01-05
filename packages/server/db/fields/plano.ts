@@ -1,7 +1,7 @@
-const { ObjectId } = require('mongoose').Schema.Types;
+import { Schema } from "mongoose";
 
-module.exports = {
-  type: ObjectId,
+export = {
   ref: 'Plano',
   required: [true, 'Plano de assinatura não definido!'],
+  type: Schema.Types.ObjectId,
 };

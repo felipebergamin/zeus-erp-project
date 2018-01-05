@@ -1,6 +1,4 @@
-const criado_em = {
-  type: Date,
+export = {
   default: Date.now,
+  type: Date,
 };
-
-module.exports = criado_em;

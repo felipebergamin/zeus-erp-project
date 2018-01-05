@@ -1,13 +1,13 @@
 import { Schema } from 'mongoose';
 
 export = new Schema({
-  logradouro: require('../fields/logradouro'),
-  numero: require('../fields/numero_endereco'),
-  cep: require('../fields/cep'),
   bairro: require('../fields/bairro'),
+  cep: require('../fields/cep'),
   cidade: require('../fields/cidade'),
-  estado: require('../fields/estado'),
   complemento: String,
+  estado: require('../fields/estado'),
   latitude: Number,
+  logradouro: require('../fields/logradouro'),
   longitude: Number,
+  numero: require('../fields/numero_endereco'),
 });

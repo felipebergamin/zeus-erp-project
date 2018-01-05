@@ -1,6 +1,6 @@
 import set = require('../setters/setCelular');
 
-module.exports = {
-  type: String,
+export = {
   set,
+  type: String,
 };

@@ -1,5 +1,3 @@
-const alterado_em = {
+export = {
   type: Date,
 };
-
-module.exports = alterado_em;

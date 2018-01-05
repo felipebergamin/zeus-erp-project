@@ -1,13 +1,13 @@
-const validateCpf = require('../validators/validateCPF');
-const setCpf = require('../setters/setCPF');
+import setCpf = require('../setters/setCPF');
+import { validateCPF } from "../validators/validateCPF";
 
-module.exports = {
-  type: String,
+export = {
   required: [true, 'CPF/CNPJ não informado!'],
-  unique: [true, 'CPF/CNPJ já existente!'],
   set: setCpf,
+  type: String,
+  unique: [true, 'CPF/CNPJ já existente!'],
   validate: {
-    validator: validateCpf,
     message: 'CPF/CNPJ inválido!',
+    validator: validateCPF,
   },
 };

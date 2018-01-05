@@ -1,3 +1,5 @@
-const moment = require('moment');
+import moment = require("moment");
 
-module.exports = (date: Date) => moment.isDate(date);
+export function isValidDate(date: Date): boolean {
+  return moment.isDate(date);
+}

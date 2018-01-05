@@ -1,9 +1,9 @@
-import * as moment from 'moment';
+import * as moment from "moment";
 
-module.exports = {
+export = {
   type: Date,
   validate: {
+    message: "A data é inválida!",
     validator: (date: Date) => moment(date).isValid(),
-    message: 'A data é inválida!',
   },
 };

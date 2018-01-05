@@ -1,7 +1,9 @@
-module.exports = {
+import { isValidIPAddress } from "../validators/isValidIPAddress";
+
+export = {
   type: String,
   validate: {
-    validator: require('../validators/ipAddress'),
-    message: 'O endereço IP é inválido!',
+    message: "O endereço IP é inválido!",
+    validator: isValidIPAddress,
   },
 };

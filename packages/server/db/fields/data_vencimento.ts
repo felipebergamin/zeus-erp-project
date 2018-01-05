@@ -1,8 +1,8 @@
-module.exports = {
-  type: Date,
+export = {
   required: [true, 'Data de vencimento do boleto não informada!'],
+  type: Date,
   validate: {
-    validator: require('../validators/isFutureDate'),
     message: 'O vencimento do boleto deve ser uma data no futuro!',
+    validator: require('../validators/isFutureDate'),
   },
 };

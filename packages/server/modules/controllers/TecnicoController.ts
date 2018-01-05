@@ -1,8 +1,8 @@
-import Tecnico = require('../../db/model/Tecnico');
 import { Request, Response } from 'express';
+import Tecnico = require('../../db/model/Tecnico');
 
 export class TecnicoController {
-  static async create (req: Request, res: Response) {
+  public static async create(req: Request, res: Response) {
     try {
       res.json(await Tecnico.create(req.body));
     } catch (err) {
@@ -10,7 +10,7 @@ export class TecnicoController {
     }
   }
 
-  static async get (req: Request, res: Response) {
+  public static async get(req: Request, res: Response) {
     try {
       res.json(await Tecnico.findById(req.params.id).exec());
     } catch (err) {
@@ -18,7 +18,7 @@ export class TecnicoController {
     }
   }
 
-  static async getAll (req: Request, res: Response) {
+  public static async getAll(req: Request, res: Response) {
     try {
       res.json(await Tecnico.find({}).exec());
     } catch (err) {
@@ -26,7 +26,7 @@ export class TecnicoController {
     }
   }
 
-  static async update (req: Request, res: Response) {
+  public static async update(req: Request, res: Response) {
     try {
       const values = {
         alterado_em: Date.now(),
@@ -43,7 +43,7 @@ export class TecnicoController {
     }
   }
 
-  static async remove (req: Request, res: Response) {
+  public static async remove(req: Request, res: Response) {
     try {
       res.json(await Tecnico.findByIdAndRemove(req.params.id));
     } catch (err) {
