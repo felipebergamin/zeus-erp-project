@@ -1,5 +1,5 @@
 import { isOfAge } from "../validators/isOfAge";
-import { isDate } from "../validators/isValidDate";
+import { isValidDate } from "../validators/isValidDate";
 
 export = {
   required: [true, 'Está faltando a data de nascimento!'],
@@ -7,7 +7,7 @@ export = {
   validate: [
     {
       message: 'A data é inválida!',
-      validator: isDate,
+      validator: isValidDate,
     },
     {
       message: 'Menor de 18 anos!',
