@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import IPPool = require("../../db/model/IPPool");
 import { LogService as log } from "../services/LogService";
-import { createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
+import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class IPPoolController {
   public static async create(req: Request, res: Response) {
@@ -19,7 +19,9 @@ export class IPPoolController {
 
   public static async get(req: Request, res: Response) {
     try {
-      res.json(await IPPool.findById(req.params.id));
+      const query = IPPool.findById(req.params.id);
+      aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
     } catch (err) {
       handleError(err, res);
     }
@@ -27,7 +29,7 @@ export class IPPoolController {
 
   public static async query(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, IPPool);
+      const query = createQueryAndApplyReqOptions(req, IPPool, IPPoolController.parseQuery);
       res.json(await query.exec());
     } catch (err) {
       handleError(err, res);
@@ -55,5 +57,15 @@ export class IPPoolController {
     } catch (err) {
       handleError(err, res);
     }
+  }
+
+  private static parseQuery(query: any = {}): any {
+    const { nome, ...mongoQuery } = query;
+
+    if (nome) {
+      mongoQuery.nome = new RegExp(nome, 'i');
+    }
+
+    return mongoQuery;
   }
 }
