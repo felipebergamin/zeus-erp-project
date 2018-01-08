@@ -9,6 +9,7 @@ import apiCliente = require('./modules/routers/ClienteRouter');
 import apiContaBancariaRouter = require('./modules/routers/ContaBancariaRouter');
 import fiberhomeServicesRouter = require('./modules/routers/FiberhomeServicesRouter');
 import apiInstalacaoRouter = require('./modules/routers/InstalacaoRouter');
+import ipPoolRouter = require("./modules/routers/IPPoolRouter");
 import apiLoginRouter = require('./modules/routers/LoginRouter');
 import logRouter = require('./modules/routers/LogRouter');
 import oltRouter = require('./modules/routers/OLTRouter');
@@ -45,6 +46,7 @@ app.use('/api/perfilusuario', perfilUsuarioRouter);
 app.use('/api/olt', oltRouter);
 app.use('/api/fiberhome', fiberhomeServicesRouter);
 app.use('/api/chamadotecnico', chamadoTecnicoRouter);
+app.use('/api/ippool', ipPoolRouter);
 app.use('/auth', apiLoginRouter);
 
 export = app;

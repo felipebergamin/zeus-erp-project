@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema } from "../connection";
 
 const schema = new Schema({
   /* informações pessoa */
