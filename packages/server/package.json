@@ -32,7 +32,8 @@
     "moment": "^2.19.1",
     "mongoose": "^4.13.0",
     "mongoose-auto-increment": "^5.0.1",
-    "node-tl1-fiberhome": "^0.2.0"
+    "node-tl1-fiberhome": "^0.2.0",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "@types/bcrypt-nodejs": "0.0.30",
@@ -42,6 +43,7 @@
     "@types/ip": "0.0.30",
     "@types/jwt-simple": "^0.5.33",
     "@types/mongoose": "^4.7.28",
+    "@types/randomstring": "^1.1.6",
     "concurrently": "^3.5.1",
     "typescript": "^2.6.2"
   }

@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
 import moment = require('moment');
+
 import Boleto = require('../../db/model/BoletoBancario');
 import Carne = require('../../db/model/Carne');
 import Cliente = require('../../db/model/Cliente');
+import { LogService as log } from "../services/LogService";
+import { handleError } from "../utils/HttpControllers";
 
 export class CarneController {
 
@@ -16,9 +19,9 @@ export class CarneController {
 
       const carneCriado = await new Carne(req.body).save();
 
-      if ('parcelas' in req.body && 'valor' in req.body && 'primeiro_vencimento' in req.body) {
+      if ('parcelas' in req.body && 'valor' in req.body && 'primeiroVencimento' in req.body) {
         const qtdParcelas = +req.body.parcelas;
-        const vencimentoInicial = moment(req.body.primeiro_vencimento);
+        const vencimentoInicial = moment(req.body.primeiroVencimento);
 
         if (!vencimentoInicial.isValid()) {
           throw new Error('A data de vencimento é inválida');
@@ -32,25 +35,28 @@ export class CarneController {
 
         for (let i = 0; i < qtdParcelas; i++) {
           const dataVencimento = vencimentoInicial.clone().add(i, 'months');
-          if (dataVencimento.isoWeekday() === 7) {
-            dataVencimento.add(1, 'days');
+
+          if (dataVencimento.isoWeekday() === 7) { // se o dia de vencimento for um domingo
+            dataVencimento.add(1, 'days'); // muda o vencimento para a próxima segunda
           }
 
-          const boleto = {
+          const boleto = new Boleto({
             carne: carneCriado.id,
             cliente: req.body.cliente,
             contaBancaria: cliente.get('conta_bancaria'),
             dataVencimento,
             valorCobranca: req.body.valor,
-          };
+          });
 
           boletosDoCarne.push(boleto);
-          await (Boleto.create(boleto));
+          await boleto.save();
+          log.info(`criou o boleto ${boleto.get("numeroBoleto")}, IP: ${req.ip}`, req.user._id, boleto.id);
         }
       }
       res.json(carneCriado);
+      log.info(`criou o carne ${carneCriado.id}, IP: ${req.ip}`, req.user._id, carneCriado.id);
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 
@@ -58,7 +64,7 @@ export class CarneController {
     try {
       res.json(await Carne.findById(req.params.id).exec());
     } catch (err) {
-      res.status(400).send();
+      handleError(err, res);
     }
   }
 
@@ -66,7 +72,7 @@ export class CarneController {
     try {
       res.json(await Carne.find({}).exec());
     } catch (err) {
-      res.status(400).send();
+      handleError(err, res);
     }
   }
 
@@ -75,21 +81,26 @@ export class CarneController {
       const carne = await Carne.findById(req.params.id);
 
       if (!carne) {
-        return res.end();
+        throw new Error(`não foi encontrado um carnê com o id: ${req.params.id}`);
       }
 
       const boletosDoCarne = await Boleto.where('carne', carne._id).exec();
 
       boletosDoCarne.forEach((boleto: any) => {
-        boleto.excluido_em = new Date();
+        boleto.set({
+          excluido: true,
+          excluidoEm: new Date(),
+        });
         boleto.save();
+        log.info(`removeu o boleto ${boleto.get("numeroBoleto")}, IP: ${req.ip}`, req.user._id, boleto.id);
       });
 
       carne.set('excluido_em', Date.now());
       res.json(await carne.save());
+      log.info(`removeu o carnê ${carne.id}, IP: ${req.ip}`, req.user._id, carne.id);
 
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 
@@ -97,7 +108,7 @@ export class CarneController {
     try {
       res.json(await Carne.find(req.body).exec());
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 }
