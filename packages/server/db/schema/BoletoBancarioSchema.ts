@@ -6,18 +6,22 @@ import autoIncrement = require('../plugins/auto-increment');
 autoIncrement.initialize(mongoose.connection);
 
 const BoletoSchema = new Schema({
-  alterado_em: require('../fields/alterado_em'),
+  alteradoEm: require('../fields/alterado_em'),
   carne: {
     ref: 'Carne',
     type: Schema.Types.ObjectId,
   },
   cliente: require('../fields/cliente'),
   contaBancaria: require('../fields/conta_bancaria'),
-  criado_em: require('../fields/criado_em'),
+  criadoEm: require('../fields/criado_em'),
   dataPagamento: require('../fields/data_pagamento'),
   dataVencimento: require('../fields/data_vencimento'),
   enviadoRemessa: require('../fields/enviado_remessa'),
-  excluido_em: require('../fields/excluido_em'),
+  excluido: {
+    default: false,
+    type: Boolean,
+  },
+  excluidoEm: require('../fields/excluido_em'),
   pago: {
     default: false,
     type: Boolean,

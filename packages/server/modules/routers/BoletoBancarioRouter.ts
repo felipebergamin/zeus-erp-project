@@ -4,15 +4,12 @@ import { BoletoBancarioController } from '../controllers/BoletoBancarioControlle
 const router = Router();
 
 router.route('/')
-  .get(BoletoBancarioController.getAll)
+  .get(BoletoBancarioController.query)
   .post(BoletoBancarioController.create);
 
 router.route('/:id')
   .get(BoletoBancarioController.get)
   .put(BoletoBancarioController.update)
   .delete(BoletoBancarioController.remove);
-
-router.route('/query')
-  .post(BoletoBancarioController.query);
 
 export = router;
