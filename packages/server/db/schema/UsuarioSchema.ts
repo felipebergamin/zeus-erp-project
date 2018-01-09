@@ -25,9 +25,9 @@ const UsuarioSchema = new Schema({
     type: Schema.Types.ObjectId,
   },
 
-  alterado_em: require('../fields/alterado_em'),
-  criado_em: require('../fields/criado_em'),
-  excluido_em: require('../fields/excluido_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
 });
 
 UsuarioSchema.pre('save', function preSave(next: (arg?: any) => void) {
