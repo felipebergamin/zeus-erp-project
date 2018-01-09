@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Document, DocumentQuery } from '../../db/connection';
 import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../services/LogService";
-import { aplyGetRequestOptionsToQuery, handleError } from "../utils/HttpControllers";
+import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class ClienteController {
   public static async create(req: Request, res: Response) {
@@ -28,8 +28,8 @@ export class ClienteController {
 
   public static async getAll(req: Request, res: Response) {
     try {
-      const query = Cliente.find({ excluido_em: { $exists: false } });
-      aplyGetRequestOptionsToQuery(req, query);
+      const query = createQueryAndApplyReqOptions(req, Cliente, ClienteController.parseQuery);
+      query.where("excluido", false);
       res.send(await query.exec());
     } catch (err) {
       handleError(err, res);
@@ -38,7 +38,7 @@ export class ClienteController {
 
   public static async getRemoved(req: Request, res: Response) {
     try {
-      const query = Cliente.find({ excluido_em: { $exists: true } });
+      const query = Cliente.where("excluido", false);
       aplyGetRequestOptionsToQuery(req, query);
       res.json(await query.exec());
     } catch (err) {
@@ -80,5 +80,17 @@ export class ClienteController {
     } catch (err) {
       handleError(err, res);
     }
+  }
+
+  private static parseQuery(searchQuery: any = {}) {
+    const { nome, ...mongoQuery } = searchQuery;
+
+    if (nome) {
+      mongoQuery.$text = {
+        $search: nome,
+      };
+    }
+
+    return mongoQuery;
   }
 }
