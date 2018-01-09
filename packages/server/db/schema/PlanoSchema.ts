@@ -6,7 +6,7 @@ export = new Schema({
 
   descricao: require('../fields/descricao'),
   nome: require('../fields/nome_plano'),
-  valor_mensal: require('../fields/valor_boleto'),
-  velocidade_download: require('../fields/velocidade_download'),
-  velocidade_upload: require('../fields/velocidade_upload'),
+  valorMensal: require('../fields/valor_boleto'),
+  velocidadeDownload: require('../fields/velocidade_download'),
+  velocidadeUpload: require('../fields/velocidade_upload'),
 });
