@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Document, DocumentQuery } from '../../db/connection';
 import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../services/LogService";
-import { aplyGetRequestOptionsToQuery } from "../utils/HttpControllers";
+import { aplyGetRequestOptionsToQuery, handleError } from "../utils/HttpControllers";
 
 export class ClienteController {
   public static async create(req: Request, res: Response) {
@@ -12,7 +12,7 @@ export class ClienteController {
       res.json(cliente);
       log.info(`cadastrou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 
@@ -22,7 +22,7 @@ export class ClienteController {
       aplyGetRequestOptionsToQuery(req, query);
       res.send(await query.exec());
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 
@@ -32,7 +32,7 @@ export class ClienteController {
       aplyGetRequestOptionsToQuery(req, query);
       res.send(await query.exec());
     } catch (err) {
-      res.json(err);
+      handleError(err, res);
     }
   }
 
@@ -42,7 +42,7 @@ export class ClienteController {
       aplyGetRequestOptionsToQuery(req, query);
       res.json(await query.exec());
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 
@@ -55,7 +55,7 @@ export class ClienteController {
       res.json(await cliente.save());
       log.info(`modificou ${modified} no cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 
@@ -66,7 +66,7 @@ export class ClienteController {
       res.send(await cliente.save());
       log.info(`excluiu o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
-      res.status(400).send(err);
+      handleError(err, res);
     }
   }
 
@@ -78,7 +78,7 @@ export class ClienteController {
       res.json(await cliente.save());
       log.info(`restaurou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 }
