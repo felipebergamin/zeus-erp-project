@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Plano = require('../../db/model/Plano');
 import { LogService as log } from "../services/LogService";
+import { handleError } from "../utils/HttpControllers";
 
 export class PlanoController {
 
@@ -11,7 +12,7 @@ export class PlanoController {
 
       log.info(`criou o plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`, req.user._id, plano.id);
     } catch (err) {
-      res.status(500).send(err);
+      handleError(err, res);
     }
   }
 
@@ -19,7 +20,7 @@ export class PlanoController {
     try {
       res.json(await Plano.findById(req.params.id).exec());
     } catch (err) {
-      res.status(500).send(err);
+      handleError(err, res);
     }
   }
 
@@ -27,7 +28,7 @@ export class PlanoController {
     try {
       res.json(await Plano.find({}).exec());
     } catch (err) {
-      res.status(500).send(err);
+      handleError(err, res);
     }
   }
 
@@ -49,7 +50,7 @@ export class PlanoController {
       log.info(`modificou ${modificado} no plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`,
         req.user._id, plano.id);
     } catch (err) {
-      res.status(500).send(err);
+      handleError(err, res);
     }
   }
 
@@ -57,7 +58,7 @@ export class PlanoController {
     try {
       res.json(await Plano.findByIdAndRemove(req.params.id).exec());
     } catch (err) {
-      res.status(500).send(err);
+      handleError(err, res);
     }
   }
 }
