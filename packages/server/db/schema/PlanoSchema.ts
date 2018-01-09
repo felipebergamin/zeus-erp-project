@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
 export = new Schema({
-  alterado_em: require('../fields/alterado_em'),
-  criado_em: require('../fields/criado_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
 
   descricao: require('../fields/descricao'),
   nome: require('../fields/nome_plano'),

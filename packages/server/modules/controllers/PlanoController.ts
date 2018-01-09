@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
 import Plano = require('../../db/model/Plano');
 import { LogService as log } from "../services/LogService";
-import { handleError } from "../utils/HttpControllers";
+import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class PlanoController {
 
   public static async create(req: Request, res: Response) {
     try {
-      const plano = await new Plano(req.body).save();
-      res.json(plano);
+      const plano = await new Plano(req.body);
+      plano.set("criadoEm", new Date());
+      res.json(await plano.save());
 
       log.info(`criou o plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`, req.user._id, plano.id);
     } catch (err) {
@@ -18,7 +19,9 @@ export class PlanoController {
 
   public static async get(req: Request, res: Response) {
     try {
-      res.json(await Plano.findById(req.params.id).exec());
+      const query = Plano.findById(req.params.id);
+      aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
     } catch (err) {
       handleError(err, res);
     }
@@ -26,7 +29,8 @@ export class PlanoController {
 
   public static async getAll(req: Request, res: Response) {
     try {
-      res.json(await Plano.find({}).exec());
+      const query = createQueryAndApplyReqOptions(req, Plano);
+      res.json(await query.exec());
     } catch (err) {
       handleError(err, res);
     }
@@ -34,15 +38,10 @@ export class PlanoController {
 
   public static async update(req: Request, res: Response) {
     try {
-      const values = {
-        alterado_em: Date.now(),
-      };
-      Object.assign(values, req.body);
-
       const plano = await Plano.findById(req.params.id).exec();
       plano.set(req.body);
       const modificado = plano.modifiedPaths().join(",");
-      plano.set("alterado_em", new Date());
+      plano.set("alteradoEm", new Date());
       await plano.save();
 
       res.json(plano);
@@ -56,7 +55,15 @@ export class PlanoController {
 
   public static async remove(req: Request, res: Response) {
     try {
-      res.json(await Plano.findByIdAndRemove(req.params.id).exec());
+      const plano = await Plano.findByIdAndRemove(req.params.id).exec();
+
+      if (!plano) {
+        throw new Error("Não existe um plano com o ID especificado");
+      }
+
+      await plano.remove();
+      res.json(plano.toJSON());
+      log.info(`excluiu o plano ${plano.get("nome")}, IP: ${req.ip}`, req.user._id, plano.id);
     } catch (err) {
       handleError(err, res);
     }
