@@ -19,7 +19,7 @@ export class LoginController {
 
       if (usuario) {
         if (usuario.checkPasswd(passwd)) {
-          const expires = moment().add(3, 'days').valueOf();
+          const expires = moment().add(12, "h").valueOf();
           const token = jwt.encode({
             expires,
             iss: usuario._id,
