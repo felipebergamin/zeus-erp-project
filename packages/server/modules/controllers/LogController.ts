@@ -1,22 +1,27 @@
 import { Request, Response } from "express";
 import Log = require("../../db/model/Log");
+import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class LogController {
   public static async get(req: Request, res: Response) {
     try {
-      res.json(await Log.findById(req.params.id).populate("usuario").exec());
+      const query = Log.findById(req.params.id);
+      aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 
   public static async query(req: Request, res: Response) {
-    const query = LogController.parseQuery(req.query);
-
     try {
-      res.json(await Log.find(query).populate("usuario").sort({ dataHora: -1 }).exec());
+      const query = createQueryAndApplyReqOptions(req, Log, LogController.parseQuery);
+      query.populate("usuario", "login");
+      query.sort({ dataHora: -1 });
+
+      res.json(await query.exec());
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 
