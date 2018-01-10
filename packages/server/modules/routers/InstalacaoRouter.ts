@@ -9,7 +9,9 @@ router.route('/')
 
 router.route('/:id')
   .get(InstalacaoController.get)
-  .put(InstalacaoController.update)
-  .delete(InstalacaoController.remove);
+  .put(InstalacaoController.update);
+
+router.post("/cancelar/:id", InstalacaoController.cancel);
+router.post("/concluir/:id", InstalacaoController.complete);
 
 export = router;

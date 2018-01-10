@@ -62,5 +62,5 @@ const schema = new Schema({
   },
 });
 
-schema.plugin(generateProtocolPlugin);
+schema.plugin(generateProtocolPlugin, { opid: "2" });
 export = schema;

@@ -1,23 +1,44 @@
 import { Schema } from "../connection";
+import { plugin } from "../plugins/generate-protocol";
 
-export = new Schema({
+const schema = new Schema({
+  cancelada: {
+    default: false,
+    type: Boolean,
+  },
+  dataHoraCancelada: Date,
+  motivoCancelamento: String,
+
+  concluida: {
+    default: false,
+    type: Boolean,
+  },
+  dataAgenda: {
+    required: [true, 'Qual a data da instalação?'],
+    type: Date,
+  },
+  dataHoraConclusao: Date,
+
   cliente: {
     ref: 'Cliente',
     required: [true, 'A instalação deve ter um cliente associado!'],
     type: Schema.Types.ObjectId,
   },
-  data_agenda: {
-    required: [true, 'Qual a data da instalação?'],
-    type: Date,
+  protocolo: {
+    type: String,
+    unique: [true, "Erro ao gerar protocolo, o protocolo não é único!"],
   },
-  data_finalizada: Date,
-  tecnico_responsavel: {
+  tecnicoResponsavel: {
     ref: 'Tecnico',
     required: [true, 'Um técnico deve ser designado para a intalação!'],
     type: Schema.Types.ObjectId,
   },
 
-  alterado_em: require('../fields/alterado_em'),
-  criado_em: require('../fields/criado_em'),
-  excluido_em: require('../fields/excluido_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
 });
+
+schema.plugin(plugin, { opid: "1" });
+
+export = schema;
