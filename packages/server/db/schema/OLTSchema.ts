@@ -12,4 +12,7 @@ export = new Schema({
   },
   obs: String,
   passwd: String,
+
+  alteradoEm: require("../fields/alterado_em"),
+  criadoEm: require("../fields/criado_em"),
 });
