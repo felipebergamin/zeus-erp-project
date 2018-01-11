@@ -61,4 +61,11 @@ UsuarioSchema.methods.checkPasswd = function checkPasswd(password: string, callb
   return match;
 };
 
+// nunca exportar o passwd
+UsuarioSchema.methods.toJSON = function toJSON() {
+  const obj = this.toObject();
+  delete obj.passwd;
+  return obj;
+};
+
 export = UsuarioSchema;
