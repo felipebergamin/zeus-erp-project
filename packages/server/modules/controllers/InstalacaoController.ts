@@ -20,7 +20,7 @@ export class InstalacaoController {
     try {
       const query = Instalacao.findById(req.params.id);
       aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      res.json((await query.exec()).toJSON());
     } catch (err) {
       handleError(err, res);
     }

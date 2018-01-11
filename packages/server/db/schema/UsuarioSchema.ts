@@ -24,6 +24,17 @@ const UsuarioSchema = new Schema({
     required: [true, "É necessário um perfil para o usuário"],
     type: Schema.Types.ObjectId,
   },
+  telegramID: String,
+  tipo: {
+    enum: [
+      "tecnico",
+      "atendente",
+      "gerente",
+      "outro",
+    ],
+    required: [true, "É necessário definir o tipo de usuário"],
+    type: String,
+  },
 
   alteradoEm: require('../fields/alterado_em'),
   criadoEm: require('../fields/criado_em'),
@@ -42,21 +53,6 @@ UsuarioSchema.pre('save', function preSave(next: (arg?: any) => void) {
   user.passwd = PASSWD_HASH;
 
   next();
-
-  /* bcrypt.genSalt(5, (genSaltError: Error, salt: string) => {
-    if (genSaltError) {
-      return next(genSaltError);
-    }
-
-    bcrypt.hash(user.passwd, salt, null, (hashError: Error, hash: string) => {
-      if (hashError) {
-        return next(hashError);
-      }
-
-      user.passwd = hash;
-      next();
-    });
-  }); */
 });
 
 UsuarioSchema.methods.checkPasswd = function checkPasswd(password: string, callback: (match: boolean) => void) {

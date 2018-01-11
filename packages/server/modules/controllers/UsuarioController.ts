@@ -1,24 +1,28 @@
 import { Request, Response } from 'express';
 import Usuario = require('../../db/model/Usuario');
 import { LogService as log } from '../services/LogService';
+import * as utils from "../utils/HttpControllers";
 
 export class UsuarioController {
 
   public static async create(req: Request, res: Response) {
     try {
-      const usuario = await new Usuario(req.body).save();
+      const usuario = new Usuario(req.body);
+      usuario.set("criadoEm", new Date());
+      await usuario.save();
       res.json(usuario);
       log.info(`criou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user.login, usuario.id);
     } catch (err) {
-      res.status(400).json(err);
+      utils.handleError(err, res);
     }
   }
 
   public static async getAll(req: Request, res: Response) {
     try {
-      res.json(await Usuario.find({}).select('-passwd').exec());
+      const query = utils.createQueryAndApplyReqOptions(req, Usuario);
+      res.json(await Usuario.find({}).exec());
     } catch (err) {
-      res.status(400).json(err);
+      utils.handleError(err, res);
     }
   }
 
@@ -27,7 +31,7 @@ export class UsuarioController {
       const usuario = await Usuario.findById(req.params.id).select('-passwd').exec();
       res.json(usuario);
     } catch (err) {
-      res.status(400).json(err);
+      utils.handleError(err, res);
     }
   }
 
@@ -36,7 +40,7 @@ export class UsuarioController {
       const usuario = await Usuario.findById(req.params.id).exec();
       usuario.set(req.body);
       const modified = usuario.modifiedPaths();
-      usuario.set('alterado_em', new Date());
+      usuario.set('alteradoEm', new Date());
 
       await usuario.save();
       log.info(`modificou ${modified} no usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
@@ -45,7 +49,7 @@ export class UsuarioController {
       delete usuobj.passwd;
       res.json(usuobj);
     } catch (err) {
-      res.status(400).json(err);
+      utils.handleError(err, res);
     }
   }
 
@@ -63,7 +67,7 @@ export class UsuarioController {
         req.user._id,
         usuario.id);
     } catch (err) {
-      res.status(400).json(err);
+      utils.handleError(err, res);
     }
   }
 }

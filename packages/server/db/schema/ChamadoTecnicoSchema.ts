@@ -57,7 +57,7 @@ const schema = new Schema({
     type: String,
   },
   tecnico: {
-    ref: "Tecnico",
+    ref: "Usuario",
     type: Schema.Types.ObjectId,
   },
 });

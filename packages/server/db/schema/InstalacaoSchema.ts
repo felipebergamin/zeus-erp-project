@@ -29,7 +29,7 @@ const schema = new Schema({
     unique: [true, "Erro ao gerar protocolo, o protocolo não é único!"],
   },
   tecnicoResponsavel: {
-    ref: 'Tecnico',
+    ref: 'Usuario',
     required: [true, 'Um técnico deve ser designado para a intalação!'],
     type: Schema.Types.ObjectId,
   },
