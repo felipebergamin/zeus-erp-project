@@ -12,4 +12,6 @@ router.route('/:id')
   .get(UsuarioController.getById)
   .put(UsuarioController.update);
 
+router.post("/recover/:id", UsuarioController.recover);
+
 export = router;

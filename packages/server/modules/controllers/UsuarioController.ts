@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Usuario = require('../../db/model/Usuario');
 import { LogService as log } from '../services/LogService';
 import * as utils from "../utils/HttpControllers";
+import { handleError } from '../utils/HttpControllers';
 
 export class UsuarioController {
 
@@ -20,7 +21,7 @@ export class UsuarioController {
   public static async getAll(req: Request, res: Response) {
     try {
       const query = utils.createQueryAndApplyReqOptions(req, Usuario);
-      res.json(await Usuario.find({}).exec());
+      res.json(await query.exec());
     } catch (err) {
       utils.handleError(err, res);
     }
@@ -28,8 +29,9 @@ export class UsuarioController {
 
   public static async getById(req: Request, res: Response) {
     try {
-      const usuario = await Usuario.findById(req.params.id).select('-passwd').exec();
-      res.json(usuario);
+      const query = Usuario.findById(req.params.id);
+      utils.aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
     } catch (err) {
       utils.handleError(err, res);
     }
@@ -39,15 +41,12 @@ export class UsuarioController {
     try {
       const usuario = await Usuario.findById(req.params.id).exec();
       usuario.set(req.body);
-      const modified = usuario.modifiedPaths();
+      const modified = usuario.modifiedPaths().join(", ");
       usuario.set('alteradoEm', new Date());
 
       await usuario.save();
+      res.json(usuario);
       log.info(`modificou ${modified} no usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
-
-      const usuobj: any = usuario.toObject();
-      delete usuobj.passwd;
-      res.json(usuobj);
     } catch (err) {
       utils.handleError(err, res);
     }
@@ -58,16 +57,35 @@ export class UsuarioController {
       const usuario = await Usuario.findById(req.params.id);
 
       usuario.set({
-        ativo: !usuario.get('ativo'),
-        excluido_em: new Date(),
+        ativo: false,
+        excluidoEm: new Date(),
       });
+      await usuario.save();
 
-      res.json(await usuario.save());
-      log.info(`${(usuario.get('ativo') ? 'ativou' : 'desativou')} o usuário ${usuario.get('login')}, IP: ${req.ip}`,
+      res.json(usuario);
+
+      log.info(`desativou o usuário ${usuario.get('login')}, IP: ${req.ip}`,
         req.user._id,
         usuario.id);
     } catch (err) {
       utils.handleError(err, res);
+    }
+  }
+
+  public static async recover(req: Request, res: Response) {
+    try {
+      const usuario = await Usuario.findById(req.params.id);
+
+      usuario.set("ativo", true);
+      await usuario.save();
+
+      res.json(usuario);
+
+      log.info(`ativou o usuário ${usuario.get('login')}, IP: ${req.ip}`,
+        req.user._id,
+        usuario.id);
+    } catch (err) {
+      handleError(err, res);
     }
   }
 }
