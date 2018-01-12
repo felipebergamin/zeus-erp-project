@@ -26,8 +26,8 @@ import authMiddleware = require('./modules/http_middleware/isAuth');
 const app = express().disable('x-powered-by');
 
 // SET MIDDLEWARES
-app.use(corsMiddleware);
 app.use(setCorsHeadersMiddleware);
+app.use(corsMiddleware);
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
