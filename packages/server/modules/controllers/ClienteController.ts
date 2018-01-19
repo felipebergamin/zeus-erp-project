@@ -8,7 +8,9 @@ import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleErro
 export class ClienteController {
   public static async create(req: Request, res: Response) {
     try {
-      const cliente = await new Cliente(req.body).save();
+      const cliente = new Cliente(req.body);
+      cliente.set("criadoEm", new Date());
+      await cliente.save();
       res.json(cliente);
       log.info(`cadastrou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
@@ -38,7 +40,7 @@ export class ClienteController {
 
   public static async getRemoved(req: Request, res: Response) {
     try {
-      const query = Cliente.where("excluido", false);
+      const query = Cliente.where("excluido", true);
       aplyGetRequestOptionsToQuery(req, query);
       res.json(await query.exec());
     } catch (err) {
@@ -51,7 +53,7 @@ export class ClienteController {
       const cliente = await Cliente.findById(req.params.id).exec();
       cliente.set(req.body);
       const modified = cliente.modifiedPaths().join(", ");
-      cliente.set("alterado_em", new Date());
+      cliente.set("alteradoEm", new Date());
       res.json(await cliente.save());
       log.info(`modificou ${modified} no cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
@@ -62,7 +64,10 @@ export class ClienteController {
   public static async remove(req: Request, res: Response) {
     try {
       const cliente = await Cliente.findById(req.params.id).exec();
-      cliente.set("excluido_em", Date.now());
+      cliente.set({
+        excluido: true,
+        excluidoEm: new Date(),
+      });
       res.send(await cliente.save());
       log.info(`excluiu o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
     } catch (err) {
@@ -73,7 +78,10 @@ export class ClienteController {
   public static async undelete(req: Request, res: Response) {
     try {
       const cliente = await Cliente.findById(req.params.id);
-      cliente.set("excluido_em", undefined);
+      cliente.set({
+        excluido: false,
+        excluidoEm: undefined,
+      });
 
       res.json(await cliente.save());
       log.info(`restaurou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);

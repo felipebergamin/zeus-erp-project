@@ -1,44 +1,53 @@
 import { Schema } from "../connection";
 
 const schema = new Schema({
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
+
+  excluido: {
+    default: false,
+    type: Boolean,
+  },
+
   /* informações pessoa */
-  alterado_em: require('../fields/alterado_em'),
-  cpf_cnpj: require('../fields/cpf_cnpj'),
-  criado_em: require('../fields/criado_em'),
-  data_nascimento: require('../fields/data_nascimento'),
-  excluido_em: require('../fields/excluido_em'),
+  cpfCnpj: require('../fields/cpf_cnpj'),
+  dataNascimento: require('../fields/data_nascimento'),
   nome: require('../fields/nome_pessoa'),
-  rg_ie: require('../fields/rg_ie'),
+  rgIe: require('../fields/rg_ie'),
   tags: [String],
-  tipo_pessoa: require('../fields/tipo_pessoa'),
+  tipoPessoa: require('../fields/tipo_pessoa'),
 
   /* informações de contato */
   email: require('../fields/email'),
-  numero_celular: require('../fields/numero_celular'),
-  telefone_fixo: require('../fields/telefone_fixo'),
+  numeroCelular: require('../fields/numero_celular'),
+  telefoneFixo: require('../fields/telefone_fixo'),
 
   /* informações de conexão */
-  auto_atrelar_mac: require('../fields/auto_atrelar_mac'),
-  ip_address: require('../fields/ip_address'),
+  autoAtrelarMac: require('../fields/auto_atrelar_mac'),
+  ipAddress: require('../fields/ip_address'),
   login: require('../fields/login'),
-  mac_address: String,
-  mac_onu: String,
-  olt: String,
+  macAddress: String,
+  macOnu: String,
+  olt: {
+    ref: "OLT",
+    type: Schema.Types.ObjectId,
+  },
   passwd: require('../fields/passwd'),
-  pon_no: Number,
-  slot_no: Number,
+  ponNo: Number,
+  slotNo: Number,
 
   plano: require('../fields/plano'),
 
   /* informações de endereço */
-  endereco_residencial: require('./Endereco'),
+  enderecoResidencial: require('./Endereco'),
 
-  endereco_correspondencia: require('./Endereco'),
+  enderecoCorrespondencia: require('./Endereco'),
 
   /* informações financeiras */
-  auto_bloquear: require('../fields/auto_bloquear'),
-  conta_bancaria: require('../fields/conta_bancaria'),
-  dia_vencimento: {
+  autoBloquear: require('../fields/auto_bloquear'),
+  contaBancaria: require('../fields/conta_bancaria'),
+  diaVencimento: {
     required: [true, 'O dia de vencimento deve ser informado'],
     type: Number,
   },
