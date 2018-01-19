@@ -32,7 +32,7 @@
     "moment": "^2.19.1",
     "mongoose": "^4.13.0",
     "mongoose-auto-increment": "^5.0.1",
-    "node-tl1-fiberhome": "^0.2.0",
+    "node-tl1-fiberhome": "^1.0.0",
     "randomstring": "^1.1.5"
   },
   "devDependencies": {
