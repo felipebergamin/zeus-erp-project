@@ -12,7 +12,7 @@ export class UsuarioController {
       usuario.set("criadoEm", new Date());
       await usuario.save();
       res.json(usuario);
-      log.info(`criou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user.login, usuario.id);
+      log.info(`criou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
     } catch (err) {
       utils.handleError(err, res);
     }
