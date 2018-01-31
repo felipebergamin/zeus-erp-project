@@ -1,6 +1,6 @@
 import { TL1Client } from "node-tl1-fiberhome";
 
-import debug = require("../../debug");
+import debug = require("../debug");
 import { LogService as log } from "./LogService";
 
 let fhService: FiberhomeService;

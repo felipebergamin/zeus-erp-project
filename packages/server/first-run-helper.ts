@@ -1,9 +1,9 @@
 import randomstring = require("randomstring");
 import readline = require("readline");
 
-import debug = require("../debug");
-import PerfilUsuario = require("./model/PerfilUsuario");
-import Usuario = require("./model/Usuario");
+import PerfilUsuario = require("./db/model/PerfilUsuario");
+import Usuario = require("./db/model/Usuario");
+import debug = require("./debug");
 
 const isFirstRun = async () => {
   const usuarios = await Usuario.find({}).select("_id").exec();

@@ -4,7 +4,7 @@ import moment = require('moment');
 import Boleto = require('../../db/model/BoletoBancario');
 import Carne = require('../../db/model/Carne');
 import Cliente = require('../../db/model/Cliente');
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { handleError } from "../utils/HttpControllers";
 
 export class CarneController {

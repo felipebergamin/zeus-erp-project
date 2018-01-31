@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import OLT = require("../../db/model/OLT");
-import { FiberhomeService } from "../services/FiberhomeService";
+import { FiberhomeService } from "../../services/FiberhomeService";
 import { handleError } from "../utils/HttpControllers";
 
 export class FiberhomeController {

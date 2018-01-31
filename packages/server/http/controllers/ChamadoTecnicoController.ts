@@ -4,7 +4,7 @@ import "moment/locale/pt-br";
 moment.locale("pt-BR");
 
 import Chamado = require("../../db/model/ChamadoTecnico");
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery,
   createQueryAndApplyReqOptions,
   handleError } from "../utils/HttpControllers";

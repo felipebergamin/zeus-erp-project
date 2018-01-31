@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Plano = require('../../db/model/Plano');
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class PlanoController {

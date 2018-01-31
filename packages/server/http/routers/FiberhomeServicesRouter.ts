@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 
+import { FiberhomeService } from "../../services/FiberhomeService";
 import { FiberhomeController } from "../controllers/FiberhomeController";
-import { FiberhomeService } from "../services/FiberhomeService";
 
 const router = Router();
 

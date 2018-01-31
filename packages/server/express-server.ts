@@ -2,26 +2,26 @@ import bodyparser = require('body-parser');
 import express = require('express');
 
 /* EXPRESS ROUTERS */
-import apiBoletoRouter = require('./modules/routers/BoletoBancarioRouter');
-import apiCarneRouter = require('./modules/routers/CarneRouter');
-import chamadoTecnicoRouter = require("./modules/routers/ChamadoTecnicoRouter");
-import apiCliente = require('./modules/routers/ClienteRouter');
-import apiContaBancariaRouter = require('./modules/routers/ContaBancariaRouter');
-import fiberhomeServicesRouter = require('./modules/routers/FiberhomeServicesRouter');
-import apiInstalacaoRouter = require('./modules/routers/InstalacaoRouter');
-import ipPoolRouter = require("./modules/routers/IPPoolRouter");
-import apiLoginRouter = require('./modules/routers/LoginRouter');
-import logRouter = require('./modules/routers/LogRouter');
-import oltRouter = require('./modules/routers/OLTRouter');
-import perfilUsuarioRouter = require('./modules/routers/PerfilUsuarioRouter');
-import apiPlanoRouter = require('./modules/routers/PlanoRouter');
-// import apiTecnicoRouter = require('./modules/routers/TecnicoRouter');
-import apiUsuarioRouter = require('./modules/routers/UsuarioRouter');
+import apiBoletoRouter = require('./http/routers/BoletoBancarioRouter');
+import apiCarneRouter = require('./http/routers/CarneRouter');
+import chamadoTecnicoRouter = require("./http/routers/ChamadoTecnicoRouter");
+import apiCliente = require('./http/routers/ClienteRouter');
+import apiContaBancariaRouter = require('./http/routers/ContaBancariaRouter');
+import fiberhomeServicesRouter = require('./http/routers/FiberhomeServicesRouter');
+import apiInstalacaoRouter = require('./http/routers/InstalacaoRouter');
+import ipPoolRouter = require("./http/routers/IPPoolRouter");
+import apiLoginRouter = require('./http/routers/LoginRouter');
+import logRouter = require('./http/routers/LogRouter');
+import oltRouter = require('./http/routers/OLTRouter');
+import perfilUsuarioRouter = require('./http/routers/PerfilUsuarioRouter');
+import apiPlanoRouter = require('./http/routers/PlanoRouter');
+// import apiTecnicoRouter = require('./http/routers/TecnicoRouter');
+import apiUsuarioRouter = require('./http/routers/UsuarioRouter');
 
 /* MIDDLEWARES */
-import corsMiddleware = require('./modules/http_middleware/corsCheckMiddleware');
-import setCorsHeadersMiddleware = require("./modules/http_middleware/corsResponseHeaders");
-import authMiddleware = require('./modules/http_middleware/isAuth');
+import corsMiddleware = require('./http/middlewares/corsCheckMiddleware');
+import setCorsHeadersMiddleware = require("./http/middlewares/corsResponseHeaders");
+import authMiddleware = require('./http/middlewares/isAuth');
 
 const app = express().disable('x-powered-by');
 

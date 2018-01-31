@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import IPPool = require("../../db/model/IPPool");
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class IPPoolController {

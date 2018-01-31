@@ -3,9 +3,9 @@ import debug = require("./debug");
 
 /* SYSTEM SERVICES */
 import expressApp = require("./express-server");
-import { FiberhomeService } from "./modules/services/FiberhomeService";
+import { FiberhomeService } from "./services/FiberhomeService";
 
-import { setupApplication } from "./db/first-run-helper";
+import { setupApplication } from "./first-run-helper";
 setupApplication();
 
 /* START SERVICES */

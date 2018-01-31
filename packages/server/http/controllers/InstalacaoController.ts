@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import Instalacao = require("../../db/model/Instalacao");
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class InstalacaoController {

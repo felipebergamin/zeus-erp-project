@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import PerfilUsuario = require("../../db/model/PerfilUsuario");
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import * as utils from "../utils/HttpControllers";
 
 export class PerfilUsuarioController {

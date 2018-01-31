@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import Log = require("../../db/model/Log");
+import Log = require("../db/model/Log");
 
 interface ILog {
   texto: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Usuario = require('../../db/model/Usuario');
-import { LogService as log } from '../services/LogService';
+import { LogService as log } from '../../services/LogService';
 import * as utils from "../utils/HttpControllers";
 import { handleError } from '../utils/HttpControllers';
 

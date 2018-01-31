@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import OLT = require("../../db/model/OLT");
-import { LogService as log } from "../services/LogService";
+import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class OLTController {
