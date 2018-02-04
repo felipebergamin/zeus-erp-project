@@ -5,7 +5,7 @@ import Boleto = require('../../db/model/BoletoBancario');
 import Carne = require('../../db/model/Carne');
 import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../../services/LogService";
-import { handleError } from "../utils/HttpControllers";
+import * as utils from "../utils/HttpControllers";
 
 export class CarneController {
 
@@ -43,7 +43,7 @@ export class CarneController {
           const boleto = new Boleto({
             carne: carneCriado.id,
             cliente: req.body.cliente,
-            contaBancaria: cliente.get('conta_bancaria'),
+            contaBancaria: cliente.get('contaBancaria'),
             dataVencimento,
             valorCobranca: req.body.valor,
           });
@@ -56,23 +56,26 @@ export class CarneController {
       res.json(carneCriado);
       log.info(`criou o carne ${carneCriado.id}, IP: ${req.ip}`, req.user._id, carneCriado.id);
     } catch (err) {
-      handleError(err, res);
+      utils.handleError(err, res);
     }
   }
 
   public static async get(req: Request, res: Response) {
     try {
-      res.json(await Carne.findById(req.params.id).exec());
+      const query = Carne.findById(req.params.id);
+      utils.aplyGetRequestOptionsToQuery(req, query);
+      res.json(await query.exec());
     } catch (err) {
-      handleError(err, res);
+      utils.handleError(err, res);
     }
   }
 
   public static async getAll(req: Request, res: Response) {
     try {
-      res.json(await Carne.find({}).exec());
+      const query = utils.createQueryAndApplyReqOptions(req, Carne);
+      res.json(await query.exec());
     } catch (err) {
-      handleError(err, res);
+      utils.handleError(err, res);
     }
   }
 
@@ -81,7 +84,7 @@ export class CarneController {
       const carne = await Carne.findById(req.params.id);
 
       if (!carne) {
-        throw new Error(`não foi encontrado um carnê com o id: ${req.params.id}`);
+        return res.status(404).json({ message: "Carnê não encontrado" });
       }
 
       const boletosDoCarne = await Boleto.where('carne', carne._id).exec();
@@ -100,15 +103,7 @@ export class CarneController {
       log.info(`removeu o carnê ${carne.id}, IP: ${req.ip}`, req.user._id, carne.id);
 
     } catch (err) {
-      handleError(err, res);
-    }
-  }
-
-  public static async query(req: Request, res: Response) {
-    try {
-      res.json(await Carne.find(req.body).exec());
-    } catch (err) {
-      handleError(err, res);
+      utils.handleError(err, res);
     }
   }
 }

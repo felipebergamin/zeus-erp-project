@@ -16,9 +16,9 @@ const schema = new Schema({
     unique: true,
   },
 
-  alterado_em: require('../fields/alterado_em'),
-  criado_em: require('../fields/criado_em'),
-  excluido_em: require('../fields/excluido_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
 });
 
 schema.plugin(plugin);
