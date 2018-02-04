@@ -11,6 +11,10 @@ const schema = new Schema({
     required: [true, 'Uma descrição é obrigatória'],
     type: String,
   },
+  excluido: {
+    default: false,
+    type: Boolean,
+  },
   idCarne: {
     type: String,
     unique: true,

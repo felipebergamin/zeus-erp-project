@@ -98,7 +98,10 @@ export class CarneController {
         log.info(`removeu o boleto ${boleto.get("numeroBoleto")}, IP: ${req.ip}`, req.user._id, boleto.id);
       });
 
-      carne.set('excluido_em', Date.now());
+      carne.set({
+        excluido: true,
+        excluidoEm: new Date(),
+      });
       res.json(await carne.save());
       log.info(`removeu o carnê ${carne.id}, IP: ${req.ip}`, req.user._id, carne.id);
 
