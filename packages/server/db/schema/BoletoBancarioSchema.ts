@@ -22,6 +22,7 @@ const BoletoSchema = new Schema({
     type: Boolean,
   },
   excluidoEm: require('../fields/excluido_em'),
+  ocorrencias: [Number],
   pago: {
     default: false,
     type: Boolean,
