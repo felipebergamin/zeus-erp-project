@@ -36,7 +36,6 @@ const schema = new Schema({
 
   alteradoEm: require('../fields/alterado_em'),
   criadoEm: require('../fields/criado_em'),
-  excluidoEm: require('../fields/excluido_em'),
 });
 
 schema.plugin(plugin, { opid: "1" });
