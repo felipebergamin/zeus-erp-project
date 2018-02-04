@@ -12,4 +12,7 @@ router.route('/:id')
   .put(ContaBancariaController.update)
   .delete(ContaBancariaController.remove);
 
+router.route('/recover/:id')
+  .post(ContaBancariaController.recover);
+
 export = router;

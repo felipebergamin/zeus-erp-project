@@ -19,7 +19,7 @@ export = new Schema({
     required: [true, 'Informe o cedente'],
     type: String,
   },
-  codigo_cedente: {
+  codigoCedente: {
     required: [true, 'Informe o código do cedente'],
     type: String,
   },
@@ -33,6 +33,10 @@ export = new Schema({
       type: Number,
     },
   }),
+  excluido: {
+    default: false,
+    type: Boolean,
+  },
   multaDia: {
     required: [true, 'Informe a multa aplicada por dia de atraso'],
     type: Number,
@@ -54,7 +58,7 @@ export = new Schema({
     type: Number,
   },
 
-  alterado_em: require('../fields/alterado_em'),
-  criado_em: require('../fields/criado_em'),
-  excluido_em: require('../fields/excluido_em'),
+  alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
 });
