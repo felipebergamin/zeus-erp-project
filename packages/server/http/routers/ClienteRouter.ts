@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import { ClienteController } from '../controllers/ClienteController';
 
-import clienteValidators = require("../validators/cliente");
+import createClientValidator = require("../validators/cliente/create");
+import updateClientValidator = require("../validators/cliente/update");
 
 const router = Router();
 
 router.route('/')
   .get(ClienteController.getAll)
-  .post(clienteValidators, ClienteController.create);
+  .post(createClientValidator, ClienteController.create);
 
 router.route('/recover/:id')
   .post(ClienteController.undelete);
@@ -18,6 +19,6 @@ router.route('/removed')
 router.route('/:id')
   .get(ClienteController.get)
   .delete(ClienteController.remove)
-  .put(clienteValidators, ClienteController.update);
+  .put(updateClientValidator, ClienteController.update);
 
 export = router;

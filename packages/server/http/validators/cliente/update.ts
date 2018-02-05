@@ -1,24 +1,28 @@
 import { Request, Response } from "express";
 import { check } from "express-validator/check";
 
-import processValidationResult = require("./processValidationResult");
+import { validateCPF } from "../fields/validateCPF";
+import processValidationResult = require("../processValidationResult");
 
 export = [
   check("cpfCnpj")
-    .exists().withMessage("O CPF/CNPJ deve ser informado"),
+    .optional({ checkFalsy: true })
+    .custom(validateCPF).withMessage("Um CPF/CNPJ válido deve ser informado"),
 
   check("dataNascimento")
+    .optional({ checkFalsy: true })
     .isISO8601().withMessage("A data de nascimento é inválida"),
 
   check("nome", "Verifique o nome informado")
+    .optional({ checkFalsy: true })
     .isLength({ min: 10 }).withMessage("O nome é muito pequeno")
     .exists().withMessage("O nome deve ser informado"),
 
   check("rgIe")
-    .exists().withMessage("O RG deve ser informado"),
+    .optional({ checkFalsy: true }),
 
   check("tipoPessoa")
-    .exists().withMessage("O tipo de pessoa deve ser informado")
+    .optional({ checkFalsy: true })
     .isIn(["fisica", "juridica"]).withMessage("Tipo de pessoa deve ser fisica/juridica"),
 
   check("email")
@@ -45,6 +49,7 @@ export = [
     }).withMessage("O número do telefone fixo parece inválido"),
 
   check("autoAtrelarMac")
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("O valor é inválido"),
 
   check("ipAddress")
@@ -52,7 +57,7 @@ export = [
     .isIP(4).withMessage("Deve ser um IPv4 válido"),
 
   check("login")
-    .exists().withMessage("O login deve ser informado")
+    .optional({ checkFalsy: true })
     .isEmail().withMessage("O login parece inválido")
     .custom((login: string) => {
       return login.endsWith("@acetech.net.br")
@@ -68,7 +73,7 @@ export = [
     .isMongoId().withMessage("A OLT é inválida"),
 
   check("passwd")
-    .exists().withMessage("Uma senha deve ser informada")
+    .optional({ checkFalsy: true })
     .isLength({ min: 4 }).withMessage("A senha deve ter mais de 4 dígitos"),
 
   check("ponNo", "Verifique a PON informada")
@@ -80,19 +85,19 @@ export = [
     .isInt(),
 
   check("plano")
-    .exists().withMessage("O plano do cliente deve ser informado")
+    .optional({ checkFalsy: true })
     .isMongoId().withMessage("O plano é inválido"),
 
   check("autoBloquear")
-    .exists().withMessage("O campo deve ser informado")
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("Valor inválido"),
 
   check("contaBancaria")
-    .exists().withMessage("A conta bancária deve ser informada")
+    .optional({ checkFalsy: true })
     .isMongoId().withMessage("O valor é inválido"),
 
   check("diaVencimento")
-    .exists().withMessage("O valor deve ser informado")
+    .optional({ checkFalsy: true })
     .isInt().withMessage("O valor é inválido"),
 
   processValidationResult,
