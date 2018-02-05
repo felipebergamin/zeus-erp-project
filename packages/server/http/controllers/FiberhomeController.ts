@@ -50,7 +50,7 @@ export class FiberhomeController {
       const r = await fh.addOnu(NAME, OLTID, ONUID, ONUTYPE, SLOTNO, PONNO);
       res.json(r.parsedResponse);
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 
@@ -61,7 +61,7 @@ export class FiberhomeController {
       const r = await fh.configureOnu(OLTID, ONUID, ONUPORT, PONID, PVID, VLANMOD);
       res.json(r.parsedResponse);
     } catch (err) {
-      res.status(400).json(err);
+      handleError(err, res);
     }
   }
 }
