@@ -10,6 +10,11 @@ export class FiberhomeController {
       const { olt, slot, pon, onumac } = req.query;
 
       const oltObj = await OLT.findById(olt).exec();
+
+      if (!oltObj) {
+        return res.status(404).json({ message: "OLT não encontrada no sistema" });
+      }
+
       const fh = await FiberhomeService.instance();
       const r = await fh.getOnuOpticalInfo(oltObj.get("ip"), slot, pon, onumac);
 
