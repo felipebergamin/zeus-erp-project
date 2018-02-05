@@ -1,15 +1,17 @@
 import { Router } from 'express';
 import { ContaBancariaController } from '../controllers/ContaBancariaController';
 
+import createContaValidator = require("../validators/conta-bancaria/create");
+
 const router = Router();
 
 router.route('/')
   .get(ContaBancariaController.getAll)
-  .post(ContaBancariaController.create);
+  .post(createContaValidator, ContaBancariaController.create);
 
 router.route('/:id')
   .get(ContaBancariaController.get)
-  .put(ContaBancariaController.update)
+  .put(createContaValidator, ContaBancariaController.update)
   .delete(ContaBancariaController.remove);
 
 router.route('/recover/:id')
