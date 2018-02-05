@@ -13,8 +13,21 @@ export class ChamadoTecnicoController {
 
   public static async create(req: Request, res: Response) {
     try {
-      const chamado = new Chamado(req.body);
-      chamado.set("abertoPor", req.user._id);
+      const {
+        cliente,
+        mensagem,
+        motivoAbertura,
+        tecnico,
+      } = req.body;
+
+      const chamado = new Chamado({
+        abertoPor: req.user._id,
+        cliente,
+        mensagem,
+        motivoAbertura,
+        tecnico,
+      });
+
       await chamado.save();
       res.json(chamado.toJSON());
       log.info(`criou o chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, req.user._id, chamado.id);
