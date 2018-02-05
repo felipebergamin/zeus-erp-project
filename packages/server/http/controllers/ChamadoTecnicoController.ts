@@ -127,13 +127,6 @@ export class ChamadoTecnicoController {
       const user = req.user;
       const { imagemAssinatura, justificativaFechamento } = req.body;
 
-      if (typeof imagemAssinatura !== "string" || !imagemAssinatura.endsWith("=")) {
-        throw new Error("Assinatura do cliente não recolhida!");
-      }
-      if (typeof justificativaFechamento !== "string" || justificativaFechamento.length < 10) {
-        throw new Error("É necessário informar uma justificativa para o fechamento do chamado");
-      }
-
       const chamado = await Chamado.findById(req.params.id).exec();
 
       if (chamado.get("finalizado")) {
