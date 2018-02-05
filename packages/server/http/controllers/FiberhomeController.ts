@@ -29,6 +29,11 @@ export class FiberhomeController {
       const { olt } = req.query;
 
       const oltObj = await OLT.findById(olt).exec();
+
+      if (!oltObj) {
+        return res.status(404).json({ message: "OLT não encontrada no sistema" });
+      }
+
       const fh = await FiberhomeService.instance();
       const r = await fh.getUnauthOnu(olt.ip);
 
