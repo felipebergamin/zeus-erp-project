@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { ChamadoTecnicoController } from "../controllers/ChamadoTecnicoController";
 
+import createChamadoValidator = require("../validators/chamado-tecnico/create");
+
 const router = Router();
 
 router.route("/")
   .get(ChamadoTecnicoController.query)
-  .post(ChamadoTecnicoController.create);
+  .post(createChamadoValidator, ChamadoTecnicoController.create);
 
 router.route("/:id")
   .get(ChamadoTecnicoController.get)
