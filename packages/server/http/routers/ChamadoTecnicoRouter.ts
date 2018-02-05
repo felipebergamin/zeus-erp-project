@@ -3,6 +3,7 @@ import { ChamadoTecnicoController } from "../controllers/ChamadoTecnicoControlle
 
 import cancelChamadoValidator = require("../validators/chamado-tecnico/cancel");
 import createChamadoValidator = require("../validators/chamado-tecnico/create");
+import finalizeChamadoValidator = require("../validators/chamado-tecnico/finalize");
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.route("/:id")
   .get(ChamadoTecnicoController.get)
   .put(ChamadoTecnicoController.update);
 
-router.post("/finalizar/:id", ChamadoTecnicoController.finalize);
+router.post("/finalizar/:id", finalizeChamadoValidator, ChamadoTecnicoController.finalize);
 router.post("/cancelar/:id", cancelChamadoValidator, ChamadoTecnicoController.cancel);
 
 export = router;
