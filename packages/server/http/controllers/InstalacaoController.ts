@@ -7,7 +7,18 @@ import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleErro
 export class InstalacaoController {
   public static async create(req: Request, res: Response) {
     try {
-      const instalacao = new Instalacao(req.body);
+      const {
+        cliente,
+        dataAgenda,
+        tecnicoResponsavel,
+      } = req.body;
+
+      const instalacao = new Instalacao({
+        cliente,
+        dataAgenda,
+        tecnicoResponsavel,
+      });
+
       await instalacao.save();
       res.json(instalacao.toJSON());
       log.info(`criou a instalacao ${instalacao.get("protocolo")}, IP: ${req.ip}`, req.user._id, instalacao.id);
@@ -65,11 +76,9 @@ export class InstalacaoController {
       const { motivoCancelamento } = req.body;
 
       if (!instalacao) {
-        throw new Error(`Não existe instalação com id: ${req.params.id}`);
+        return res.status(404).json({ message: "Instalação não encontrada" });
       }
-      if (typeof motivoCancelamento !== 'string' || motivoCancelamento.length < 10) {
-        throw new Error("O motivo do cancelamento é inválido!");
-      }
+
       if (instalacao.get("cancelada") || instalacao.get("concluida")) {
         throw new Error("Impossível cancelar uma instalação já concluída ou cancelada!");
       }
