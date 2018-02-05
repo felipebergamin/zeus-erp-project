@@ -98,14 +98,6 @@ export class ChamadoTecnicoController {
   public static async cancel(req: Request, res: Response) {
     try {
       const { motivoCancelamento } = req.body;
-
-      if (typeof motivoCancelamento !== "string") {
-        throw new Error("Deve ser informada uma justificativa para fechar o chamado");
-      }
-      if (motivoCancelamento.length < 10) {
-        throw new Error("A justificativa para fechar o chamado é inválida!");
-      }
-
       const chamado = await Chamado.findById(req.params.id).exec();
 
       if (chamado.get("finalizado")) {
@@ -121,6 +113,7 @@ export class ChamadoTecnicoController {
         canceladoPor: req.user._id,
         motivoCancelamento,
       });
+
       await chamado.save();
       res.json(chamado);
       log.info(`cancelou o chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, req.user._id, chamado.id);
