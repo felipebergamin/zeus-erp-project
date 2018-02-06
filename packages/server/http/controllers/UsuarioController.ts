@@ -8,8 +8,16 @@ export class UsuarioController {
 
   public static async create(req: Request, res: Response) {
     try {
-      const usuario = new Usuario(req.body);
-      usuario.set("criadoEm", new Date());
+      const {
+        ativo,
+        ...data,
+      } = req.body;
+
+      const usuario = new Usuario({
+        criadoEm: new Date(),
+        ...data,
+      });
+
       await usuario.save();
       res.json(usuario);
       log.info(`criou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
