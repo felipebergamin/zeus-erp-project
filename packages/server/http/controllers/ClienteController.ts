@@ -5,14 +5,16 @@ import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
+import { RepositoryCliente } from "../../repository/repository-cliente";
+
+const repositoryCliente = new RepositoryCliente();
+
 export class ClienteController {
   public static async create(req: Request, res: Response) {
     try {
-      const cliente = new Cliente(req.body);
-      cliente.set("criadoEm", new Date());
-      await cliente.save();
+      const cliente = await repositoryCliente.create(req.body);
       res.json(cliente);
-      log.info(`cadastrou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+      log.info(`cadastrou o cliente ${cliente.nome}, IP: ${req.ip}`, req.user._id, cliente._id);
     } catch (err) {
       handleError(err, res);
     }
@@ -20,9 +22,11 @@ export class ClienteController {
 
   public static async get(req: Request, res: Response) {
     try {
-      const query = Cliente.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.send(await query.exec());
+      const { id } = req.params;
+      const { fields, populate } = req.query;
+
+      const cliente = await repositoryCliente.get(id, { fields, populate });
+      res.json(cliente);
     } catch (err) {
       handleError(err, res);
     }
@@ -30,9 +34,13 @@ export class ClienteController {
 
   public static async getAll(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, Cliente, ClienteController.parseQuery);
-      query.where("excluido", false);
-      res.send(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const cliente = await repositoryCliente.getAll({
+        ...ClienteController.parseQuery(search),
+        excluido: false,
+      }, { fields, populate });
+
+      res.json(cliente);
     } catch (err) {
       handleError(err, res);
     }
@@ -40,9 +48,12 @@ export class ClienteController {
 
   public static async getRemoved(req: Request, res: Response) {
     try {
-      const query = Cliente.where("excluido", true);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const { fields, populate } = req.query;
+      const clientes = repositoryCliente.getAll({
+        excluido: true,
+      }, { fields, populate });
+
+      res.json(clientes);
     } catch (err) {
       handleError(err, res);
     }
@@ -50,12 +61,10 @@ export class ClienteController {
 
   public static async update(req: Request, res: Response) {
     try {
-      const cliente = await Cliente.findById(req.params.id).exec();
-      cliente.set(req.body);
-      const modified = cliente.modifiedPaths().join(", ");
-      cliente.set("alteradoEm", new Date());
-      res.json(await cliente.save());
-      log.info(`modificou ${modified} no cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+      const { id } = req.params;
+      const { result, modifiedPaths } = await repositoryCliente.update(id, req.body);
+      res.json(result);
+      log.info(`modificou ${modifiedPaths} no cliente ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
     }
@@ -63,13 +72,11 @@ export class ClienteController {
 
   public static async remove(req: Request, res: Response) {
     try {
-      const cliente = await Cliente.findById(req.params.id).exec();
-      cliente.set({
-        excluido: true,
-        excluidoEm: new Date(),
-      });
-      res.send(await cliente.save());
-      log.info(`excluiu o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+      const { id } = req.params;
+
+      const cliente = await repositoryCliente.remove(id);
+      res.json(cliente);
+      log.info(`excluiu o cliente ${cliente.nome}, IP: ${req.ip}`, req.user._id, cliente._id);
     } catch (err) {
       handleError(err, res);
     }
@@ -77,14 +84,17 @@ export class ClienteController {
 
   public static async undelete(req: Request, res: Response) {
     try {
-      const cliente = await Cliente.findById(req.params.id);
-      cliente.set({
+      const { id } = req.query;
+      const cliente = await repositoryCliente.get(id);
+
+      const { result } = await repositoryCliente.update(id, {
+        ...cliente,
         excluido: false,
         excluidoEm: undefined,
       });
 
-      res.json(await cliente.save());
-      log.info(`restaurou o cliente ${cliente.get("nome")}, IP: ${req.ip}`, req.user._id, cliente.id);
+      res.json(result);
+      log.info(`restaurou o cliente ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
     }
