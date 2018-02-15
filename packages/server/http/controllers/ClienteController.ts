@@ -5,7 +5,7 @@ import Cliente = require('../../db/model/Cliente');
 import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
-import { RepositoryCliente } from "../../repository/repository-cliente";
+import { RepositoryCliente } from "../../services/repository/repository-cliente";
 
 const repositoryCliente = new RepositoryCliente();
 

@@ -1,7 +1,7 @@
-import mongoose = require("../db/connection");
+import mongoose = require("../../db/connection");
 
-import { ICliente } from "../interfaces/ICliente";
-import { IRepository } from "../interfaces/IRepository";
+import { ICliente } from "../../interfaces/ICliente";
+import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
 const Cliente = mongoose.model("Cliente");
