@@ -1,7 +1,7 @@
-import { ContaBancaria } from "../models/ContaBancaria";
-import { Endereco } from "../models/Endereco";
-import { OLT } from "../models/OLT";
-import { Plano } from "../models/Plano";
+import { IContaBancaria } from "./IContaBancaria";
+import { IEndereco } from "./IEndereco";
+import { IOLT } from "./IOLT";
+import { IPlano } from "./IPlano";
 
 export interface ICliente {
   _id: string;
@@ -30,21 +30,21 @@ export interface ICliente {
   login: string;
   macAddress: string;
   macOnu: string;
-  olt: string|OLT;
+  olt: string|IOLT;
   passwd: string;
   ponNo: number;
   slotNo: number;
 
-  plano: string|Plano;
+  plano: string|IPlano;
 
   /* informações de endereço */
-  enderecoResidencial: Endereco;
+  enderecoResidencial: IEndereco;
 
-  enderecoCorrespondencia: Endereco;
+  enderecoCorrespondencia: IEndereco;
 
   /* informações financeiras */
   autoBloquear: boolean;
-  contaBancaria: string|ContaBancaria;
+  contaBancaria: string|IContaBancaria;
   diaVencimento: number;
   observacoes: string;
 }
