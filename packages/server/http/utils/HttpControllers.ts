@@ -44,8 +44,14 @@ export function createQueryAndApplyReqOptions(
 }
 
 export function handleError(err: any, res: Response) {
-  if ("name" in err && err.name.includes("ValidationError")) {
-    return res.status(400).json(err);
+  if ("name" in err) {
+    if (err.name.includes("ValidationError")) {
+      return res.status(400).json(err);
+    }
+
+    if (err.name.includes("NotFoundError")) {
+      return res.status(404).json(err);
+    }
   }
 
   if (err instanceof Error) {

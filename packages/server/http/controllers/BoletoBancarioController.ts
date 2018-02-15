@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
+
 import BoletoBancario = require('../../db/model/BoletoBancario');
 import { LogService as log } from "../../services/LogService";
-import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
+import { RepositoryBoleto } from "../../services/repository/repository-boleto";
+import { handleError } from "../utils/HttpControllers";
+
+const repositoryBoleto = new RepositoryBoleto();
 
 export class BoletoBancarioController {
   public static async create(req: Request, res: Response) {
     try {
-      const boleto = new BoletoBancario(req.body);
-      boleto.set("criadoEm", new Date());
-      await boleto.save();
-      res.json(boleto.toJSON());
-      log.info(`adicionou o boleto ${boleto.get("numeroBoleto")}, IP: ${req.ip}`, req.user._id, boleto.id);
+      const boleto = await repositoryBoleto.create(req.body);
+      res.json(boleto);
+      log.info(`adicionou o boleto ${boleto.numeroBoleto}, IP: ${req.ip}`, req.user._id, boleto._id);
     } catch (err) {
       handleError(err, res);
     }
@@ -18,9 +20,14 @@ export class BoletoBancarioController {
 
   public static async get(req: Request, res: Response) {
     try {
-      const query = BoletoBancario.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const { fields, populate } = req.query;
+      const boleto = await repositoryBoleto.get(req.params.id);
+
+      if (!boleto) {
+        return res.status(404).json({ message: "Boleto não encontrado" });
+      }
+
+      res.json(boleto);
     } catch (err) {
       handleError(err, res);
     }
@@ -28,8 +35,13 @@ export class BoletoBancarioController {
 
   public static async query(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, BoletoBancario);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const boletos = await repositoryBoleto.getAll({
+        excluido: false,
+        ...search,
+      }, { fields, populate });
+
+      res.json(boletos);
     } catch (err) {
       handleError(err, res);
     }
@@ -37,13 +49,11 @@ export class BoletoBancarioController {
 
   public static async update(req: Request, res: Response) {
     try {
-      const boleto = await BoletoBancario.findById(req.params.id);
-      boleto.set(req.body);
-      const mod = boleto.modifiedPaths().join(", ");
-      boleto.set("alteradoEm", new Date());
-      await boleto.save();
-      res.json(boleto.toJSON());
-      log.info(`alterou ${mod} no boleto ${boleto.get("numeroBoleto")}, IP: ${req.ip}`, req.user._id, boleto.id);
+      const { id } = req.params;
+      const { result, modifiedPaths } = await repositoryBoleto.update(id, req.body);
+      log.info(`alterou ${modifiedPaths} no boleto ${result.numeroBoleto}, IP: ${req.ip}`, req.user._id, result._id);
+
+      res.json(result);
     } catch (err) {
       handleError(err, res);
     }
@@ -51,14 +61,11 @@ export class BoletoBancarioController {
 
   public static async remove(req: Request, res: Response) {
     try {
-      const boleto = await BoletoBancario.findById(req.params.id);
-      boleto.set({
-        excluido: true,
-        excluidoEm: new Date(),
-      });
-      boleto.save();
-      res.json(boleto.toJSON());
-      log.info(`removeu o boleto ${boleto.get("numeroBoleto")}, IP ${req.ip}`, req.user._id, boleto.id);
+      const { id } = req.params;
+      const boleto = await repositoryBoleto.remove(id);
+
+      res.json(boleto);
+      log.info(`removeu o boleto ${boleto.numeroBoleto}, IP ${req.ip}`, req.user._id, boleto._id);
     } catch (err) {
       handleError(err, res);
     }
