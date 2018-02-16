@@ -9,7 +9,7 @@ import * as utils from "../utils/HttpControllers";
 
 export class CarneController {
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
       const cliente = await Cliente.findById(req.body.cliente);
 
@@ -60,7 +60,7 @@ export class CarneController {
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
       const query = Carne.findById(req.params.id);
       utils.aplyGetRequestOptionsToQuery(req, query);
@@ -70,7 +70,7 @@ export class CarneController {
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
       const query = utils.createQueryAndApplyReqOptions(req, Carne);
       res.json(await query.exec());
@@ -79,7 +79,7 @@ export class CarneController {
     }
   }
 
-  public static async remove(req: Request, res: Response) {
+  public async remove(req: Request, res: Response) {
     try {
       const carne = await Carne.findById(req.params.id);
 
