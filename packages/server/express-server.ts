@@ -15,7 +15,6 @@ import logRouter = require('./http/routers/LogRouter');
 import oltRouter = require('./http/routers/OLTRouter');
 import perfilUsuarioRouter = require('./http/routers/PerfilUsuarioRouter');
 import apiPlanoRouter = require('./http/routers/PlanoRouter');
-// import apiTecnicoRouter = require('./http/routers/TecnicoRouter');
 import apiUsuarioRouter = require('./http/routers/UsuarioRouter');
 
 /* MIDDLEWARES */
@@ -37,7 +36,6 @@ app.use('/api/cliente', apiCliente);
 app.use('/api/plano', apiPlanoRouter);
 app.use('/api/boleto', apiBoletoRouter);
 app.use('/api/instalacao', apiInstalacaoRouter);
-// app.use('/api/tecnico', apiTecnicoRouter);
 app.use('/api/usuario', apiUsuarioRouter);
 app.use('/api/contabancaria', apiContaBancariaRouter);
 app.use('/api/carne', apiCarneRouter);
