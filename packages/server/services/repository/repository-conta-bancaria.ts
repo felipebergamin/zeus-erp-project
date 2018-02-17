@@ -8,7 +8,7 @@ import * as utils from "./utils";
 
 const ContaBancaria = mongoose.model("ContaBancaria");
 
-export class RepositoryChamadoTecnico implements IRepository<IContaBancaria> {
+export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
 
   public async create(data: IContaBancaria): Promise<IContaBancaria> {
     const cb = new ContaBancaria(data);
