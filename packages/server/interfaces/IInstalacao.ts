@@ -1,7 +1,7 @@
 import { ICliente } from "./ICliente";
 import { IUsuario } from "./IUsuario";
 
-export interface Instalacao {
+export interface IInstalacao {
   cancelada: boolean;
   dataHoraCancelada: Date;
   motivoCancelamento: string;
