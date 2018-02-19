@@ -5,12 +5,13 @@ import { LogService as log } from "../../services/LogService";
 import { RepositoryBoleto } from "../../services/repository/repository-boleto";
 import { handleError } from "../utils/HttpControllers";
 
-const repositoryBoleto = new RepositoryBoleto();
-
 export class BoletoBancarioController {
-  public static async create(req: Request, res: Response) {
+
+  constructor(private repoBoleto: RepositoryBoleto) {}
+
+  public async create(req: Request, res: Response) {
     try {
-      const boleto = await repositoryBoleto.create(req.body);
+      const boleto = await this.repoBoleto.create(req.body);
       res.json(boleto);
       log.info(`adicionou o boleto ${boleto.numeroBoleto}, IP: ${req.ip}`, req.user._id, boleto._id);
     } catch (err) {
@@ -18,10 +19,10 @@ export class BoletoBancarioController {
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
       const { fields, populate } = req.query;
-      const boleto = await repositoryBoleto.get(req.params.id);
+      const boleto = await this.repoBoleto.get(req.params.id);
 
       if (!boleto) {
         return res.status(404).json({ message: "Boleto não encontrado" });
@@ -33,10 +34,10 @@ export class BoletoBancarioController {
     }
   }
 
-  public static async query(req: Request, res: Response) {
+  public async query(req: Request, res: Response) {
     try {
       const { fields, populate, ...search } = req.query;
-      const boletos = await repositoryBoleto.getAll({
+      const boletos = await this.repoBoleto.getAll({
         excluido: false,
         ...search,
       }, { fields, populate });
@@ -47,10 +48,10 @@ export class BoletoBancarioController {
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { result, modifiedPaths } = await repositoryBoleto.update(id, req.body);
+      const { result, modifiedPaths } = await this.repoBoleto.update(id, req.body);
       log.info(`alterou ${modifiedPaths} no boleto ${result.numeroBoleto}, IP: ${req.ip}`, req.user._id, result._id);
 
       res.json(result);
@@ -59,10 +60,10 @@ export class BoletoBancarioController {
     }
   }
 
-  public static async remove(req: Request, res: Response) {
+  public async remove(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const boleto = await repositoryBoleto.remove(id);
+      const boleto = await this.repoBoleto.remove(id);
 
       res.json(boleto);
       log.info(`removeu o boleto ${boleto.numeroBoleto}, IP ${req.ip}`, req.user._id, boleto._id);
