@@ -1,4 +1,4 @@
-import { Schema } from "../connection";
+import { Schema } from "mongoose";
 
 export = new Schema({
   cidr: {

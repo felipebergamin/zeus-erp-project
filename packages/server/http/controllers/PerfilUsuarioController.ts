@@ -1,64 +1,59 @@
 import { Request, Response } from "express";
-import PerfilUsuario = require("../../db/model/PerfilUsuario");
 import { LogService as log } from "../../services/LogService";
+import { RepositoryPerfilUsuario } from "../../services/repository/repository-perfil-usuario";
 import * as utils from "../utils/HttpControllers";
 
 export class PerfilUsuarioController {
+  constructor(private repoPerfilUsuario: RepositoryPerfilUsuario) {}
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const perfil = await new PerfilUsuario(req.body).save();
+      const perfil = await this.repoPerfilUsuario.create(req.body);
       res.json(perfil);
-      log.info(`criou o perfil de usuário ${perfil.get("nome")}, IP: ${req.ip}`, req.user._id, perfil.id);
+      log.info(`criou o perfil de usuário ${perfil.nome}, IP: ${req.ip}`, req.user._id, perfil._id);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
-      const query = utils.createQueryAndApplyReqOptions(req, PerfilUsuario);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const searchResult = await this.repoPerfilUsuario.getAll(search, { fields, populate });
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const query = PerfilUsuario.findById(req.params.id);
-      utils.aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const perfil = await this.repoPerfilUsuario.get(req.params.id);
+      res.json(perfil);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      const perfil = await PerfilUsuario.findById(req.params.id).exec();
+      const updated = await this.repoPerfilUsuario.update(req.params.id, req.body);
 
-      if (!perfil) {
-        throw new Error(`O perfil com ID ${req.params.id} não existe`);
+      if (!updated) {
+        return res.status(204).end();
       }
 
-      perfil.set(req.body);
-      const modified = perfil.modifiedPaths().join(", ");
-
-      await perfil.save();
-      res.json(perfil);
-      log.info(`alterou ${modified} no perfil ${perfil.get("nome")}, IP: ${req.ip}`, req.user._id, perfil.id);
+      const { result, modifiedPaths } = updated;
+      log.info(`alterou ${modifiedPaths} no perfil ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async delete(req: Request, res: Response) {
+  public async delete(req: Request, res: Response) {
     try {
-      const perfil = await PerfilUsuario.findById(req.params.id).exec();
-      perfil.remove();
+      const perfil = await this.repoPerfilUsuario.remove(req.params.id);
       res.json(perfil);
-      log.info(`removeu o perfil ${perfil.get("nome")}, IP: ${req.ip}`, req.user._id, perfil.id);
+      log.info(`removeu o perfil ${perfil.nome}, IP: ${req.ip}`, req.user._id, perfil._id);
     } catch (err) {
       utils.handleError(err, res);
     }

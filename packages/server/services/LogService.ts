@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import Log = require("../db/model/Log");
+import { instanceDB } from "../db/initConnection";
 
 interface ILog {
   texto: string;
@@ -27,11 +27,12 @@ export class LogService {
   }
 
   public static async getAll(): Promise<Document[]> {
+    const Log = (await instanceDB()).model("Log");
     return await Log.find({}).exec();
   }
 
-  private static create(logData: ILog): void {
-
+  private static async create(logData: ILog) {
+    const Log = (await instanceDB()).model("Log");
     Log.create({
       dataHora: new Date(),
       ...logData,

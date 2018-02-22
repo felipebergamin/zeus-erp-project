@@ -1,6 +1,6 @@
 import bcrypt = require("bcrypt-nodejs");
 
-import { Document, model, Schema } from "../connection";
+import { Document, model, Schema } from "mongoose";
 import email = require("../fields/email");
 
 const UsuarioSchema = new Schema({

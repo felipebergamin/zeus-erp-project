@@ -1,22 +1,25 @@
 import { Request, Response } from "express";
 
-import OLT = require("../../db/model/OLT");
+import { NotFoundError } from "../../errors/NotFoundError";
 import { FiberhomeService } from "../../services/FiberhomeService";
+import { RepositoryOLT } from "../../services/repository/repository-olt";
 import { handleError } from "../utils/HttpControllers";
 
 export class FiberhomeController {
-  public static async getOnuInfo(req: Request, res: Response) {
+  constructor(private repoOlt: RepositoryOLT) {}
+
+  public async getOnuInfo(req: Request, res: Response) {
     try {
       const { olt, slot, pon, onumac } = req.query;
 
-      const oltObj = await OLT.findById(olt).exec();
+      const oltObj = await this.repoOlt.get(olt);
 
       if (!oltObj) {
-        return res.status(404).json({ message: "OLT não encontrada no sistema" });
+        throw new NotFoundError(`OLT ${olt} não encontrada`);
       }
 
       const fh = await FiberhomeService.instance();
-      const r = await fh.getOnuOpticalInfo(oltObj.get("ip"), slot, pon, onumac);
+      const r = await fh.getOnuOpticalInfo(oltObj.ip, slot, pon, onumac);
 
       res.json(r.parsedResponse.values.pop());
     } catch (err) {
@@ -24,14 +27,14 @@ export class FiberhomeController {
     }
   }
 
-  public static async getUnauthorizedOnu(req: Request, res: Response) {
+  public async getUnauthorizedOnu(req: Request, res: Response) {
     try {
       const { olt } = req.query;
 
-      const oltObj = await OLT.findById(olt).exec();
+      const oltObj = await this.repoOlt.get(olt);
 
       if (!oltObj) {
-        return res.status(404).json({ message: "OLT não encontrada no sistema" });
+        throw new NotFoundError(`OLT ${olt} não encontrada`);
       }
 
       const fh = await FiberhomeService.instance();
@@ -43,7 +46,7 @@ export class FiberhomeController {
     }
   }
 
-  public static async addOnu(req: Request, res: Response) {
+  public async addOnu(req: Request, res: Response) {
     try {
       const { NAME, OLTID, ONUID, ONUTYPE, SLOTNO, PONNO } = req.body;
       const fh = await FiberhomeService.instance();
@@ -54,7 +57,7 @@ export class FiberhomeController {
     }
   }
 
-  public static async configureOnu(req: Request, res: Response) {
+  public async configureOnu(req: Request, res: Response) {
     try {
       const { OLTID, ONUID, ONUPORT, PONID, PVID, VLANMOD } = req.body;
       const fh = await FiberhomeService.instance();

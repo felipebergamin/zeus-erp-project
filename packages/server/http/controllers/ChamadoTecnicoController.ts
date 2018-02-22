@@ -3,155 +3,90 @@ import moment = require("moment");
 import "moment/locale/pt-br";
 moment.locale("pt-BR");
 
-import Chamado = require("../../db/model/ChamadoTecnico");
 import { LogService as log } from "../../services/LogService";
-import { aplyGetRequestOptionsToQuery,
-  createQueryAndApplyReqOptions,
-  handleError } from "../utils/HttpControllers";
+import { RepositoryChamadoTecnico } from "../../services/repository/repository-chamado-tecnico";
+import { handleError } from "../utils/HttpControllers";
 
 export class ChamadoTecnicoController {
+  constructor(private repoChamado: RepositoryChamadoTecnico) { }
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const {
-        cliente,
-        mensagem,
-        motivoAbertura,
-        tecnico,
-      } = req.body;
-
-      const chamado = new Chamado({
-        abertoPor: req.user._id,
-        cliente,
-        mensagem,
-        motivoAbertura,
-        tecnico,
-      });
-
-      await chamado.save();
-      res.json(chamado.toJSON());
-      log.info(`criou o chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, req.user._id, chamado.id);
+      const chamado = await this.repoChamado.create(req.body);
+      res.status(201).json(chamado);
+      log.info(`criou o chamado ${chamado.protocolo}, IP: ${req.ip}`, req.user._id, chamado._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const query = Chamado.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const { fields, populate } = req.query;
+      const { id } = req.params;
+      const chamado = await this.repoChamado.get(id);
+      res.json(chamado);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async query(req: Request, res: Response) {
+  public async query(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, Chamado, ChamadoTecnicoController.parseQuery);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const chamados = await this.repoChamado.getAll(this.parseQuery(search), { fields, populate });
+      res.json(chamados);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      // impede que informações sensíveis sejam alteradas livremente
-      const {
-        alteradoEm,
-        criadoEm,
-        cancelado,
-        canceladoEm,
-        canceladoPor,
-        motivoCancelamento,
-        finalizado,
-        finalizadoEm,
-        imagemAssinatura,
-        justificativaFechamento,
-        abertoPor,
-        cliente,
-        protocolo,
-        ...newData, // apenas as propriedades restantes podem ser modificadas
-      } = req.body;
+      const { id } = req.params;
+      const updated = await this.repoChamado.update(id, req.body);
 
-      const user = req.user;
-      const chamado = await Chamado.findById(req.params.id).exec();
-      chamado.set(newData);
-
-      // se nenhuma informação foi modificada, retorna o objeto
-      // evita escrita desnecessária no banco de dados
-      if (!chamado.isModified()) {
-        return res.json(chamado);
+      if (updated) {
+        const { result, modifiedPaths } = updated;
+        log.info(`alterou ${modifiedPaths} no chamado ${result.protocolo}, IP: ${req.ip}`, req.user._id, result._id);
+        return res.json(result);
       }
 
-      const modified = chamado.modifiedPaths().join(", ");
-      chamado.set("alteradoEm", new Date());
-      await chamado.save();
-      res.json(chamado);
-      log.info(`alterou ${modified} no chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, user._id, chamado.id);
+      res.status(204).send();
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async cancel(req: Request, res: Response) {
+  public async cancel(req: Request, res: Response) {
     try {
+      const { id } = req.params;
       const { motivoCancelamento } = req.body;
-      const chamado = await Chamado.findById(req.params.id).exec();
+      const canceladoPor = req.user._id;
 
-      if (chamado.get("finalizado")) {
-        throw new Error("Impossível cancelar um chamado finalizado");
-      }
-      if (chamado.get("cancelado")) {
-        throw new Error("O chamado já foi cancelado");
-      }
-
-      chamado.set({
-        cancelado: true,
-        canceladoEm: new Date(),
-        canceladoPor: req.user._id,
-        motivoCancelamento,
-      });
-
-      await chamado.save();
+      const chamado = await this.repoChamado.cancel(id, motivoCancelamento, canceladoPor);
       res.json(chamado);
-      log.info(`cancelou o chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, req.user._id, chamado.id);
+      log.info(`cancelou o chamado ${chamado.protocolo}, IP: ${req.ip}`, req.user._id, chamado._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async finalize(req: Request, res: Response) {
+  public async finalize(req: Request, res: Response) {
     try {
-      const user = req.user;
+      const { id } = req.params;
       const { imagemAssinatura, justificativaFechamento } = req.body;
 
-      const chamado = await Chamado.findById(req.params.id).exec();
+      const chamado = await this.repoChamado.finalize(req.params.id, imagemAssinatura, justificativaFechamento);
 
-      if (chamado.get("finalizado")) {
-        throw new Error("Chamado já finalizado");
-      }
-      if (chamado.get("cancelado")) {
-        throw new Error("Impossível finalizar um chamado cancelado");
-      }
-
-      chamado.set({
-        finalizado: true,
-        finalizadoEm: new Date(),
-        imagemAssinatura,
-        justificativaFechamento,
-      });
-
-      await chamado.save();
       res.json(chamado);
-      log.info(`finalizou o chamado ${chamado.get("protocolo")}, IP: ${req.ip}`, user._id, chamado.id);
+      log.info(`finalizou o chamado ${chamado.protocolo}, IP: ${req.ip}`, req.user._id, chamado._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  private static parseQuery(expressQuery: any): any {
+  private parseQuery(expressQuery: any): any {
     if (!expressQuery) {
       return {};
     }

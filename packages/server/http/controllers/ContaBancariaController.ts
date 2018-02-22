@@ -1,87 +1,78 @@
 import { Request, Response } from 'express';
 
-import ContaBancaria = require('../../db/model/ContaBancaria');
 import { LogService as log } from '../../services/LogService';
+import { RepositoryContaBancaria } from "../../services/repository/repository-conta-bancaria";
 import * as utils from '../utils/HttpControllers';
 
 export class ContaBancariaController {
+  constructor(private repoCB: RepositoryContaBancaria) {}
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const conta = new ContaBancaria(req.body);
-      await conta.save();
-      res.json(conta);
-      log.info(`criou a conta bancária ${conta.get("nome")}`, req.user._id, conta.id);
+      const conta = await this.repoCB.create(req.body);
+      res.status(201).json(conta);
+      log.info(`criou a conta bancária ${conta.nome}`, req.user._id, conta._id);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const query = ContaBancaria.findById(req.params.id);
-      utils.aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const { id } = req.params;
+      const contaBancaria = await this.repoCB.get(id);
+      res.json(contaBancaria);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
-      const query = utils.createQueryAndApplyReqOptions(req, ContaBancaria);
-      query.where("excluido", false);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const contas = await this.repoCB.getAll(search, { fields, populate });
+      res.json(contas);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      const conta = await ContaBancaria.findById(req.params.id).exec();
-      conta.set(req.body);
-      const modified = conta.modifiedPaths().join(", ");
-      conta.set("alteradoEm", new Date());
-      await conta.save();
+      const { id } = req.body;
+      const updated = await this.repoCB.update(id, req.body);
 
-      res.json(conta);
-      log.info(`alterou ${modified} na conta bancária ${conta.get("nome")}`, req.user._id, conta.id);
-    } catch (err) {
-      utils.handleError(err, res);
-    }
-  }
-
-  public static async remove(req: Request, res: Response) {
-    try {
-      const conta = await ContaBancaria.findByIdAndUpdate(req.params.id, {
-        excluido: true,
-        excluidoEm: new Date(),
-      }).exec();
-
-      res.json(conta);
-      log.info(`excluiu a conta bancária ${conta.get("nome")}`, req.user._id, conta.id);
-    } catch (err) {
-      utils.handleError(err, res);
-    }
-  }
-
-  public static async recover(req: Request, res: Response) {
-    try {
-      const conta = await ContaBancaria.findById(req.params.id).exec();
-
-      if (conta) {
-        conta.set({
-          excluido: false,
-          excluidoEm: undefined,
-        });
-
-        await conta.save();
-        res.json(conta);
-        log.info(`restaurou a conta ${conta.get("nome")}`, req.user._id, conta.id);
-      } else {
-        res.status(404).json({ message: "Conta bancária não encontrada" });
+      if (!updated) {
+        return res.status(204).end();
       }
+
+      const { result, modifiedPaths } = updated;
+      res.json(result);
+      log.info(`alterou ${modifiedPaths} na conta bancária ${result.nome}`, req.user._id, result._id);
+    } catch (err) {
+      utils.handleError(err, res);
+    }
+  }
+
+  public async remove(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const removed = await this.repoCB.remove(id);
+
+      res.json(removed);
+      log.info(`excluiu a conta bancária ${removed.nome}`, req.user._id, removed._id);
+    } catch (err) {
+      utils.handleError(err, res);
+    }
+  }
+
+  public async recover(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const recovered = await this.repoCB.recover(id);
+      res.json(recovered);
+      log.info(`restaurou a conta bancária ${recovered.nome}, IP: ${req.ip}`, req.user._id, recovered._id);
     } catch (err) {
       utils.handleError(err, res);
     }

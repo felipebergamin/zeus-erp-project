@@ -1,18 +1,26 @@
 import { Request, Response } from 'express';
 import jwt = require('jwt-simple');
 import moment = require('moment');
-import Usuario = require('../../db/model/Usuario');
+import { instanceDB } from "../../db/initConnection";
+import { LoginService } from "../../services/LoginService";
 
 export class LoginController {
+  private secret = '4PP_S3CR3T_JWT';
 
-  public static decode(token: string): any {
-    return jwt.decode(token, this.secret);
-  }
+  constructor(private loginService: LoginService) {}
 
-  public static async checkLogin(req: Request, res: Response) {
+  public async checkLogin(req: Request, res: Response) {
     const { login, passwd } = req.body;
 
-    if (login && passwd) {
+    const auth = await this.loginService.auth(login, passwd);
+
+    if (auth) {
+      return res.json(auth);
+    }
+
+    return res.status(401).send();
+
+    /* if (login && passwd) {
       const usuario: any = await Usuario.findOne({login})
         .populate("perfil")
         .exec();
@@ -23,7 +31,7 @@ export class LoginController {
           const token = jwt.encode({
             expires,
             iss: usuario._id,
-          }, LoginController.secret);
+          }, this.secret);
 
           const user = usuario.toObject();
           delete user.passwd;
@@ -35,10 +43,6 @@ export class LoginController {
           });
         }
       }
-    }
-
-    res.status(401).send();
+    } */
   }
-
-  private static secret = '4PP_S3CR3T_JWT';
 }

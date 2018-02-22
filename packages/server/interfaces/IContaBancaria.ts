@@ -1,4 +1,5 @@
 export interface IContaBancaria {
+  _id: string;
   agencia: {
     digito: string;
     numero: string;

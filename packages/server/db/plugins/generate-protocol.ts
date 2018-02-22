@@ -1,5 +1,5 @@
 import moment = require("moment");
-import mongoose = require("../connection");
+import mongoose = require("mongoose");
 
 export function plugin(schema: mongoose.Schema, options: { opid: string } = { opid: "" }) {
   schema.pre("save", function genProtocol(next) {

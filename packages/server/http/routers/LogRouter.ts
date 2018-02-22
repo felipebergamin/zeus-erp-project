@@ -3,10 +3,12 @@ import { LogController } from "../controllers/LogController";
 
 const router = Router();
 
+const controller = new LogController();
+
 router.route("/")
-  .get(LogController.query);
+  .get(controller.query);
 
 router.route("/:id")
-  .get(LogController.get);
+  .get(controller.get);
 
 export = router;

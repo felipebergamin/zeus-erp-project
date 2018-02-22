@@ -1,4 +1,4 @@
-import { Schema } from "../connection";
+import { Schema } from "mongoose";
 import { plugin } from "../plugins/generate-carne-id";
 
 const schema = new Schema({

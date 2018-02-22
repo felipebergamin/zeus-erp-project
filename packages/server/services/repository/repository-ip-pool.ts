@@ -1,16 +1,15 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
 
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IIPPool } from "../../interfaces/IIPPool";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const IPPool = mongoose.model("IPPool");
-
 export class RepositoryIPPool implements IRepository<IIPPool> {
 
   public async create(data: IIPPool): Promise<IIPPool> {
+    const IPPool = (await instanceDB()).model("IPPool");
     const pool = new IPPool(data);
     await pool.save();
 
@@ -18,6 +17,7 @@ export class RepositoryIPPool implements IRepository<IIPPool> {
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IIPPool> {
+    const IPPool = (await instanceDB()).model("IPPool");
     const query = IPPool.findById(id);
     const { fields, populate } = options;
 
@@ -39,6 +39,7 @@ export class RepositoryIPPool implements IRepository<IIPPool> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IIPPool[]> {
+    const IPPool = (await instanceDB()).model("IPPool");
     const query = IPPool.find(searchValues);
     const { fields, populate } = options;
 
@@ -54,11 +55,13 @@ export class RepositoryIPPool implements IRepository<IIPPool> {
   }
 
   public async remove(id: string): Promise<IIPPool> {
+    const IPPool = (await instanceDB()).model("IPPool");
     const pool = await IPPool.findByIdAndRemove(id).exec();
     return pool.toObject() as IIPPool;
   }
 
   public async update(id: string, data: IIPPool): Promise<{ result: IIPPool, modifiedPaths: string }> {
+    const IPPool = (await instanceDB()).model("IPPool");
     const pool = await IPPool.findById(id).exec();
 
     if (!pool) {

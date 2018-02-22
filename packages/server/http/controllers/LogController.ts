@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
-import Log = require("../../db/model/Log");
+import { instanceDB } from "../../db/initConnection";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class LogController {
-  public static async get(req: Request, res: Response) {
+
+  public async get(req: Request, res: Response) {
     try {
+      const Log = (await instanceDB()).model("Log");
       const query = Log.findById(req.params.id);
       aplyGetRequestOptionsToQuery(req, query);
       res.json(await query.exec());
@@ -13,9 +15,10 @@ export class LogController {
     }
   }
 
-  public static async query(req: Request, res: Response) {
+  public async query(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, Log, LogController.parseQuery);
+      const Log = (await instanceDB()).model("Log");
+      const query = createQueryAndApplyReqOptions(req, Log, this.parseQuery);
       query.populate("usuario", "login");
       query.sort({ dataHora: -1 });
 
@@ -25,7 +28,7 @@ export class LogController {
     }
   }
 
-  private static parseQuery(query: any = {}) {
+  private parseQuery(query: any = {}) {
     for (const property in query) {
       if (query[property] === 'null' || query[property] == null || query[property] === '') {
         delete query[property];

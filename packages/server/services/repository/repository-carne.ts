@@ -2,28 +2,23 @@
 import moment = require("moment");
 import { Document } from "mongoose";
 
-import mongoose = require("../../db/connection");
-
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
-
 import { IBoletoBancario } from "../../interfaces/IBoletoBancario";
 import { ICarne } from "../../interfaces/ICarne";
 import { IRepository } from "../../interfaces/IRepository";
-
 import { RepositoryBoleto } from "./repository-boleto";
 import { RepositoryCliente } from "./repository-cliente";
-
 import * as utils from "./utils";
-
-const Carne = mongoose.model("Carne");
 
 export class RepositoryCarne implements IRepository<ICarne> {
 
   constructor(
     private repoBoleto: RepositoryBoleto,
-    private repoCliente: RepositoryCliente) {}
+    private repoCliente: RepositoryCliente) { }
 
   public async create(data: ICarne): Promise<ICarne> {
+    const Carne = (await instanceDB()).model("Carne");
     let cliente;
 
     if (typeof data.cliente === "string") {
@@ -75,6 +70,7 @@ export class RepositoryCarne implements IRepository<ICarne> {
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<ICarne> {
+    const Carne = (await instanceDB()).model("Carne");
     const query = Carne.findById(id);
     const { fields, populate } = options;
 
@@ -90,6 +86,7 @@ export class RepositoryCarne implements IRepository<ICarne> {
   }
 
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<ICarne[]> {
+    const Carne = (await instanceDB()).model("Carne");
     const query = Carne.find(searchValues);
     const { fields, populate } = options;
 
@@ -126,6 +123,7 @@ export class RepositoryCarne implements IRepository<ICarne> {
   }
 
   public async update(id: string, data: ICarne): Promise<{ result: ICarne, modifiedPaths: string }> {
+    const Carne = (await instanceDB()).model("Carne");
     const carne = await Carne.findById(id);
 
     if (!carne) {

@@ -2,6 +2,7 @@ import { ICliente } from "./ICliente";
 import { IUsuario } from "./IUsuario";
 
 export interface IChamadoTecnico {
+  _id?: string;
   alteradoEm: Date;
   criadoEm: Date;
 

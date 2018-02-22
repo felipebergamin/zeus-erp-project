@@ -1,4 +1,4 @@
-import { Schema } from "../connection";
+import { Schema } from "mongoose";
 import { plugin } from "../plugins/generate-protocol";
 
 const schema = new Schema({

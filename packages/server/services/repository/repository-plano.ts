@@ -1,21 +1,21 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
 
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IPlano } from "../../interfaces/IPlano";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const Plano = mongoose.model("Plano");
-
 export class RepositoryPlano implements IRepository<IPlano> {
 
   public async create(data: IPlano): Promise<IPlano> {
+    const Plano = (await instanceDB()).model("Plano");
     const plano = new Plano(data);
     return (await plano.save()).toObject() as IPlano;
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IPlano> {
+    const Plano = (await instanceDB()).model("Plano");
     const query = Plano.findById(id);
     const { fields, populate } = options;
 
@@ -37,6 +37,7 @@ export class RepositoryPlano implements IRepository<IPlano> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IPlano[]> {
+    const Plano = (await instanceDB()).model("Plano");
     const query = Plano.find(searchValues);
     const { fields, populate } = options;
 
@@ -52,11 +53,13 @@ export class RepositoryPlano implements IRepository<IPlano> {
   }
 
   public async remove(id: string): Promise<IPlano> {
+    const Plano = (await instanceDB()).model("Plano");
     const plano = await Plano.findByIdAndRemove(id).exec();
     return plano.toObject() as IPlano;
   }
 
   public async update(id: string, data: IPlano): Promise<{ result: IPlano, modifiedPaths: string }> {
+    const Plano = (await instanceDB()).model("Plano");
     const plano = await Plano.findById(id).exec();
 
     if (!plano) {

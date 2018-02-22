@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-import BoletoBancario = require('../../db/model/BoletoBancario');
 import { LogService as log } from "../../services/LogService";
 import { RepositoryBoleto } from "../../services/repository/repository-boleto";
 import { handleError } from "../utils/HttpControllers";

@@ -1,69 +1,67 @@
 import { Request, Response } from 'express';
-import Plano = require('../../db/model/Plano');
+
 import { LogService as log } from "../../services/LogService";
-import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
+import { RepositoryPlano } from '../../services/repository/repository-plano';
+import { handleError } from "../utils/HttpControllers";
 
 export class PlanoController {
+  constructor(private repoPlano: RepositoryPlano) {}
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const plano = await new Plano(req.body);
-      plano.set("criadoEm", new Date());
-      res.json(await plano.save());
-
-      log.info(`criou o plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`, req.user._id, plano.id);
+      const plano = await this.repoPlano.create(req.body);
+      res.json(plano);
+      log.info(`criou o plano ${plano.nome}, IP: ${req.ip}`, req.user._id, plano._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const query = Plano.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
+      const plano = await this.repoPlano.get(req.params.id);
+      res.json(plano);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, Plano);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const searchResult = await this.repoPlano.getAll(search, { fields, populate });
+      res.json(searchResult);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      const plano = await Plano.findById(req.params.id).exec();
-      plano.set(req.body);
-      const modificado = plano.modifiedPaths().join(",");
-      plano.set("alteradoEm", new Date());
-      await plano.save();
+      const { id } = req.params.id;
+      const updated = await this.repoPlano.update(id, req.body);
+
+      if (!updated) {
+        return res.status(204).end();
+      }
+
+      const { result, modifiedPaths } = updated;
+
+      res.json(result);
+      log.info(`modificou ${modifiedPaths} no plano ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
+  public async remove(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const plano = await this.repoPlano.remove(id);
 
       res.json(plano);
 
-      log.info(`modificou ${modificado} no plano ${plano.get("nome")}<${plano.id}>, IP: ${req.ip}`,
-        req.user._id, plano.id);
-    } catch (err) {
-      handleError(err, res);
-    }
-  }
-
-  public static async remove(req: Request, res: Response) {
-    try {
-      const plano = await Plano.findByIdAndRemove(req.params.id).exec();
-
-      if (!plano) {
-        throw new Error("Não existe um plano com o ID especificado");
-      }
-
-      await plano.remove();
-      res.json(plano.toJSON());
-      log.info(`excluiu o plano ${plano.get("nome")}, IP: ${req.ip}`, req.user._id, plano.id);
+      log.info(`excluiu o plano ${plano.nome}, IP: ${req.ip}`, req.user._id, plano._id);
     } catch (err) {
       handleError(err, res);
     }

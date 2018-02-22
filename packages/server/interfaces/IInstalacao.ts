@@ -2,6 +2,7 @@ import { ICliente } from "./ICliente";
 import { IUsuario } from "./IUsuario";
 
 export interface IInstalacao {
+  _id: string;
   cancelada: boolean;
   dataHoraCancelada: Date;
   motivoCancelamento: string;

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Document, DocumentQuery } from '../../db/connection';
-import Cliente = require('../../db/model/Cliente');
+import { Document, DocumentQuery } from "mongoose";
 import { LogService as log } from "../../services/LogService";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 

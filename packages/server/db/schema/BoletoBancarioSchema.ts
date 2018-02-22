@@ -1,9 +1,8 @@
-import mongoose = require('../connection');
-const Schema = mongoose.Schema;
+import mongoose = require("mongoose");
+const { Schema } = mongoose;
 
+import db = require("../connection");
 import autoIncrement = require('../plugins/auto-increment');
-
-autoIncrement.initialize(mongoose.connection);
 
 const BoletoSchema = new Schema({
   alteradoEm: require('../fields/alterado_em'),
@@ -31,5 +30,8 @@ const BoletoSchema = new Schema({
   valorPago: Number,
 });
 
-BoletoSchema.plugin(autoIncrement.plugin, { model: 'BoletoBancario', field: 'numeroBoleto', startAt: 1 });
+db.then((mongoclient: typeof mongoose) => {
+  autoIncrement.initialize(mongoclient.connection);
+  BoletoSchema.plugin(autoIncrement.plugin, { model: 'BoletoBancario', field: 'numeroBoleto', startAt: 1 });
+});
 export = BoletoSchema;

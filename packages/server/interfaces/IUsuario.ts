@@ -1,6 +1,7 @@
 import { IPerfilUsuario } from "./IPerfilUsuario";
 
 export interface IUsuario {
+  _id: string;
   ativo: boolean;
   email: string;
   login: string;

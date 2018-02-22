@@ -1,16 +1,15 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
 
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IOLT } from "../../interfaces/IOLT";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const OLT = mongoose.model("OLT");
-
 export class RepositoryOLT implements IRepository<IOLT> {
 
   public async create(data: IOLT): Promise<IOLT> {
+    const OLT = (await instanceDB()).model("OLT");
     const olt = new OLT(data);
     await olt.save();
 
@@ -18,6 +17,7 @@ export class RepositoryOLT implements IRepository<IOLT> {
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IOLT> {
+    const OLT = (await instanceDB()).model("OLT");
     const query = OLT.findById(id);
     const { fields, populate } = options;
 
@@ -39,6 +39,7 @@ export class RepositoryOLT implements IRepository<IOLT> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IOLT[]> {
+    const OLT = (await instanceDB()).model("OLT");
     const query = OLT.find(searchValues);
     const { fields, populate } = options;
 
@@ -54,11 +55,13 @@ export class RepositoryOLT implements IRepository<IOLT> {
   }
 
   public async remove(id: string): Promise<IOLT> {
+    const OLT = (await instanceDB()).model("OLT");
     const olt = await OLT.findByIdAndRemove(id).exec();
     return olt.toObject() as IOLT;
   }
 
   public async update(id: string, data: IOLT): Promise<{ result: IOLT, modifiedPaths: string }> {
+    const OLT = (await instanceDB()).model("OLT");
     const olt = await OLT.findById(id).exec();
 
     if (!olt) {

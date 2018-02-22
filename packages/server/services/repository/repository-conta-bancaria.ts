@@ -1,21 +1,21 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
+import { instanceDB } from "../../db/initConnection";
 
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IContaBancaria } from "../../interfaces/IContaBancaria";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const ContaBancaria = mongoose.model("ContaBancaria");
-
 export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
 
   public async create(data: IContaBancaria): Promise<IContaBancaria> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
     const cb = new ContaBancaria(data);
     return (await cb.save()).toObject() as IContaBancaria;
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IContaBancaria> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
     const query = ContaBancaria.findById(id);
     const { fields, populate } = options;
 
@@ -31,6 +31,7 @@ export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IContaBancaria[]> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
     const query = ContaBancaria.find(searchValues);
     const { fields, populate } = options;
 
@@ -60,6 +61,7 @@ export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
   }
 
   public async update(id: string, data: IContaBancaria): Promise<{ result: IContaBancaria, modifiedPaths: string }> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
     const cb = await ContaBancaria.findById(id).exec();
 
     cb.set(data);
@@ -72,4 +74,19 @@ export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
     };
   }
 
+  public async recover(id: string): Promise<IContaBancaria> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
+    const cb = await ContaBancaria.findById(id);
+
+    if (!cb) {
+      throw new NotFoundError(`Conta bancária ${id} não encontrada`);
+    }
+
+    cb.set({
+      excluido: false,
+      excluidoEm: undefined,
+    });
+    await cb.save();
+    return cb.toObject() as IContaBancaria;
+  }
 }

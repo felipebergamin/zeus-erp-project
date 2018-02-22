@@ -1,62 +1,61 @@
 import { Request, Response } from "express";
 
-import OLT = require("../../db/model/OLT");
 import { LogService as log } from "../../services/LogService";
-import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
+import { RepositoryOLT } from "../../services/repository/repository-olt";
+import { handleError } from "../utils/HttpControllers";
 
 export class OLTController {
-  public static async create(req: Request, res: Response) {
-    try {
-      const olt = new OLT(req.body);
-      olt.set("criadoEm", new Date());
-      await olt.save();
-      log.info(`criou a OLT ${olt.get("nome")}, IP: ${req.ip}`, req.user._id, olt.id);
-      res.send(olt);
-    } catch (err) {
-      handleError(err, res);
-    }
-  }
+  constructor(private repoOlt: RepositoryOLT) {}
 
-  public static async get(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const query = OLT.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-
-      res.json(await query.exec());
-    } catch (err) {
-      handleError(err, res);
-    }
-  }
-
-  public static async getAll(req: Request, res: Response) {
-    try {
-      const query = createQueryAndApplyReqOptions(req, OLT);
-      res.json(await query.exec());
-    } catch (err) {
-      handleError(err, res);
-    }
-  }
-
-  public static async delete(req: Request, res: Response) {
-    try {
-      const olt = await OLT.findById(req.params.id).exec();
-      await olt.remove();
+      const olt = await this.repoOlt.create(req.body);
       res.json(olt);
-      log.info(`removeu a OLT ${olt.get("nome")}, IP: ${req.ip}`, req.user._id, olt._id);
+      log.info(`criou a OLT ${olt.nome}, IP: ${req.ip}`, req.user._id, olt._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const olt = await OLT.findById(req.params.id);
-      olt.set(req.body);
-      const modified = olt.modifiedPaths().join(", ");
-      olt.set("alteradoEm", new Date());
-      await olt.save();
+      const olt = await this.repoOlt.get(req.params.id);
       res.json(olt);
-      log.info(`alterou ${modified} na olt ${olt.get("nome")}, IP: ${req.ip}`, req.user._id, olt.id);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
+  public async getAll(req: Request, res: Response) {
+    try {
+      const { fields, populate, ...search } = req.query;
+      const results = await this.repoOlt.getAll(search, { fields, populate });
+      res.json(results);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
+  public async delete(req: Request, res: Response) {
+    try {
+      const removed = await this.repoOlt.remove(req.params.id);
+      res.json(removed);
+      log.info(`removeu a OLT ${removed.nome}, IP: ${req.ip}`, req.user._id, removed._id);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
+  public async update(req: Request, res: Response) {
+    try {
+      const updated = await this.repoOlt.update(req.params.id, req.body);
+
+      if (!updated) {
+        return res.status(204).end();
+      }
+
+      const { result, modifiedPaths } = updated;
+      log.info(`alterou ${modifiedPaths} na olt ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
     }

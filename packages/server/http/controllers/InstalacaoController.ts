@@ -1,120 +1,77 @@
 import { Request, Response } from "express";
 
-import Instalacao = require("../../db/model/Instalacao");
 import { LogService as log } from "../../services/LogService";
+import { RepositoryInstalacao } from "../../services/repository/repository-instalacao";
 import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleError } from "../utils/HttpControllers";
 
 export class InstalacaoController {
-  public static async create(req: Request, res: Response) {
+  constructor(private repoInstalacao: RepositoryInstalacao) {}
+
+  public async create(req: Request, res: Response) {
     try {
-      const {
-        cliente,
-        dataAgenda,
-        tecnicoResponsavel,
-      } = req.body;
-
-      const instalacao = new Instalacao({
-        cliente,
-        dataAgenda,
-        tecnicoResponsavel,
-      });
-
-      await instalacao.save();
-      res.json(instalacao.toJSON());
-      log.info(`criou a instalacao ${instalacao.get("protocolo")}, IP: ${req.ip}`, req.user._id, instalacao.id);
+      const instalacao = await this.repoInstalacao.create(req.body);
+      res.json(instalacao);
+      log.info(`criou a instalacao ${instalacao.protocolo}, IP: ${req.ip}`, req.user._id, instalacao._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
-      const query = Instalacao.findById(req.params.id);
-      aplyGetRequestOptionsToQuery(req, query);
-      res.json((await query.exec()).toJSON());
+      const instalacao = await this.repoInstalacao.get(req.params.id);
+      res.json(instalacao);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
-      const query = createQueryAndApplyReqOptions(req, Instalacao);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+      const queryResult = this.repoInstalacao.getAll(search, { fields, populate });
+      res.json(queryResult);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      const instalacao = await Instalacao.findById(req.params.id).exec();
-      const { tecnicoResponsavel } = req.body;
+      const { id } = req.params.id;
+      const data = req.body;
+      const updated = await this.repoInstalacao.update(id, data);
 
-      if (!instalacao) {
-        throw new Error(`Não foi encontrada uma instalação com id: ${req.params.id}`);
-      }
-      if (typeof tecnicoResponsavel !== "string" || tecnicoResponsavel.length === 0) {
-        throw new Error("um técnico responsável pela instalação deve ser informado");
+      if (!updated) {
+        return res.status(204).end();
       }
 
-      instalacao.set({
-        alteradoEm: new Date(),
-        tecnicoResponsavel,
-      });
-      await instalacao.save();
-      res.json(instalacao.toJSON());
-      log.info(`modificou a instalacao ${instalacao.get("protocolo")}, IP: ${req.ip}`, req.user._id, instalacao.id);
+      const { result, modifiedPaths } = updated;
+
+      log.info(`modificou a instalacao ${result.protocolo}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async cancel(req: Request, res: Response) {
+  public async cancel(req: Request, res: Response) {
     try {
-      const instalacao = await Instalacao.findById(req.params.id).exec();
+      const { id } = req.params;
       const { motivoCancelamento } = req.body;
 
-      if (!instalacao) {
-        return res.status(404).json({ message: "Instalação não encontrada" });
-      }
+      const cancelled = await this.repoInstalacao.cancel(id, motivoCancelamento);
 
-      if (instalacao.get("cancelada") || instalacao.get("concluida")) {
-        throw new Error("Impossível cancelar uma instalação já concluída ou cancelada!");
-      }
-
-      instalacao.set({
-        cancelada: true,
-        dataHoraCancelada: new Date(),
-        motivoCancelamento,
-      });
-      await instalacao.save();
-      res.json(instalacao);
-      log.info(`cancelou a instalacao ${instalacao.get("protocolo")}, IP: ${req.ip}`, req.user._id, instalacao.id);
+      log.info(`cancelou a instalacao ${cancelled.protocolo}, IP: ${req.ip}`, req.user._id, cancelled._id);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async complete(req: Request, res: Response) {
+  public async complete(req: Request, res: Response) {
     try {
-      const instalacao = await Instalacao.findById(req.params.id);
-
-      if (!instalacao) {
-        throw new Error(`Instalação com id ${req.params.id} não encontrada!`);
-      }
-      if (instalacao.get("cancelada") || instalacao.get("concluida")) {
-        throw new Error("Impossível concluir uma instalação já concluída ou cancelada");
-      }
-
-      instalacao.set({
-        concluida: true,
-        dataHoraConclusao: new Date(),
-      });
-
-      await instalacao.save();
-      res.json(instalacao.toJSON());
-      log.info(`concluiu a instalacao ${instalacao.get("protocolo")}, IP: ${req.ip}`, req.user._id, instalacao.id);
+      const { id } = req.params;
+      const completed = await this.repoInstalacao.complete(id);
+      log.info(`concluiu a instalacao ${completed.protocolo}, IP: ${req.ip}`, req.user._id, completed._id);
     } catch (err) {
       handleError(err, res);
     }

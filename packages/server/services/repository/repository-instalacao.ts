@@ -1,16 +1,16 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
 
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IInstalacao } from "../../interfaces/IInstalacao";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const Instalacao = mongoose.model("Instalacao");
-
 export class RepositoryInstalacao implements IRepository<IInstalacao> {
 
   public async create(data: IInstalacao): Promise<IInstalacao> {
+    const Instalacao = (await instanceDB()).model("Instalacao");
+
     const {
       cliente,
       dataAgenda,
@@ -27,6 +27,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IInstalacao> {
+    const Instalacao = (await instanceDB()).model("Instalacao");
     const query = Instalacao.findById(id);
     const { fields, populate } = options;
 
@@ -48,6 +49,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IInstalacao[]> {
+    const Instalacao = (await instanceDB()).model("Instalacao");
     const query = Instalacao.find(searchValues);
     const { fields, populate } = options;
 
@@ -67,6 +69,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
   }
 
   public async update(id: string, data: IInstalacao): Promise<{ result: IInstalacao, modifiedPaths: string }> {
+    const Instalacao = (await instanceDB()).model("Instalacao");
     const instalacao = await Instalacao.findById(id).exec();
     const { tecnicoResponsavel, dataAgenda } = data;
 
@@ -78,6 +81,10 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
     }
     if (dataAgenda) {
       instalacao.set({ dataAgenda });
+    }
+
+    if (!instalacao.isModified()) {
+      return null;
     }
 
     const modifiedPaths = instalacao.modifiedPaths().join(", ");

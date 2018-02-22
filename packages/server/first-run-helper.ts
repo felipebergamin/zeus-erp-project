@@ -1,16 +1,18 @@
 import randomstring = require("randomstring");
 import readline = require("readline");
 
-import PerfilUsuario = require("./db/model/PerfilUsuario");
-import Usuario = require("./db/model/Usuario");
+import { instanceDB } from "./db/initConnection";
 import debug = require("./debug");
 
 const isFirstRun = async () => {
+  const Usuario = (await instanceDB()).model("Usuario");
   const usuarios = await Usuario.find({}).select("_id").exec();
   return usuarios.length === 0;
 };
 
 export async function setupApplication() {
+  const Usuario = (await instanceDB()).model("Usuario");
+  const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
   const firstRun = await isFirstRun();
 
   if (firstRun) {

@@ -1,5 +1,5 @@
+import { Schema } from "mongoose";
 import randomstring = require("randomstring");
-import { Schema } from "../connection";
 
 export function plugin(schema: Schema) {
   schema.pre("save", function genProtocol(next) {

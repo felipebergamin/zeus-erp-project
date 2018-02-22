@@ -1,97 +1,83 @@
 import { Request, Response } from 'express';
-import Usuario = require('../../db/model/Usuario');
 import { LogService as log } from '../../services/LogService';
+import { RepositoryUsuario } from '../../services/repository/repository-usuario';
 import * as utils from "../utils/HttpControllers";
 import { handleError } from '../utils/HttpControllers';
 
 export class UsuarioController {
+  constructor(private repoUsuario: RepositoryUsuario) {}
 
-  public static async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response) {
     try {
-      const {
-        ativo,
-        ...data,
-      } = req.body;
-
-      const usuario = new Usuario({
-        criadoEm: new Date(),
-        ...data,
-      });
-
-      await usuario.save();
+      const usuario = await this.repoUsuario.create(req.body);
       res.json(usuario);
-      log.info(`criou o usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
+      log.info(`criou o usuário ${usuario.login}, IP: ${req.ip}`, req.user._id, usuario._id);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
-      const query = utils.createQueryAndApplyReqOptions(req, Usuario);
-      res.json(await query.exec());
+      const { fields, populate, ...search } = req.query;
+
+      const searchResult = await this.repoUsuario.getAll(search, { fields, populate });
+      res.json(searchResult);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async getById(req: Request, res: Response) {
+  public async getById(req: Request, res: Response) {
     try {
-      const query = Usuario.findById(req.params.id);
-      utils.aplyGetRequestOptionsToQuery(req, query);
-      res.json(await query.exec());
-    } catch (err) {
-      utils.handleError(err, res);
-    }
-  }
+      const { fields, populate } = req.query;
+      const { id } = req.params;
 
-  public static async update(req: Request, res: Response) {
-    try {
-      const usuario = await Usuario.findById(req.params.id).exec();
-      usuario.set(req.body);
-      const modified = usuario.modifiedPaths().join(", ");
-      usuario.set('alteradoEm', new Date());
-
-      await usuario.save();
+      const usuario = await this.repoUsuario.get(id, { fields, populate });
       res.json(usuario);
-      log.info(`modificou ${modified} no usuário ${usuario.get('login')}, IP: ${req.ip}`, req.user._id, usuario.id);
     } catch (err) {
       utils.handleError(err, res);
     }
   }
 
-  public static async delete(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
-      const usuario = await Usuario.findById(req.params.id);
+      const { id } = req.params;
 
-      usuario.set({
-        ativo: false,
-        excluidoEm: new Date(),
-      });
-      await usuario.save();
+      const updated = await this.repoUsuario.update(id, req.body);
 
-      res.json(usuario);
+      if (!updated) {
+        res.status(204).end();
+      }
 
-      log.info(`desativou o usuário ${usuario.get('login')}, IP: ${req.ip}`,
+      const { result, modifiedPaths } = updated;
+      res.json(result);
+      log.info(`modificou ${modifiedPaths} no usuário ${result.login}, IP: ${req.ip}`, req.user._id, result._id);
+    } catch (err) {
+      utils.handleError(err, res);
+    }
+  }
+
+  public async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const deleted = await this.repoUsuario.remove(id);
+      log.info(`desativou o usuário ${deleted.login}, IP: ${req.ip}`, req.user._id, deleted._id);
+    } catch (err) {
+      utils.handleError(err, res);
+    }
+  }
+
+  public async recover(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const recovered = await this.repoUsuario.recover(id);
+      res.json(recovered);
+
+      log.info(`ativou o usuário ${recovered.login}, IP: ${req.ip}`,
         req.user._id,
-        usuario.id);
-    } catch (err) {
-      utils.handleError(err, res);
-    }
-  }
-
-  public static async recover(req: Request, res: Response) {
-    try {
-      const usuario = await Usuario.findById(req.params.id);
-
-      usuario.set("ativo", true);
-      await usuario.save();
-
-      res.json(usuario);
-
-      log.info(`ativou o usuário ${usuario.get('login')}, IP: ${req.ip}`,
-        req.user._id,
-        usuario.id);
+        recovered._id);
     } catch (err) {
       handleError(err, res);
     }

@@ -1,22 +1,22 @@
 import { Document } from "mongoose";
-import mongoose = require("../../db/connection");
 
+import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IPerfilUsuario } from "../../interfaces/IPerfilUsuario";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
-const PerfilUsuario = mongoose.model("PerfilUsuario");
-
 export class RepositoryPerfilUsuario implements IRepository<IPerfilUsuario> {
 
   public async create(data: IPerfilUsuario): Promise<IPerfilUsuario> {
+    const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
     const perfil = new PerfilUsuario(data);
     await perfil.save();
     return perfil.toObject() as IPerfilUsuario;
   }
 
   public async get(id: string, options: { fields?: string, populate?: string } = {}): Promise<IPerfilUsuario> {
+    const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
     const query = PerfilUsuario.findById(id);
     const { fields, populate } = options;
 
@@ -38,6 +38,7 @@ export class RepositoryPerfilUsuario implements IRepository<IPerfilUsuario> {
 
   // tslint:disable-next-line:max-line-length
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IPerfilUsuario[]> {
+    const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
     const query = PerfilUsuario.find(searchValues);
     const { fields, populate } = options;
 
@@ -53,11 +54,13 @@ export class RepositoryPerfilUsuario implements IRepository<IPerfilUsuario> {
   }
 
   public async remove(id: string): Promise<IPerfilUsuario> {
+    const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
     const perfil = await PerfilUsuario.findByIdAndRemove(id).exec();
     return perfil.toObject() as IPerfilUsuario;
   }
 
   public async update(id: string, data: IPerfilUsuario): Promise<{ result: IPerfilUsuario, modifiedPaths: string }> {
+    const PerfilUsuario = (await instanceDB()).model("PerfilUsuario");
     const perfil = await PerfilUsuario.findById(id).exec();
 
     if (!perfil) {

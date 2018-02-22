@@ -1,4 +1,4 @@
-import { Schema } from "../connection";
+import { Schema } from "mongoose";
 
 const schema = new Schema({
   alteradoEm: require('../fields/alterado_em'),

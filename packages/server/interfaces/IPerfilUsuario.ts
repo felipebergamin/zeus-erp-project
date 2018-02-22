@@ -1,4 +1,5 @@
 export interface IPerfilUsuario {
+  _id: string;
   nome: string;
 
   alterarClientes: boolean;
