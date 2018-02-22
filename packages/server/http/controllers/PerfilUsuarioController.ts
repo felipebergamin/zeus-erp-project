@@ -20,6 +20,7 @@ export class PerfilUsuarioController {
     try {
       const { fields, populate, ...search } = req.query;
       const searchResult = await this.repoPerfilUsuario.getAll(search, { fields, populate });
+      res.json(searchResult);
     } catch (err) {
       utils.handleError(err, res);
     }
