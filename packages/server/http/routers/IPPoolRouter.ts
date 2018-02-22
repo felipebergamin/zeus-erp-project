@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { IPPoolController } from "../controllers/IPPoolController";
 
 import { RepositoryIPPool } from "../../services/repository/repository-ip-pool";
@@ -10,12 +10,12 @@ const repoIPPool = new RepositoryIPPool();
 const controller = new IPPoolController(repoIPPool);
 
 router.route("/")
-  .get(controller.query)
-  .post(createPoolValidator, controller.create);
+  .get((req: Request, res: Response) => controller.query(req, res))
+  .post(createPoolValidator, (req: Request, res: Response) => controller.create(req, res));
 
 router.route("/:id")
-  .get(controller.get)
-  .put(createPoolValidator, controller.update)
-  .delete(controller.delete);
+  .get((req: Request, res: Response) => controller.get(req, res))
+  .put(createPoolValidator, (req: Request, res: Response) => controller.update(req, res))
+  .delete((req: Request, res: Response) => controller.delete(req, res));
 
 export = router;

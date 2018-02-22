@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { ChamadoTecnicoController } from "../controllers/ChamadoTecnicoController";
 
 import { RepositoryChamadoTecnico } from "../../services/repository/repository-chamado-tecnico";
@@ -10,14 +10,14 @@ const controller = new ChamadoTecnicoController(new RepositoryChamadoTecnico());
 const router = Router();
 
 router.route("/")
-  .get(controller.query)
-  .post(createChamadoValidator, controller.create);
+  .get((req: Request, res: Response) => controller.query(req, res))
+  .post(createChamadoValidator, (req: Request, res: Response) => controller.create(req, res));
 
 router.route("/:id")
-  .get(controller.get)
-  .put(controller.update);
+  .get((req: Request, res: Response) => controller.get(req, res))
+  .put((req: Request, res: Response) => controller.update(req, res));
 
-router.post("/finalizar/:id", finalizeChamadoValidator, controller.finalize);
-router.post("/cancelar/:id", cancelChamadoValidator, controller.cancel);
+router.post("/finalizar/:id", finalizeChamadoValidator, (req: Request, res: Response) => controller.finalize(req, res));
+router.post("/cancelar/:id", cancelChamadoValidator, (req: Request, res: Response) => controller.cancel(req, res));
 
 export = router;

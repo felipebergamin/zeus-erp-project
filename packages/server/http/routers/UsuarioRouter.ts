@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { UsuarioController } from "../controllers/UsuarioController";
 
 import { RepositoryUsuario } from "../../services/repository/repository-usuario";
@@ -10,14 +10,14 @@ const repoUsuario = new RepositoryUsuario();
 const controller = new UsuarioController(repoUsuario);
 
 router.route('/')
-  .get(controller.getAll)
-  .post(createUsuarioValidator, controller.create);
+  .get((req: Request, res: Response) => controller.getAll(req, res))
+  .post(createUsuarioValidator, (req: Request, res: Response) => controller.create(req, res));
 
 router.route('/:id')
-  .delete(controller.delete)
-  .get(controller.getById)
-  .put(createUsuarioValidator, controller.update);
+  .delete((req: Request, res: Response) => controller.delete(req, res))
+  .get((req: Request, res: Response) => controller.getById(req, res))
+  .put(createUsuarioValidator, (req: Request, res: Response) => controller.update(req, res));
 
-router.post("/recover/:id", controller.recover);
+router.post("/recover/:id", (req: Request, res: Response) => controller.recover(req, res));
 
 export = router;

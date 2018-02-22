@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { BoletoBancarioController } from '../controllers/BoletoBancarioController';
 
 import { RepositoryBoleto } from '../../services/repository/repository-boleto';
@@ -10,12 +10,12 @@ const controller = new BoletoBancarioController(new RepositoryBoleto());
 const router = Router();
 
 router.route('/')
-  .get(controller.query)
-  .post(createBoletoValidator, controller.create);
+  .get((req, res) => controller.query(req, res))
+  .post(createBoletoValidator, (req: Request, res: Response) => controller.create(req, res));
 
 router.route('/:id')
-  .get(controller.get)
-  .put(updateBoletoValidator, controller.update)
-  .delete(controller.remove);
+  .get((req, res) => controller.get(req, res))
+  .put(updateBoletoValidator, (req: Request, res: Response) => controller.update(req, res))
+  .delete((req, res) => controller.remove(req, res));
 
 export = router;

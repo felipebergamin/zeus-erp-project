@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { PerfilUsuarioController } from "../controllers/PerfilUsuarioController";
 
 import { RepositoryPerfilUsuario } from "../../services/repository/repository-perfil-usuario";
@@ -10,12 +10,12 @@ const repoPerfil = new RepositoryPerfilUsuario();
 const controller = new PerfilUsuarioController(repoPerfil);
 
 router.route('/')
-  .get(controller.getAll)
-  .post(createPerfilUsuario, controller.create);
+  .get((req: Request, res: Response) => controller.getAll(req, res))
+  .post(createPerfilUsuario, (req: Request, res: Response) => controller.create(req, res));
 
 router.route('/:id')
-  .get(controller.get)
-  .put(createPerfilUsuario, controller.update)
-  .delete(controller.delete);
+  .get((req: Request, res: Response) => controller.get(req, res))
+  .put(createPerfilUsuario, (req: Request, res: Response) => controller.update(req, res))
+  .delete((req: Request, res: Response) => controller.delete(req, res));
 
 export = router;

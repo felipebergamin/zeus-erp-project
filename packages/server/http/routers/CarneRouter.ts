@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
 import { CarneController } from '../controllers/CarneController';
 
@@ -17,11 +17,11 @@ const repoCarne = new RepositoryCarne(repoBoleto, repoCliente);
 const controller = new CarneController(repoCarne);
 
 router.route('/')
-  .get(controller.getAll)
-  .post(createCarneValidator, controller.create);
+  .get((req: Request, res: Response) => controller.getAll(req, res))
+  .post(createCarneValidator, (req: Request, res: Response) => controller.create(req, res));
 
 router.route('/:id')
-  .get(controller.get)
-  .delete(controller.remove);
+  .get((req: Request, res: Response) => controller.get(req, res))
+  .delete((req: Request, res: Response) => controller.remove(req, res));
 
 export = router;

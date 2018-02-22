@@ -10,16 +10,19 @@ export class LoginController {
   constructor(private loginService: LoginService) {}
 
   public async checkLogin(req: Request, res: Response) {
-    const { login, passwd } = req.body;
+    try {
+      const { login, passwd } = req.body;
 
-    const auth = await this.loginService.auth(login, passwd);
+      const auth = await this.loginService.auth(login, passwd);
 
-    if (auth) {
-      return res.json(auth);
+      if (auth) {
+        return res.json(auth);
+      }
+
+      return res.status(401).send();
+    } catch (err) {
+      return res.status(401).json(err.message);
     }
-
-    return res.status(401).send();
-
     /* if (login && passwd) {
       const usuario: any = await Usuario.findOne({login})
         .populate("perfil")

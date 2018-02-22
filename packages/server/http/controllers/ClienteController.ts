@@ -6,12 +6,12 @@ import { aplyGetRequestOptionsToQuery, createQueryAndApplyReqOptions, handleErro
 
 import { RepositoryCliente } from "../../services/repository/repository-cliente";
 
-const repositoryCliente = new RepositoryCliente();
-
 export class ClienteController {
-  public static async create(req: Request, res: Response) {
+  constructor(private repoCliente: RepositoryCliente) {}
+
+  public async create(req: Request, res: Response) {
     try {
-      const cliente = await repositoryCliente.create(req.body);
+      const cliente = await this.repoCliente.create(req.body);
       res.json(cliente);
       log.info(`cadastrou o cliente ${cliente.nome}, IP: ${req.ip}`, req.user._id, cliente._id);
     } catch (err) {
@@ -19,23 +19,23 @@ export class ClienteController {
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { fields, populate } = req.query;
 
-      const cliente = await repositoryCliente.get(id, { fields, populate });
+      const cliente = await this.repoCliente.get(id, { fields, populate });
       res.json(cliente);
     } catch (err) {
       handleError(err, res);
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
+  public async getAll(req: Request, res: Response) {
     try {
       const { fields, populate, ...search } = req.query;
-      const cliente = await repositoryCliente.getAll({
-        ...ClienteController.parseQuery(search),
+      const cliente = await this.repoCliente.getAll({
+        ...this.parseQuery(search),
         excluido: false,
       }, { fields, populate });
 
@@ -45,10 +45,10 @@ export class ClienteController {
     }
   }
 
-  public static async getRemoved(req: Request, res: Response) {
+  public async getRemoved(req: Request, res: Response) {
     try {
       const { fields, populate } = req.query;
-      const clientes = repositoryCliente.getAll({
+      const clientes = this.repoCliente.getAll({
         excluido: true,
       }, { fields, populate });
 
@@ -58,10 +58,10 @@ export class ClienteController {
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { result, modifiedPaths } = await repositoryCliente.update(id, req.body);
+      const { result, modifiedPaths } = await this.repoCliente.update(id, req.body);
       res.json(result);
       log.info(`modificou ${modifiedPaths} no cliente ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
@@ -69,11 +69,11 @@ export class ClienteController {
     }
   }
 
-  public static async remove(req: Request, res: Response) {
+  public async remove(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
-      const cliente = await repositoryCliente.remove(id);
+      const cliente = await this.repoCliente.remove(id);
       res.json(cliente);
       log.info(`excluiu o cliente ${cliente.nome}, IP: ${req.ip}`, req.user._id, cliente._id);
     } catch (err) {
@@ -81,12 +81,12 @@ export class ClienteController {
     }
   }
 
-  public static async undelete(req: Request, res: Response) {
+  public async undelete(req: Request, res: Response) {
     try {
       const { id } = req.query;
-      const cliente = await repositoryCliente.get(id);
+      const cliente = await this.repoCliente.get(id);
 
-      const { result } = await repositoryCliente.update(id, {
+      const { result } = await this.repoCliente.update(id, {
         ...cliente,
         excluido: false,
         excluidoEm: undefined,
@@ -99,7 +99,7 @@ export class ClienteController {
     }
   }
 
-  private static parseQuery(searchQuery: any = {}) {
+  private parseQuery(searchQuery: any = {}) {
     const { nome, ...mongoQuery } = searchQuery;
 
     if (nome) {

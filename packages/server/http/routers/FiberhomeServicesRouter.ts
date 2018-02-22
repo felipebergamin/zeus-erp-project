@@ -14,9 +14,20 @@ const router = Router();
 const repoOlt = new RepositoryOLT();
 const controller = new FiberhomeController(repoOlt);
 
-router.get("/onuinfo", getOnuInfoValidator, controller.getOnuInfo);
-router.get("/getunauthonu", getUnauthOnuValidator, controller.getUnauthorizedOnu);
-router.post("/addonu", addOnuValidator, controller.addOnu);
-router.post("/configureonu", configureOnuValidator, controller.configureOnu);
+router.get("/onuinfo",
+  getOnuInfoValidator,
+  (req: Request, res: Response) => controller.getOnuInfo(req, res));
+
+router.get("/getunauthonu",
+  getUnauthOnuValidator,
+  (req: Request, res: Response) => controller.getUnauthorizedOnu(req, res));
+
+router.post("/addonu",
+  addOnuValidator,
+  (req: Request, res: Response) => controller.addOnu(req, res));
+
+router.post("/configureonu",
+  configureOnuValidator,
+  (req: Request, res: Response) => controller.configureOnu(req, res));
 
 export = router;
