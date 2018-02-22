@@ -25,7 +25,7 @@ export = [
 
   check("conta.digito", "Verifique o dígito da conta")
     .exists()
-    .isInt(),
+    .isAlphanumeric().withMessage("O dígito da conta deve ser uma letra ou número"),
 
   check("conta.numero", "Verifique o número da conta")
     .exists()
@@ -33,11 +33,11 @@ export = [
 
   check("multaDia", "Verifique a multa por dia de atraso")
     .exists()
-    .isInt(),
+    .isFloat(),
 
   check("multaVencimento", "Verifique a multa após o vencimento")
     .exists()
-    .isInt(),
+    .isFloat(),
 
   check("nome")
     .exists().withMessage("Um nome deve ser atraibuído à conta"),
