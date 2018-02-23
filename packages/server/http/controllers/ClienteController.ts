@@ -48,7 +48,7 @@ export class ClienteController {
   public async getRemoved(req: Request, res: Response) {
     try {
       const { fields, populate } = req.query;
-      const clientes = this.repoCliente.getAll({
+      const clientes = await this.repoCliente.getAll({
         excluido: true,
       }, { fields, populate });
 
@@ -83,7 +83,7 @@ export class ClienteController {
 
   public async undelete(req: Request, res: Response) {
     try {
-      const { id } = req.query;
+      const { id } = req.params;
       const cliente = await this.repoCliente.get(id);
 
       const { result } = await this.repoCliente.update(id, {
