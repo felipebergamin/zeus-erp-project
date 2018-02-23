@@ -1,3 +1,6 @@
+import dotenv = require("dotenv");
+dotenv.config();
+
 import db = require("./db/initConnection");
 import debug = require("./debug");
 

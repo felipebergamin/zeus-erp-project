@@ -11,10 +11,11 @@ export class FiberhomeService {
     if (!fhService) {
       try {
         fhService = new FiberhomeService();
+        const { TL1_IP, TL1_USER, TL1_PASSWD } = process.env;
 
-        fhService.tl1 = new TL1Client("172.16.255.6", 3337);
+        fhService.tl1 = new TL1Client(TL1_IP, 3337);
         await fhService.tl1.connect();
-        const loginResponse = await fhService.tl1.login("felipe", "fe.li.pe./28");
+        const loginResponse = await fhService.tl1.login(TL1_USER, TL1_PASSWD);
 
         if (loginResponse.parsedResponse.completion_code.includes("COMPLD")) {
           debug("conexão TL1 estabelecida");
@@ -22,7 +23,7 @@ export class FiberhomeService {
 
           setInterval(() => {
             fhService.tl1.handShake();
-          }, FiberhomeService.FIVE_MINUTES_IN_MS);
+          }, FiberhomeService.HANDSHAKE_INTERVAL);
 
           process.on('SIGINT', () => {
             debug("SIGINT: fechando conexão TL1");
@@ -41,10 +42,10 @@ export class FiberhomeService {
     return fhService;
   }
 
-  private static FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
+  private static HANDSHAKE_INTERVAL = 1000 * 60 * (+process.env.TL1_HANDSHAKE_INTERVAL);
   private tl1: TL1Client;
 
-  public async getOnuOpticalInfo(olt: string, slot: string|number, pon: string|number, onumac: string) {
+  public async getOnuOpticalInfo(olt: string, slot: string | number, pon: string | number, onumac: string) {
     return await this.tl1.lstOpticalModuleDDM({
       OLTID: olt,
       ONUID: onumac,
@@ -61,6 +62,7 @@ export class FiberhomeService {
 
   public async addOnu(NAME: string, OLTID: string, ONUID: string,
                       ONUTYPE: string, SLOTNO: number, PONNO: number) {
+
     return await this.tl1.addOnu({
       AUTHTYPE: "MAC",
       NAME,
@@ -73,6 +75,7 @@ export class FiberhomeService {
 
   public async configureOnu(OLTID: string, ONUID: string, ONUPORT: string,
                             PONID: string, PVID: number, VLANMOD: string) {
+
     return await this.tl1.configureLanPort({
       OLTID,
       ONUID,
