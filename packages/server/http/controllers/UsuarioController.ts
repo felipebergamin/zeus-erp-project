@@ -62,6 +62,7 @@ export class UsuarioController {
     try {
       const { id } = req.params;
       const deleted = await this.repoUsuario.remove(id);
+      res.json(deleted);
       log.info(`desativou o usuário ${deleted.login}, IP: ${req.ip}`, req.user._id, deleted._id);
     } catch (err) {
       utils.handleError(err, res);

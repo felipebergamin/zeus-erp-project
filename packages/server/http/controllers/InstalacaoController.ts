@@ -29,7 +29,7 @@ export class InstalacaoController {
   public async getAll(req: Request, res: Response) {
     try {
       const { fields, populate, ...search } = req.query;
-      const queryResult = this.repoInstalacao.getAll(search, { fields, populate });
+      const queryResult = await this.repoInstalacao.getAll(search, { fields, populate });
       res.json(queryResult);
     } catch (err) {
       handleError(err, res);
