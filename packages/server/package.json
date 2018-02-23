@@ -2,14 +2,15 @@
   "name": "zeus",
   "version": "0.0.0",
   "description": "sistema zeus",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && tsc",
-    "build-serve": "rm -rf dist && tsc && DEBUG=zeus nodemon dist/app.js",
-    "serve": "DEBUG=zeus nodemon dist/app.js",
-    "dev": "rm -rf dist && tsc && concurrently 'tsc --watch' 'DEBUG=zeus nodemon dist/app.js'",
-    "lint": "tslint --project ."
+    "build-serve": "rm -rf dist && tsc && DEBUG=zeus npm start",
+    "serve": "DEBUG=zeus npm start",
+    "dev": "rm -rf dist && tsc && concurrently 'tsc --watch' 'DEBUG=zeus npm start'",
+    "lint": "tslint --project .",
+    "start": "node dist/app.js"
   },
   "repository": {
     "type": "git",
