@@ -39,7 +39,7 @@ export class ContaBancariaController {
 
   public async update(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       const updated = await this.repoCB.update(id, req.body);
 
       if (!updated) {
