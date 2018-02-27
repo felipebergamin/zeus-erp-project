@@ -32,7 +32,8 @@ export class RepositoryBoleto implements IRepository<IBoletoBancario> {
 
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IBoletoBancario[]> {
     const Boleto = (await instanceDB()).model("BoletoBancario");
-    const query = Boleto.find(searchValues);
+    const query = Boleto.find(this.parseQuery(searchValues));
+    query.where("excluido", false);
     const { fields, populate } = options;
 
     if (fields) {
@@ -55,6 +56,7 @@ export class RepositoryBoleto implements IRepository<IBoletoBancario> {
     }
 
     boleto.set({
+      carne: undefined,
       excluido: true,
       excluidoEm: new Date(),
     });
@@ -80,6 +82,19 @@ export class RepositoryBoleto implements IRepository<IBoletoBancario> {
       modifiedPaths,
       result: boleto.toObject() as IBoletoBancario,
     };
+  }
+
+  private parseQuery(query: any): any {
+    if (typeof query === "object") {
+      if ("semCarne" in query) {
+        if (query.semCarne) {
+          query.carne = { $exists: false };
+        }
+        delete query.semCarne;
+      }
+    }
+
+    return query;
   }
 
 }

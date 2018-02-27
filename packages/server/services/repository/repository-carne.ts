@@ -102,7 +102,8 @@ export class RepositoryCarne implements IRepository<ICarne> {
   }
 
   public async remove(id: string): Promise<ICarne> {
-    const carne = await this.get(id);
+    const Carne = (await instanceDB()).model("Carne");
+    const carne = await Carne.findById(id);
 
     if (!carne) {
       throw new NotFoundError("Carnê não encontrado");
@@ -111,15 +112,10 @@ export class RepositoryCarne implements IRepository<ICarne> {
     const boletos = await this.repoBoleto.getAll({ carne: carne._id });
 
     for (const boleto of boletos) {
-      boleto.excluido = true;
-      boleto.excluidoEm = new Date();
-      await this.repoBoleto.update(boleto._id, boleto);
+      await this.repoBoleto.remove(boleto._id);
     }
 
-    carne.excluido = true;
-    carne.excluidoEm = new Date();
-
-    return (await this.update(carne._id, carne)).result;
+    return (await carne.remove()).toObject() as ICarne;
   }
 
   public async update(id: string, data: ICarne): Promise<{ result: ICarne, modifiedPaths: string }> {
