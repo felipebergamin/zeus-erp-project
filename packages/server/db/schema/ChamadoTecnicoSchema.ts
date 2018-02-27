@@ -53,6 +53,16 @@ const schema = new Schema({
     required: [true, "O cliente deve ser especificado"],
     type: Schema.Types.ObjectId,
   },
+  prioridade: {
+    default: 'normal',
+    enum: [
+      'baixa',
+      'normal',
+      'alta',
+      'critica',
+    ],
+    type: String,
+  },
   protocolo: {
     type: String,
   },
