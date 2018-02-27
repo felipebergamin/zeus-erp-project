@@ -12,7 +12,11 @@ export class ChamadoTecnicoController {
 
   public async create(req: Request, res: Response) {
     try {
-      const chamado = await this.repoChamado.create(req.body);
+      const chamado = await this.repoChamado.create({
+        ...req.body,
+        abertoPor: req.user._id,
+      });
+
       res.status(201).json(chamado);
       log.info(`criou o chamado ${chamado.protocolo}, IP: ${req.ip}`, req.user._id, chamado._id);
     } catch (err) {

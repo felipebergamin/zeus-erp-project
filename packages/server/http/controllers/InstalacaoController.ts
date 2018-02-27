@@ -38,7 +38,7 @@ export class InstalacaoController {
 
   public async update(req: Request, res: Response) {
     try {
-      const { id } = req.params.id;
+      const { id } = req.params;
       const data = req.body;
       const updated = await this.repoInstalacao.update(id, data);
 
@@ -48,6 +48,7 @@ export class InstalacaoController {
 
       const { result, modifiedPaths } = updated;
 
+      res.json(result);
       log.info(`modificou a instalacao ${result.protocolo}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
