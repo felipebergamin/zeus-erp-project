@@ -36,10 +36,7 @@ export class BoletoBancarioController {
   public async query(req: Request, res: Response) {
     try {
       const { fields, populate, ...search } = req.query;
-      const boletos = await this.repoBoleto.getAll({
-        excluido: false,
-        ...search,
-      }, { fields, populate });
+      const boletos = await this.repoBoleto.getAll(search, { fields, populate });
 
       res.json(boletos);
     } catch (err) {

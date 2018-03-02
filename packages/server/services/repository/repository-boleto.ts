@@ -33,7 +33,6 @@ export class RepositoryBoleto implements IRepository<IBoletoBancario> {
   public async getAll(searchValues: any, options: { fields?: string, populate?: string } = {}): Promise<IBoletoBancario[]> {
     const Boleto = (await instanceDB()).model("BoletoBancario");
     const query = Boleto.find(this.parseQuery(searchValues));
-    query.where("excluido", false);
     const { fields, populate } = options;
 
     if (fields) {
