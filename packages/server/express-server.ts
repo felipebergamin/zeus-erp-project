@@ -31,20 +31,20 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
 // SET ROUTERS
-app.use('/api', authMiddleware);
-app.use('/api/cliente', apiCliente);
-app.use('/api/plano', apiPlanoRouter);
-app.use('/api/boleto', apiBoletoRouter);
-app.use('/api/instalacao', apiInstalacaoRouter);
-app.use('/api/usuario', apiUsuarioRouter);
-app.use('/api/contabancaria', apiContaBancariaRouter);
-app.use('/api/carne', apiCarneRouter);
-app.use('/api/log', logRouter);
-app.use('/api/perfilusuario', perfilUsuarioRouter);
-app.use('/api/olt', oltRouter);
-app.use('/api/fiberhome', fiberhomeServicesRouter);
-app.use('/api/chamadotecnico', chamadoTecnicoRouter);
-app.use('/api/ippool', ipPoolRouter);
-app.use('/auth', apiLoginRouter);
+// app.use('/api', authMiddleware);
+app.use('/api/cliente', authMiddleware, apiCliente);
+app.use('/api/plano', authMiddleware, apiPlanoRouter);
+app.use('/api/boleto', authMiddleware, apiBoletoRouter);
+app.use('/api/instalacao', authMiddleware, apiInstalacaoRouter);
+app.use('/api/usuario', authMiddleware, apiUsuarioRouter);
+app.use('/api/contabancaria', authMiddleware, apiContaBancariaRouter);
+app.use('/api/carne', authMiddleware, apiCarneRouter);
+app.use('/api/log', authMiddleware, logRouter);
+app.use('/api/perfilusuario', authMiddleware, perfilUsuarioRouter);
+app.use('/api/olt', authMiddleware, oltRouter);
+app.use('/api/fiberhome', authMiddleware, fiberhomeServicesRouter);
+app.use('/api/chamadotecnico', authMiddleware, chamadoTecnicoRouter);
+app.use('/api/ippool', authMiddleware, ipPoolRouter);
+app.use('/api/auth', apiLoginRouter);
 
 export = app;
