@@ -97,5 +97,9 @@ export = [
     .exists().withMessage("O valor deve ser informado")
     .isInt().withMessage("O valor é inválido"),
 
+  check("ibge")
+    .optional({ checkFalsy: true })
+    .isNumeric().withMessage("O cód. IBGE deve ser um valor numérico"),
+
   processValidationResult,
 ];

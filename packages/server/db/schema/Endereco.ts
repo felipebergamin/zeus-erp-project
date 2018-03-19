@@ -6,6 +6,7 @@ export = new Schema({
   cidade: require('../fields/cidade'),
   complemento: String,
   estado: require('../fields/estado'),
+  ibge: Number,
   latitude: Number,
   logradouro: require('../fields/logradouro'),
   longitude: Number,
