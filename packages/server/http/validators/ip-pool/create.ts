@@ -35,7 +35,7 @@ export = [
 
   check("nome")
     .exists().withMessage("O pool deve ter um nome")
-    .isAlpha("pt-BR").withMessage("Nome deve conter apenas letras"),
+    .isLength({ min: 4 }).withMessage("O nome do pool deve ter 4 caracteres ou mais"),
 
   processValidationResult,
 ];
