@@ -47,6 +47,7 @@ export class IPPoolController {
 
       const { result, modifiedPaths } = updated;
 
+      res.json(result);
       log.info(`alterou ${modifiedPaths} no pool ${result.nome}, IP: ${req.ip}`, req.user._id, result._id);
     } catch (err) {
       handleError(err, res);
