@@ -9,6 +9,12 @@ export = [
     .optional()
     .isMongoId().withMessage("O carnê do boleto é inválido"),
 
+  check("nossoNumero")
+    .not().exists().withMessage("O Nosso Número não deve ser informado"),
+
+  check("digitoNossoNumero")
+    .not().exists().withMessage("O dígito de conferência do nosso número não deve ser informado"),
+
   check("cliente", "Verifique o cliente informado como pagador")
     .exists().withMessage("O boleto deve ser associado à um cliente")
     .isMongoId(),

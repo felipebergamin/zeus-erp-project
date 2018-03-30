@@ -2,6 +2,7 @@ import bodyparser = require('body-parser');
 import express = require('express');
 
 /* EXPRESS ROUTERS */
+import arquivoRemessaRouter = require('./http/routers/ArquivoRemessaRouter');
 import apiBoletoRouter = require('./http/routers/BoletoBancarioRouter');
 import apiCarneRouter = require('./http/routers/CarneRouter');
 import chamadoTecnicoRouter = require("./http/routers/ChamadoTecnicoRouter");
@@ -45,6 +46,7 @@ app.use('/api/olt', authMiddleware, oltRouter);
 app.use('/api/fiberhome', authMiddleware, fiberhomeServicesRouter);
 app.use('/api/chamadotecnico', authMiddleware, chamadoTecnicoRouter);
 app.use('/api/ippool', authMiddleware, ipPoolRouter);
+app.use('/api/remessa', arquivoRemessaRouter);
 app.use('/api/auth', apiLoginRouter);
 
 export = app;

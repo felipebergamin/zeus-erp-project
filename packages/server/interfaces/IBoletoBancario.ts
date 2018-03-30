@@ -11,9 +11,14 @@ export interface IBoletoBancario {
   criadoEm?: Date;
   dataPagamento?: Date;
   dataVencimento: Date;
+  digitoNossoNumero?: string;
   enviadoRemessa?: boolean;
+  enviarAtualizacaoValor?: boolean;
+  enviarAtualizacaoVencimento?: boolean;
+  enviarPedidoBaixa?: boolean;
   excluido?: boolean;
   excluidoEm?: Date;
+  nossoNumero?: number;
   numeroBoleto?: number;
   ocorrencias?: number[];
   pago?: boolean;

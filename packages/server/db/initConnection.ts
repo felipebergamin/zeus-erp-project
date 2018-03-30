@@ -14,6 +14,7 @@ import logSchema = require("./schema/LogSchema");
 import oltSchema = require("./schema/OLTSchema");
 import perfilUsuarioSchema = require("./schema/PerfilUsuarioSchema");
 import planoSchema = require("./schema/PlanoSchema");
+import arquivoRemessaSchema = require("./schema/Remessa");
 import usuarioSchema = require("./schema/UsuarioSchema");
 
 /* mongoose.connection.on('error', (err) => {
@@ -49,6 +50,7 @@ db.then((mongoClient: typeof mongoose) => {
   mongoClient.model("PerfilUsuario", perfilUsuarioSchema);
   mongoClient.model("Plano", planoSchema);
   mongoClient.model("Usuario", usuarioSchema);
+  mongoClient.model("ArquivoRemessa", arquivoRemessaSchema);
   debug("models registrados");
   return mongoClient;
 });

@@ -9,7 +9,7 @@ export interface IContaBancaria {
   codigoCedente: string;
   conta: {
     digito: string;
-    numero: string;
+    numero: number;
   };
   excluido: boolean;
   multaDia: number;
