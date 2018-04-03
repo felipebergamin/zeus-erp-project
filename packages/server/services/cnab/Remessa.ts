@@ -17,6 +17,14 @@ export interface IRemessaOptions {
   reenviarRemetidos?: boolean;
 }
 
+function* counter() {
+  let index = 1;
+
+  while (true) {
+    yield index++;
+  }
+}
+
 export class Remessa {
   private stringData: string[];
   private contadorRegistros: IterableIterator<number>;
@@ -26,15 +34,6 @@ export class Remessa {
     private repoBoleto: RepositoryBoleto,
   ) {
     this.stringData = [];
-
-    function* counter() {
-      let index = 1;
-
-      while (true) {
-        yield index++;
-      }
-    }
-
     this.contadorRegistros = counter();
   }
 
@@ -42,6 +41,9 @@ export class Remessa {
     if (!contaBancaria) {
       throw new Error("Conta bancária inexistente");
     }
+
+    this.stringData = [];
+    this.contadorRegistros = counter();
 
     const remessa = {} as IArquivoRemessa;
     remessa.diaGeracao = moment().date();
@@ -54,11 +56,11 @@ export class Remessa {
     query.contaBancaria = contaBancaria._id;
     query.excluido = false;
 
-    if ("dataInicio" in options) {
+    if ("dataInicio" in options && moment(options.dataInicio).isValid()) {
       query.dataVencimento = { $gte: options.dataInicio };
     }
 
-    if ("dataFim" in options) {
+    if ("dataFim" in options && moment(options.dataFim).isValid()) {
       if (!query.dataVencimento) {
         query.dataVencimento = {};
       }
@@ -66,7 +68,7 @@ export class Remessa {
       query.dataVencimento.$lte = options.dataFim;
     }
 
-    if ("cliente" in options) {
+    if ("cliente" in options && typeof options.cliente === 'string') {
       query.cliente = options.cliente;
     }
 
@@ -118,6 +120,8 @@ export class Remessa {
   private async generateFileName(diaGeracao: number, mesGeracao: number): Promise<string> {
     const previousFiles = await this.repoArquivoRemessa.getAll({ diaGeracao, mesGeracao });
     const previousFilesCounter = previousFiles.length;
+
+    mesGeracao += 1;
 
     let fileName = 'CB';
     fileName += diaGeracao.toString().padStart(2, "0");
@@ -206,7 +210,7 @@ export class Remessa {
     // 37 - digito da conta
     line += boleto.contaBancaria.conta.digito;
     // 38 a 62 - numero de controle do participante
-    line += `ZEUS${boleto._id}`.padEnd(25, " ");
+    line += `Z${boleto._id}`.padEnd(25, " ");
     // 63 a 65 - código do banco débito automático
     line += "000";
     // 66 - campo de multa
@@ -270,7 +274,7 @@ export class Remessa {
     // 219 a 220 - identificacao do tipo de inscricao do pagador
     line += (boleto.cliente.tipoPessoa === 'fisica' ? '01' : '02');
     // 221 a 234 - numero de inscricao do pagador
-    line += boleto.cliente.cpfCnpj;
+    line += boleto.cliente.cpfCnpj.padStart(14, "0");
     // 235 a 274 - nome do pagador
     line += boleto.cliente.nome.toUpperCase().padEnd(40, " ");
     // 275 a 314 - endereco completo

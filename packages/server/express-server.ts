@@ -46,7 +46,7 @@ app.use('/api/olt', authMiddleware, oltRouter);
 app.use('/api/fiberhome', authMiddleware, fiberhomeServicesRouter);
 app.use('/api/chamadotecnico', authMiddleware, chamadoTecnicoRouter);
 app.use('/api/ippool', authMiddleware, ipPoolRouter);
-app.use('/api/remessa', arquivoRemessaRouter);
+app.use('/api/remessa', authMiddleware, arquivoRemessaRouter);
 app.use('/api/auth', apiLoginRouter);
 
 export = app;

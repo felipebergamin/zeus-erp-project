@@ -38,7 +38,6 @@ export class ArquivoRemessaController {
       res.json(remessa);
     } catch (err) {
       utils.handleError(err, res);
-      console.error(err.stack);
     }
   }
 
@@ -64,10 +63,16 @@ export class ArquivoRemessaController {
     }
 
     const path = `/tmp/${remessa.nome}`;
+
+    if (fs.existsSync(path)) {
+      fs.unlinkSync(path);
+    }
+
     fs.writeFileSync(path, remessa.conteudoArquivo, 'utf8');
+
     res.download(path, remessa.nome, () => {
       debug("Download concluído");
-      // fs.unlinkSync(path);
+      fs.unlinkSync(path);
     });
   }
 }
