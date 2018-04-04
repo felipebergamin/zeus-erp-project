@@ -15,19 +15,8 @@ import oltSchema = require("./schema/OLTSchema");
 import perfilUsuarioSchema = require("./schema/PerfilUsuarioSchema");
 import planoSchema = require("./schema/PlanoSchema");
 import arquivoRemessaSchema = require("./schema/Remessa");
+import arquivoRetornoSchema = require("./schema/Retorno");
 import usuarioSchema = require("./schema/UsuarioSchema");
-
-/* mongoose.connection.on('error', (err) => {
-  debug(`Mongoose default connection error: ${err}`);
-}); */
-
-/* mongoose.connection.on('disconnected', () => {
-  debug('Mongoose default connection disconnected');
-}); */
-
-/* mongoose.connection.on('open', () => {
-  debug('Mongoose default connection is open');
-}); */
 
 process.on('SIGINT', () => {
   mongoose.connection.close(() => {
@@ -51,6 +40,7 @@ db.then((mongoClient: typeof mongoose) => {
   mongoClient.model("Plano", planoSchema);
   mongoClient.model("Usuario", usuarioSchema);
   mongoClient.model("ArquivoRemessa", arquivoRemessaSchema);
+  mongoClient.model("ArquivoRetorno", arquivoRetornoSchema);
   debug("models registrados");
   return mongoClient;
 });
