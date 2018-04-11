@@ -4,6 +4,7 @@ import { Document } from "mongoose";
 import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IBoletoBancario } from "../../interfaces/IBoletoBancario";
+import { IOcorrenciaCNAB } from "../../interfaces/IOcorrenciaCNAB";
 import { IRepository } from "../../interfaces/IRepository";
 import * as utils from "./utils";
 
@@ -81,6 +82,26 @@ export class RepositoryBoleto implements IRepository<IBoletoBancario> {
       modifiedPaths,
       result: boleto.toObject() as IBoletoBancario,
     };
+  }
+
+  public async pushOcorrencia(b: string|IBoletoBancario, ocorrencia: IOcorrenciaCNAB): Promise<IBoletoBancario> {
+    const boleto = await this.get(this.isBoleto(b) ? b._id : b);
+
+    if (boleto) {
+      if (Array.isArray(boleto.ocorrencias)) {
+        boleto.ocorrencias.push(ocorrencia);
+      } else {
+        boleto.ocorrencias = [ ocorrencia ];
+      }
+
+      return (await this.update(boleto._id, boleto)).result;
+    }
+
+    return boleto;
+  }
+
+  private isBoleto(b: any): b is IBoletoBancario {
+    return typeof b === 'object';
   }
 
   private parseQuery(query: any): any {

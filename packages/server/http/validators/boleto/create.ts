@@ -30,7 +30,7 @@ export = [
     .exists().withMessage("O boleto deve ter data de vencimento")
     .isISO8601().withMessage("Deve ser uma data válida"),
 
-  check("enviadoRemessa")
+  check("registrado")
     .not().exists().withMessage("Não deve ser definido no cadastro do boleto"),
 
   check("excluido")

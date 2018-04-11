@@ -13,6 +13,14 @@ export = new Schema({
     required: true,
     type: Date,
   },
+  nomeArquivo: {
+    required: true,
+    type: String,
+  },
+  quantidadeOperacoes: {
+    required: true,
+    type: Number,
+  },
 
   criadoEm: {
     default: Date.now,

@@ -23,7 +23,7 @@ export = [
     .optional()
     .isISO8601().withMessage("Deve ser uma data válida"),
 
-  check("enviadoRemessa")
+  check("registrado")
     .not().exists().withMessage("Esta propriedade não deve ser especificada manualmente"),
 
   check("excluido")

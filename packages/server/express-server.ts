@@ -3,6 +3,7 @@ import express = require('express');
 
 /* EXPRESS ROUTERS */
 import arquivoRemessaRouter = require('./http/routers/ArquivoRemessaRouter');
+import apiRetornoRouter = require('./http/routers/ArquivoRetornoRouter');
 import apiBoletoRouter = require('./http/routers/BoletoBancarioRouter');
 import apiCarneRouter = require('./http/routers/CarneRouter');
 import chamadoTecnicoRouter = require("./http/routers/ChamadoTecnicoRouter");
@@ -22,12 +23,14 @@ import apiUsuarioRouter = require('./http/routers/UsuarioRouter');
 import corsMiddleware = require('./http/middlewares/corsCheckMiddleware');
 import setCorsHeadersMiddleware = require("./http/middlewares/corsResponseHeaders");
 import authMiddleware = require('./http/middlewares/isAuth');
+import uploadRetornoMiddleware = require('./http/middlewares/uploadRetorno');
 
 const app = express().disable('x-powered-by');
 
 // SET MIDDLEWARES
 app.use(setCorsHeadersMiddleware);
 app.use(corsMiddleware);
+app.use(uploadRetornoMiddleware);
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
@@ -47,6 +50,7 @@ app.use('/api/fiberhome', authMiddleware, fiberhomeServicesRouter);
 app.use('/api/chamadotecnico', authMiddleware, chamadoTecnicoRouter);
 app.use('/api/ippool', authMiddleware, ipPoolRouter);
 app.use('/api/remessa', authMiddleware, arquivoRemessaRouter);
+app.use('/api/retorno', authMiddleware, apiRetornoRouter);
 app.use('/api/auth', apiLoginRouter);
 
 export = app;

@@ -10,6 +10,14 @@ const ocorrenciaSchema = new Schema({
     default: Date.now,
     type: Date,
   },
+  descricaoOcorrencia: {
+    required: true,
+    type: String,
+  },
+  motivoOcorrencia: {
+    required: true,
+    type: String,
+  },
   ocorrencia: {
     required: true,
     type: Number,
@@ -18,37 +26,47 @@ const ocorrenciaSchema = new Schema({
 
 const BoletoSchema = new Schema({
   alteradoEm: require('../fields/alterado_em'),
+  criadoEm: require('../fields/criado_em'),
+  excluidoEm: require('../fields/excluido_em'),
+
   carne: {
     ref: 'Carne',
     type: Schema.Types.ObjectId,
   },
   cliente: require('../fields/cliente'),
   contaBancaria: require('../fields/conta_bancaria'),
-  criadoEm: require('../fields/criado_em'),
+
+  dataBaixa: Date,
   dataPagamento: require('../fields/data_pagamento'),
   dataVencimento: require('../fields/data_vencimento'),
-  digitoNossoNumero: {
-    type: String,
+  valorCobranca: require('../fields/valor_boleto'),
+  valorPago: Number,
+
+  digitoNossoNumero: String,
+  nossoNumero: Number,
+  ocorrencias: [ocorrenciaSchema],
+
+  /* informações de status do boleto */
+  baixado: {
+    default: false,
+    type: Boolean,
   },
-  enviadoRemessa: require('../fields/enviado_remessa'),
-  enviarAtualizacaoValor: Boolean,
-  enviarAtualizacaoVencimento: Boolean,
-  enviarPedidoBaixa: Boolean,
   excluido: {
     default: false,
     type: Boolean,
   },
-  excluidoEm: require('../fields/excluido_em'),
-  nossoNumero: {
-    type: Number,
-  },
-  ocorrencias: [ocorrenciaSchema],
   pago: {
     default: false,
     type: Boolean,
   },
-  valorCobranca: require('../fields/valor_boleto'),
-  valorPago: Number,
+  registrado: {
+    default: false,
+    type: Boolean,
+  },
+
+  enviarAtualizacaoValor: Boolean,
+  enviarAtualizacaoVencimento: Boolean,
+  enviarPedidoBaixa: Boolean,
 });
 
 db.then((mongoclient: typeof mongoose) => {

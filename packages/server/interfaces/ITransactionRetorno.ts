@@ -1,4 +1,12 @@
+import { IBoletoBancario } from "./IBoletoBancario";
+
 export interface ITransactionRetorno {
+  boleto?: IBoletoBancario;
+  descricaoErro?: string;
+  descricaoMotivoOcorrencia?: string;
+  descricaoOcorrencia?: string;
+  erro?: boolean;
+
   idRegistro: string;
   tipoInscricaoEmpresa: string;
   numeroInscricao: string;
@@ -9,28 +17,28 @@ export interface ITransactionRetorno {
   pagamentoParcial: string;
   carteira: string;
   idOcorrencia: string;
-  dataOcorrencia: string;
+  dataOcorrencia: Date;
   numeroDocumento: string;
   idTituloBanco: string;
-  vencimentoTitulo: string;
-  valorTitulo: string;
+  vencimentoTitulo: Date;
+  valorTitulo: number;
   bancoCobrador: string;
   agenciaCobradora: string;
-  despesaCobranca: string;
-  outrasDespesas: string;
-  jurosAtraso: string;
-  iof: string;
-  abatimento: string;
-  descontoConcedido: string;
-  valorPago: string;
-  jurosMora: string;
-  outrosCreditos: string;
+  despesaCobranca: number;
+  outrasDespesas: number;
+  jurosAtraso: number;
+  iof: number;
+  abatimento: number;
+  descontoConcedido: number;
+  valorPago: number;
+  jurosMora: number;
+  outrosCreditos: number;
   motivoOcorrencia: string;
-  dataCredito: string;
+  dataCredito: Date;
   origemPagamento: string;
   chequeBradesco: string;
   motivoRejeicao: string;
   numeroCartorio: string;
   numeroProtocolo: string;
-  sequenciaRegistro: string;
+  sequenciaRegistro: number;
 }
