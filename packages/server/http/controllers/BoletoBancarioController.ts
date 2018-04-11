@@ -21,7 +21,7 @@ export class BoletoBancarioController {
   public async get(req: Request, res: Response) {
     try {
       const { fields, populate } = req.query;
-      const boleto = await this.repoBoleto.get(req.params.id);
+      const boleto = await this.repoBoleto.get(req.params.id, { fields, populate });
 
       if (!boleto) {
         return res.status(404).json({ message: "Boleto não encontrado" });
