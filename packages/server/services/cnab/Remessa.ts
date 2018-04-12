@@ -83,7 +83,7 @@ export class Remessa {
 
     todosBoletos.forEach((boleto) => {
       // se o boleto nunca foi enviado para registro
-      if (!boleto.enviadoRemessa) {
+      if (!boleto.registrado) {
         // add o boleto para registro
         this.registrarBoleto(boleto);
         remessa.quantidadeOperacoes++;

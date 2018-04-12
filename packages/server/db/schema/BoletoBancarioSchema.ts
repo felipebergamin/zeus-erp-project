@@ -20,7 +20,7 @@ const ocorrenciaSchema = new Schema({
   },
   ocorrencia: {
     required: true,
-    type: Number,
+    type: String,
   },
 }, { _id: false });
 

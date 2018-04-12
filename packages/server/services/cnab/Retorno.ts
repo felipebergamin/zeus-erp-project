@@ -121,11 +121,11 @@ export class Retorno {
   }
 
   private getDescritivoOcorrencia(ocorrencia: string): string {
-    return DicionarioOcorrencias[ocorrencia] || 'Ocorrência desconhecida';
+    return DicionarioOcorrencias[ocorrencia] || '';
   }
 
   private getDescritivoMotivoOcorrencia(ocorrencia: string, motivo: string) {
-    return DicionarioMotivosOcorrencias[ocorrencia][motivo] || 'Desconhecido';
+    return DicionarioMotivosOcorrencias[ocorrencia][motivo] || '';
   }
 
   private validateFileContent(fileContent: string): boolean {
