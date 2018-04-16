@@ -47,7 +47,7 @@ export class Retorno {
 
           if (registro.numeroControle.startsWith('Z')) {
             const id = registro.numeroControle.replace('Z', '');
-            const boleto = await this.repoBoleto.get(id);
+            const boleto = await this.repoBoleto.get(id, { populate: 'cliente' });
 
             if (boleto) {
               this.processarOcorrencia(registro, boleto);
