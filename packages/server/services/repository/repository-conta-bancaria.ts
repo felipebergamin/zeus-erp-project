@@ -89,4 +89,23 @@ export class RepositoryContaBancaria implements IRepository<IContaBancaria> {
     await cb.save();
     return cb.toObject() as IContaBancaria;
   }
+
+  public async incrementarRemessa(idConta: string): Promise<IContaBancaria> {
+    const ContaBancaria = (await instanceDB()).model("ContaBancaria");
+    const conta = await ContaBancaria.findById(idConta).exec();
+
+    if (!conta) {
+      throw new NotFoundError(`Conta bancária ${idConta} não encontrada`);
+    }
+
+    let proximaRemessa = +conta.get('proximaRemessa');
+    proximaRemessa++;
+
+    if (isNaN(proximaRemessa)) {
+      throw new Error(`Proxima remessa não é um número: ${proximaRemessa}`);
+    }
+
+    conta.set('proximaRemessa', proximaRemessa);
+    return (await conta.save()).toObject();
+  }
 }

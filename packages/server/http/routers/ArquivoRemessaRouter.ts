@@ -10,7 +10,7 @@ const router = Router();
 const repoRemessa = new RepositoryArquivoRemessa();
 const repoBoleto = new RepositoryBoleto();
 const repoContaBancaria = new RepositoryContaBancaria();
-const remessaService = new Remessa(repoRemessa, repoBoleto);
+const remessaService = new Remessa(repoRemessa, repoBoleto, repoContaBancaria);
 
 const controller = new ArquivoRemessaController(remessaService, repoContaBancaria, repoRemessa);
 

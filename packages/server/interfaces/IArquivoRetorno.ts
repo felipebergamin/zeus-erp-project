@@ -12,5 +12,6 @@ export interface IArquivoRetorno {
   conteudoArquivo: string;
   dataGravacao: Date;
   nomeArquivo: string;
+  processado?: boolean;
   quantidadeOperacoes: number;
 }

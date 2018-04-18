@@ -23,7 +23,7 @@ export interface IBoletoBancario {
   excluidoEm?: Date;
   nossoNumero?: number;
   numeroBoleto?: number;
-  ocorrencias?: [IOcorrenciaCNAB];
+  ocorrencias?: IOcorrenciaCNAB[];
   pago?: boolean;
   valorCobranca: number;
   valorPago?: number;

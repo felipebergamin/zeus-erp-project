@@ -44,18 +44,25 @@ export function createQueryAndApplyReqOptions(
 }
 
 export function handleError(err: any, res: Response) {
-  if ("name" in err) {
-    if (err.name.includes("ValidationError")) {
-      return res.status(400).json(err);
-    }
-
-    if (err.name.includes("NotFoundError")) {
-      return res.status(404).json(err);
-    }
-  }
 
   if (err instanceof Error) {
-    return res.status(500).json({ message: err.message });
+    switch (err.name) {
+      case 'ValidationError':
+        return res.status(400).json({
+          error: err.name,
+          message: err.message,
+        });
+      case 'NotFoundError':
+        return res.status(404).json({
+          error: err.name,
+          message: err.message,
+        });
+      default:
+        return res.status(500).json({
+          error: err.name,
+          message: err.message,
+        });
+    }
   }
 
   res.status(500).json({ message: "Ops, ocorreu um erro desconhecido!", stack: err.stack });

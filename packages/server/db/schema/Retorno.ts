@@ -17,6 +17,7 @@ export = new Schema({
     required: true,
     type: String,
   },
+  processado: Boolean,
   quantidadeOperacoes: {
     required: true,
     type: Number,

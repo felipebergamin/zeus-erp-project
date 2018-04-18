@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import fs = require('fs');
-import { inspect } from 'util';
 
 import debug = require('../../debug');
 import { NotFoundError } from '../../errors/NotFoundError';
@@ -23,10 +22,7 @@ export class ArquivoRetornoController {
         debug('read file content: ' + req.files.retorno.path);
         const fileContent = fs.readFileSync(req.files.retorno.path, 'utf8');
         debug('parse file content');
-        const retorno = await this.retornoService.parseFileContent(fileContent);
-
-        // tslint:disable-next-line:no-console
-        console.log(inspect(req.files.retorno));
+        const retorno = await this.retornoService.parseFileContent(fileContent, true);
 
         const saved = await this.repoRetorno.create({
           contaBancaria: req.body.contaBancaria,
@@ -90,7 +86,7 @@ export class ArquivoRetornoController {
         throw new NotFoundError(`Retorno ${id} não encontrado`);
       }
 
-      const parsed = await this.retornoService.parseFileContent(retorno.conteudoArquivo);
+      const parsed = await this.retornoService.parseFileContent(retorno.conteudoArquivo, false);
       res.json(parsed);
     } catch (err) {
       httpUtils.handleError(err, res);

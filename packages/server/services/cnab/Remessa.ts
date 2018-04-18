@@ -1,11 +1,13 @@
 import filesystem = require("fs");
 import moment = require("moment");
 
+import { NotFoundError } from "../../errors/NotFoundError";
 import { IArquivoRemessa } from "../../interfaces/IArquivoRemessa";
 import { IBoletoBancario } from "../../interfaces/IBoletoBancario";
 import { IContaBancaria } from "../../interfaces/IContaBancaria";
 import { RepositoryArquivoRemessa } from "../repository/repository-arquivo-remessa";
 import { RepositoryBoleto } from "../repository/repository-boleto";
+import { RepositoryContaBancaria } from "../repository/repository-conta-bancaria";
 
 export interface IRemessaOptions {
   dataInicio?: Date;
@@ -32,6 +34,7 @@ export class Remessa {
   constructor(
     private repoArquivoRemessa: RepositoryArquivoRemessa,
     private repoBoleto: RepositoryBoleto,
+    private repoContaBancaria: RepositoryContaBancaria,
   ) {
     this.stringData = [];
     this.contadorRegistros = counter();
@@ -53,8 +56,14 @@ export class Remessa {
 
     const query = {} as any;
 
+    const normalizeBoolean = (val: any): boolean => val === true;
+
     query.contaBancaria = contaBancaria._id;
     query.excluido = false;
+    query.registrado = false;
+    query.enviarAtualizacaoValor = normalizeBoolean(options.enviarAtualizacaoValor);
+    query.enviarAtualizacaoVencimento = normalizeBoolean(options.enviarAtualizacaoVencimento);
+    query.enviarPedidoBaixa = normalizeBoolean(options.enviarPedidoBaixa);
 
     if ("dataInicio" in options && moment(options.dataInicio).isValid()) {
       query.dataVencimento = { $gte: options.dataInicio };
@@ -76,7 +85,7 @@ export class Remessa {
 
     // se não há boletos com os critérios selecionados
     if (todosBoletos.length === 0) {
-      return null;
+      throw new NotFoundError('Não há boletos para enviar');
     }
 
     this.setHeader(contaBancaria);
@@ -89,21 +98,21 @@ export class Remessa {
         remessa.quantidadeOperacoes++;
       } else {
         // se o boleto precisa atualizar valor e o usuario permitiu atualizacao de valor
-        if (options.enviarAtualizacaoValor && boleto.enviarAtualizacaoValor) {
+        if (boleto.enviarAtualizacaoValor) {
           // add o boleto para atualizacao de valor
           this.addAtualizacaoValor(boleto);
           remessa.quantidadeOperacoes++;
         }
 
         // se o boleto precisa de uma atualizacao de vencimento e o usuario permitiu essa operacao
-        if (options.enviarAtualizacaoVencimento && boleto.enviarAtualizacaoVencimento) {
+        if (boleto.enviarAtualizacaoVencimento) {
           // add o boleto para atualizacao de vencimento
           this.atualizarVencimento(boleto);
           remessa.quantidadeOperacoes++;
         }
 
         // se precisa enviar um pedido de baixa do boleto e essa operacao foi permitida
-        if (options.enviarPedidoBaixa && boleto.enviarPedidoBaixa) {
+        if (boleto.enviarPedidoBaixa) {
           // add o boleto para pedido de baixa
           this.addPedidoBaixa(boleto);
           remessa.quantidadeOperacoes++;
@@ -114,6 +123,7 @@ export class Remessa {
     remessa.conteudoArquivo = this.finalize();
     remessa.nome = await this.generateFileName(remessa.diaGeracao, remessa.mesGeracao);
 
+    await this.repoContaBancaria.incrementarRemessa(contaBancaria._id);
     return await this.repoArquivoRemessa.create(remessa);
   }
 

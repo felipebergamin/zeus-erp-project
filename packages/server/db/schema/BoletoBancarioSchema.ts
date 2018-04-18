@@ -15,7 +15,6 @@ const ocorrenciaSchema = new Schema({
     type: String,
   },
   motivoOcorrencia: {
-    required: true,
     type: String,
   },
   ocorrencia: {
@@ -64,9 +63,18 @@ const BoletoSchema = new Schema({
     type: Boolean,
   },
 
-  enviarAtualizacaoValor: Boolean,
-  enviarAtualizacaoVencimento: Boolean,
-  enviarPedidoBaixa: Boolean,
+  enviarAtualizacaoValor: {
+    default: false,
+    type: Boolean,
+  },
+  enviarAtualizacaoVencimento: {
+    default: false,
+    type: Boolean,
+  },
+  enviarPedidoBaixa: {
+    default: false,
+    type: Boolean,
+  },
 });
 
 db.then((mongoclient: typeof mongoose) => {

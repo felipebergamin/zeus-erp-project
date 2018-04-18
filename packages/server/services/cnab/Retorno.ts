@@ -1,4 +1,5 @@
 import moment = require("moment");
+import { inspect } from "util";
 
 import { IArquivoRetorno } from "../../interfaces/IArquivoRetorno";
 import { IBoletoBancario } from "../../interfaces/IBoletoBancario";
@@ -18,7 +19,7 @@ export class Retorno {
     private repoBoleto: RepositoryBoleto,
   ) { }
 
-  public async parseFileContent(fileContent: string): Promise<IArquivoRetorno> {
+  public async parseFileContent(fileContent: string, applyChanges: boolean): Promise<IArquivoRetorno> {
     const retorno = {
       registros: [],
     } as IArquivoRetorno;
@@ -29,15 +30,17 @@ export class Retorno {
 
     const lines = fileContent.split('\n');
 
+    // itera as linhas do arquivo
     while (lines.length > 0) {
       const line = lines.shift().trim();
 
+      // toma ações diferentes de acordo com o tipo de registro da linha atual
       switch (line.charAt(0)) {
-        case '0':
+        case '0': // registro header
           this.header = this.parseHeader(line);
           retorno.dataGravacao = moment(this.header.dataArquivo, 'DDMMYY').toDate();
           break;
-        case '1':
+        case '1': // registro de transação
           const registro = this.parseTransaction(line);
 
           registro.descricaoOcorrencia =
@@ -45,25 +48,30 @@ export class Retorno {
           registro.descricaoMotivoOcorrencia =
             this.getDescritivoMotivoOcorrencia(registro.idOcorrencia, registro.motivoOcorrencia);
 
+          // se o título foi gerado pelo Zeus
           if (registro.numeroControle.startsWith('Z')) {
             const id = registro.numeroControle.replace('Z', '');
             const boleto = await this.repoBoleto.get(id, { populate: 'cliente' });
 
             if (boleto) {
-              this.processarOcorrencia(registro, boleto);
               registro.boleto = boleto;
-            } else {
+
+              if (applyChanges === true) {
+                const boletoProcessado = this.aplicarOcorrenciaAoBoleto(registro, boleto);
+                this.repoBoleto.update(boletoProcessado._id, boletoProcessado);
+              }
+            } else { // o boleto não foi encontrado
               registro.erro = true;
               registro.descricaoErro = 'Título não encontrado';
             }
-          } else {
+          } else { // o título não foi gerado pelo Zeus
             registro.erro = true;
             registro.descricaoErro = 'Título não pertence ao sistema Zeus';
           }
 
           retorno.registros.push(registro);
           break;
-        case '9':
+        case '9': // registro trailler
           retorno.trailler = this.parseTrailler(line);
           break;
       }
@@ -72,40 +80,61 @@ export class Retorno {
     return retorno;
   }
 
-  private processarOcorrencia(retorno: ITransactionRetorno, boleto: IBoletoBancario): IBoletoBancario {
+  /**
+   * Retorna um novo objeto BoletoBancario modificado de acordo com
+   * a transação do arquivo retorno. Não modifica o objeto Boleto passado por parâmetro
+   *
+   * @param registroTransacao registro do arquivo de retorno a ser processado
+   * @param b boleto tratado pela transacao
+   * @returns Um novo objeto BoletoBancario com as devidas alterações do arquivo retorno
+   */
+  private aplicarOcorrenciaAoBoleto(registroTransacao: ITransactionRetorno, boleto: IBoletoBancario): IBoletoBancario {
+    // armazena informações sobre a ocorrência
     const dataHora = new Date();
-    const ocorrencia = retorno.idOcorrencia;
+    const ocorrencia = registroTransacao.idOcorrencia;
     const descricaoOcorrencia =
       this.getDescritivoOcorrencia(ocorrencia);
     const motivoOcorrencia =
-      this.getDescritivoMotivoOcorrencia(ocorrencia, retorno.motivoOcorrencia);
+      this.getDescritivoMotivoOcorrencia(ocorrencia, registroTransacao.motivoOcorrencia);
 
     if (Array.isArray(boleto.ocorrencias)) {
-      boleto.ocorrencias.push({ dataHora, ocorrencia, descricaoOcorrencia, motivoOcorrencia });
+      boleto.ocorrencias.push({
+        dataHora,
+        descricaoOcorrencia,
+        motivoOcorrencia,
+        ocorrencia,
+      });
     } else {
-      boleto.ocorrencias = [{ dataHora, ocorrencia, descricaoOcorrencia, motivoOcorrencia }];
+      boleto.ocorrencias = [
+        {
+          dataHora,
+          descricaoOcorrencia,
+          motivoOcorrencia,
+          ocorrencia,
+        },
+      ];
     }
 
-    switch (retorno.idOcorrencia) {
-      case '02':
+    switch (registroTransacao.idOcorrencia) {
+      case '02': // Entrada confirmada
         boleto.registrado = true;
         break;
-      case '06':
+      case '06': // Liquidação normal (título pago)
         boleto.pago = true;
-        boleto.dataPagamento = moment(retorno.dataOcorrencia, "DDMMYY").toDate();
+        boleto.dataPagamento = moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate();
         break;
-      case '09':
-      case '10':
+      case '09': // Baixado automático via arquivo
+      case '10': // Baixado conforme instruções da agência
         boleto.baixado = true;
-        boleto.dataBaixa = moment(retorno.dataOcorrencia, "DDMMYY").toDate();
+        boleto.dataBaixa = moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate();
         break;
-      case '17':
+      case '17': // Liquidação após baixa ou Título não registrado
         if (boleto.pago) {
-          retorno.erro = true;
-          retorno.descricaoErro = 'Título pago mais de uma vez';
+          registroTransacao.erro = true;
+          registroTransacao.descricaoErro = 'Título pago mais de uma vez';
         } else {
           boleto.pago = true;
-          boleto.dataPagamento = moment(retorno.dataOcorrencia, "DDMMYY").toDate();
+          boleto.dataPagamento = moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate();
         }
         break;
       case '14': // Vencimento Alterado
