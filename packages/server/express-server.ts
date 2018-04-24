@@ -4,6 +4,7 @@ import express = require('express');
 /* EXPRESS ROUTERS */
 import arquivoRemessaRouter = require('./http/routers/ArquivoRemessaRouter');
 import apiRetornoRouter = require('./http/routers/ArquivoRetornoRouter');
+import apiBaixaEstoqueRouter = require('./http/routers/baixa-estoque-router');
 import apiBoletoRouter = require('./http/routers/BoletoBancarioRouter');
 import apiCarneRouter = require('./http/routers/CarneRouter');
 import chamadoTecnicoRouter = require("./http/routers/ChamadoTecnicoRouter");
@@ -12,6 +13,8 @@ import apiContaBancariaRouter = require('./http/routers/ContaBancariaRouter');
 import fiberhomeServicesRouter = require('./http/routers/FiberhomeServicesRouter');
 import apiInstalacaoRouter = require('./http/routers/InstalacaoRouter');
 import ipPoolRouter = require("./http/routers/IPPoolRouter");
+import apiItemEstoqueRouter = require('./http/routers/item-estoque-router');
+import apiLancamentoEstoqueRouter = require('./http/routers/lancamentos-estoque-router');
 import apiLoginRouter = require('./http/routers/LoginRouter');
 import logRouter = require('./http/routers/LogRouter');
 import oltRouter = require('./http/routers/OLTRouter');
@@ -51,6 +54,9 @@ app.use('/api/chamadotecnico', authMiddleware, chamadoTecnicoRouter);
 app.use('/api/ippool', authMiddleware, ipPoolRouter);
 app.use('/api/remessa', authMiddleware, arquivoRemessaRouter);
 app.use('/api/retorno', authMiddleware, apiRetornoRouter);
+app.use('/api/itemestoque', authMiddleware, apiItemEstoqueRouter);
+app.use('/api/baixaestoque', authMiddleware, apiBaixaEstoqueRouter);
+app.use('/api/lancamentoestoque', authMiddleware, apiLancamentoEstoqueRouter);
 app.use('/api/auth', apiLoginRouter);
 
 export = app;

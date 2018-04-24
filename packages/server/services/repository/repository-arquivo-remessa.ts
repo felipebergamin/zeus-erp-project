@@ -47,6 +47,8 @@ export class RepositoryArquivoRemessa implements IRepository<IArquivoRemessa> {
       query.populate(utils.normalizePopulate(populate));
     }
 
+    query.sort({ $natural: -1 });
+
     return (await query.exec()).map((document: Document) => document.toObject());
   }
 

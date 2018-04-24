@@ -3,6 +3,7 @@ import debug = require('../debug');
 
 import db = require("./connection");
 
+import baixaEstoqueSchema = require('./schema/BaixaEstoqueSchema');
 import boletoSchema = require("./schema/BoletoBancarioSchema");
 import carneSchema = require("./schema/CarneSchema");
 import chamadoTecnicoSchema = require("./schema/ChamadoTecnicoSchema");
@@ -10,6 +11,8 @@ import clienteSchema = require("./schema/ClienteSchema");
 import contaBancariaSchema = require("./schema/ContaBancariaSchema");
 import instalacaoSchema = require("./schema/InstalacaoSchema");
 import ipPoolSchema = require("./schema/IPPoolSchema");
+import itemEstoqueSchema = require('./schema/ItemEstoqueSchema');
+import lancamentosEstoqueSchema = require('./schema/LancamentoEstoqueSchema');
 import logSchema = require("./schema/LogSchema");
 import oltSchema = require("./schema/OLTSchema");
 import perfilUsuarioSchema = require("./schema/PerfilUsuarioSchema");
@@ -41,6 +44,9 @@ db.then((mongoClient: typeof mongoose) => {
   mongoClient.model("Usuario", usuarioSchema);
   mongoClient.model("ArquivoRemessa", arquivoRemessaSchema);
   mongoClient.model("ArquivoRetorno", arquivoRetornoSchema);
+  mongoClient.model("ItemEstoque", itemEstoqueSchema, 'itensEstoque');
+  mongoClient.model("BaixaEstoque", baixaEstoqueSchema, 'baixasEstoque');
+  mongoClient.model("LancamentoEstoque", lancamentosEstoqueSchema, 'lancamentosEstoque');
   debug("models registrados");
   return mongoClient;
 });
