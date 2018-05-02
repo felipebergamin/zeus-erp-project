@@ -5,6 +5,7 @@ export interface ILancamentoEstoque {
   _id: string;
   criadoEm: Date;
   criadoPor: string|IUsuario;
+  descricao: string;
 
   itens: [{
     item: string|IItemEstoque,

@@ -9,6 +9,10 @@ export = new Schema({
     required: [true, 'O responsável pelo lançamento deve ser informado'],
     type: Schema.Types.ObjectId,
   },
+  descricao: {
+    required: [true, 'Uma descrição para o lançamento é necessária'],
+    type: String,
+  },
 
   itens: [new Schema({
     item: {
