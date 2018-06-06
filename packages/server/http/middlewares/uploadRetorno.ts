@@ -5,12 +5,13 @@ import util = require('util');
 import debug = require('../../debug');
 
 export = async (req: Request, res: Response, next: (err?: Error) => void) => {
-  debug(`formidable middleware: recebido Content-Type: ${req.header('Content-Type')}`);
-  const form = new formidable.IncomingForm();
+  if (req.method.toLowerCase() !== 'post' ||
+      !req.header('Content-Type').toLowerCase().includes('multipart/form-data')) {
 
-  if (!req.header('Content-Type').toLowerCase().includes('multipart/form-data')) {
     return next();
   }
+  debug(`formidable middleware: recebido Content-Type: ${req.header('Content-Type')}`);
+  const form = new formidable.IncomingForm();
 
   debug('Parsing form-data');
   form.parse(req, (err, fields, files) => {
