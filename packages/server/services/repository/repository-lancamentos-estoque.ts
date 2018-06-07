@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { inspect } from "util";
 
 import { instanceDB } from "../../db/initConnection";
@@ -76,12 +77,13 @@ export class RepositoryLancamentosEstoque implements IRepository<ILancamentoEsto
   /**
    * Faz um aggregation e soma todos os lancamentos de cada item no estoque
    */
-  public async summarizeAndGetSum() {
+  public async summarizeAndGetSum(query: any = {}) {
     const LancamentoEstoque = (await instanceDB()).model('LancamentoEstoque');
 
     const result = await LancamentoEstoque.aggregate([
-      { $match: { 'itens.quantidade': { $gte: 0 } } },
+      { $match: query },
       { $unwind: "$itens" },
+      { $match: query },
       {
         $group: {
           _id: "$itens.item",
@@ -91,6 +93,10 @@ export class RepositoryLancamentosEstoque implements IRepository<ILancamentoEsto
     ]);
 
     return result;
+  }
+
+  public async summarizeAndGetSumOfItem(id: string) {
+    return await this.summarizeAndGetSum({ "itens.item": new Types.ObjectId(id) });
   }
 
   // tslint:disable-next-line:max-line-length

@@ -1,10 +1,10 @@
+import { Types } from "mongoose";
+
 import { instanceDB } from "../../db/initConnection";
 import { IBaixaEstoque } from "../../interfaces/IBaixaEstoque";
 import { IRepository } from "../../interfaces/IRepository";
 import { RepositoryItemEstoque } from "./repository-item-estoque";
 import * as utils from './utils';
-
-import { inspect } from 'util';
 
 export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
 
@@ -76,11 +76,13 @@ export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
     return null;
   }
 
-  public async summarizeAndGetSum() {
+  public async summarizeAndGetSum(query: any = {}) {
     const BaixaEstoque = (await instanceDB()).model('BaixaEstoque');
 
     return await BaixaEstoque.aggregate([
+      { $match: query },
       { $unwind: "$itens" },
+      { $match: query },
       {
         $group: {
           _id: "$itens.item",
@@ -88,5 +90,9 @@ export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
         },
       },
     ]);
+  }
+
+  public async summarizeAndGetSumOfItem(id: string) {
+    return await this.summarizeAndGetSum({ "itens.item": new Types.ObjectId(id) });
   }
 }

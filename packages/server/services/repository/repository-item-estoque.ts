@@ -26,14 +26,35 @@ export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
     const { fields, populate } = options;
 
     if (fields) {
-      query.select(utils.normalizeFields(fields));
+      let selectFields = fields;
+
+      if (selectFields.includes("quantidade") && !selectFields.includes("quantidadeInicial")) {
+        selectFields += " quantidadeInicial";
+      }
+      query.select(utils.normalizeFields(selectFields));
     }
 
     if (populate) {
       query.populate(utils.normalizePopulate(populate));
     }
 
-    return (await query.exec()).toObject();
+    const item = (await query.exec()).toObject() as IItemEstoque;
+
+    // se a quantidade do item foi solicitada
+    if (fields && utils.normalizeFields(fields).split(" ").some((field) => field === 'quantidade')) {
+      item.quantidade = item.quantidadeInicial;
+      const lancamentos = await this.repoLancamentoEstoque.summarizeAndGetSumOfItem(id);
+      const baixas = await this.repoBaixaEstoque.summarizeAndGetSumOfItem(id);
+
+      if (lancamentos.length === 1) {
+        item.quantidade += lancamentos.pop().total;
+      }
+      if (baixas.length === 1) {
+        item.quantidade -= baixas.pop().total;
+      }
+    }
+
+    return item;
   }
 
   // tslint:disable-next-line:max-line-length
