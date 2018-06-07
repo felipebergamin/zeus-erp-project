@@ -3,8 +3,7 @@ import { RepositoryItemEstoque } from '../../services/repository/repository-item
 import { RepositoryLancamentosEstoque } from '../../services/repository/repository-lancamentos-estoque';
 import { LancamentoEstoqueController } from '../controllers/lancamento-estoque-controller';
 
-const repoItemEstoque = new RepositoryItemEstoque();
-const repoLancamentosEstoque = new RepositoryLancamentosEstoque(repoItemEstoque);
+const repoLancamentosEstoque = new RepositoryLancamentosEstoque();
 const controller = new LancamentoEstoqueController(repoLancamentosEstoque);
 
 const router = Router();

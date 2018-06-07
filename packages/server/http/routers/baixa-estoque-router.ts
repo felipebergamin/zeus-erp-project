@@ -4,8 +4,7 @@ import { RepositoryBaixaEstoque } from '../../services/repository/repository-bai
 import { RepositoryItemEstoque } from '../../services/repository/repository-item-estoque';
 import { BaixaEstoqueController } from '../controllers/baixa-estoque-controller';
 
-const repoItemEstoque = new RepositoryItemEstoque();
-const repoBaixaEstoque = new RepositoryBaixaEstoque(repoItemEstoque);
+const repoBaixaEstoque = new RepositoryBaixaEstoque();
 const controller = new BaixaEstoqueController(repoBaixaEstoque);
 
 const router = Router();

@@ -4,6 +4,7 @@ export interface IItemEstoque {
   nome: string;
   observacao?: string;
   quantidade: number;
+  quantidadeInicial: number;
   quantidadeMinima: number;
   unidadeMedida: string;
 }

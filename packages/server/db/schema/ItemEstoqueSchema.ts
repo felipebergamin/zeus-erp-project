@@ -8,7 +8,7 @@ export = new Schema({
   observacao: {
     type: String,
   },
-  quantidade: {
+  quantidadeInicial: {
     default: 0,
     type: Number,
   },

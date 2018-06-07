@@ -1,9 +1,15 @@
 import { Router } from 'express';
 
+import { RepositoryBaixaEstoque } from '../../services/repository/repository-baixa-estoque';
 import { RepositoryItemEstoque } from '../../services/repository/repository-item-estoque';
+import { RepositoryLancamentosEstoque } from '../../services/repository/repository-lancamentos-estoque';
 import { ItemEstoqueController } from '../controllers/item-estoque-controller';
 
-const controller = new ItemEstoqueController(new RepositoryItemEstoque());
+const repoBaixaEstoque = new RepositoryBaixaEstoque();
+const repoLancamentoEstoque = new RepositoryLancamentosEstoque();
+const repoItemEstoque = new RepositoryItemEstoque(repoLancamentoEstoque, repoBaixaEstoque);
+
+const controller = new ItemEstoqueController(repoItemEstoque);
 
 const router = Router();
 

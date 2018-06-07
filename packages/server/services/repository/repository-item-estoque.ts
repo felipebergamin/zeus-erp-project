@@ -1,11 +1,18 @@
 import { instanceDB } from "../../db/initConnection";
 import { IItemEstoque } from "../../interfaces/IItemEstoque";
 import { IRepository } from "../../interfaces/IRepository";
+import { RepositoryBaixaEstoque } from './repository-baixa-estoque';
+import { RepositoryLancamentosEstoque } from './repository-lancamentos-estoque';
 import * as utils from './utils';
 
 export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
 
-  public async create(data: IItemEstoque|IItemEstoque[]): Promise<IItemEstoque> {
+  constructor(
+    private repoLancamentoEstoque: RepositoryLancamentosEstoque,
+    private repoBaixaEstoque: RepositoryBaixaEstoque,
+  ) { }
+
+  public async create(data: IItemEstoque | IItemEstoque[]): Promise<IItemEstoque> {
     const ItemEstoque = (await instanceDB()).model('ItemEstoque');
     const item = new ItemEstoque(data);
     await item.save();
@@ -37,14 +44,35 @@ export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
     const { fields, populate } = options;
 
     if (fields) {
-      query.select(utils.normalizeFields(fields));
+      let selectFields = fields;
+      if (selectFields.includes("quantidade") && !selectFields.includes("quantidadeInicial")) {
+        selectFields += " quantidadeInicial";
+      }
+      query.select(utils.normalizeFields(selectFields));
     }
 
     if (populate) {
       query.populate(utils.normalizePopulate(populate));
     }
 
-    return (await query.exec()).map((el) => el.toObject());
+    const itensEstoque = (await query.exec()).map((el) => el.toObject()) as IItemEstoque[];
+
+    if (utils.normalizeFields(fields).split(" ").some((field) => field === 'quantidade')) {
+      const lancamentos = await this.repoLancamentoEstoque.summarizeAndGetSum();
+
+      itensEstoque.forEach((item) => {
+        const lancamento = lancamentos.find((l) => l._id.toString() === item._id.toString());
+
+        if (!lancamento) {
+          item.quantidade = item.quantidadeInicial;
+          return;
+        }
+
+        item.quantidade = item.quantidadeInicial + lancamento.total;
+      });
+    }
+
+    return itensEstoque;
   }
 
   public async remove(id: string): Promise<IItemEstoque> {
@@ -63,30 +91,5 @@ export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
       modifiedPaths,
       result: item.toObject(),
     };
-  }
-
-  public async baixaItem(itemId: string, quantidade: number): Promise<IItemEstoque> {
-    const ItemEstoque = (await instanceDB()).model('ItemEstoque');
-
-    const query = ItemEstoque.findByIdAndUpdate(itemId, {
-      $inc: {
-        quantidade: (quantidade > 0 ? -quantidade : quantidade),
-      },
-    });
-
-    const result = await query.exec();
-    return result.toObject();
-  }
-
-  public async lancarItem(itemId: string, quantidade: number): Promise<IItemEstoque> {
-    const ItemEstoque = (await instanceDB()).model('ItemEstoque');
-
-    const query = ItemEstoque.findByIdAndUpdate(itemId, {
-      $inc: {
-        quantidade: (quantidade > 0 ? quantidade : -quantidade),
-      },
-    });
-
-    return (await query.exec()).toObject();
   }
 }

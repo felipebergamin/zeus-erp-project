@@ -8,22 +8,9 @@ import { inspect } from 'util';
 
 export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
 
-  constructor(private repoItemEstoque: RepositoryItemEstoque) {}
-
   public async create(data: IBaixaEstoque|IBaixaEstoque[]): Promise<IBaixaEstoque> {
     const BaixaEstoque = (await instanceDB()).model('BaixaEstoque');
     const baixa = (await new BaixaEstoque(data).save()).toObject() as IBaixaEstoque;
-
-    const getItemId = (itemBaixa: any): string => {
-      if ('item' in itemBaixa) {
-        return itemBaixa.item;
-      }
-      return itemBaixa;
-    };
-
-    baixa.itens.forEach((itemBaixa) => {
-      this.repoItemEstoque.baixaItem(getItemId(itemBaixa), itemBaixa.quantidade);
-    });
 
     return baixa;
   }
@@ -81,17 +68,6 @@ export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
   public async remove(id: string): Promise<IBaixaEstoque> {
     const BaixaEstoque = (await instanceDB()).model('BaixaEstoque');
     const baixa = (await BaixaEstoque.findByIdAndRemove(id).exec()).toObject();
-
-    const getItemId = (itemBaixa: any): string => {
-      if ('item' in itemBaixa) {
-        return itemBaixa.item;
-      }
-      return itemBaixa;
-    };
-
-    baixa.itens.forEach((itemBaixa: any) => {
-      this.repoItemEstoque.lancarItem(getItemId(itemBaixa), itemBaixa.quantidade);
-    });
 
     return baixa;
   }
