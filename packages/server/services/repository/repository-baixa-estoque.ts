@@ -8,7 +8,7 @@ import { inspect } from 'util';
 
 export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
 
-  public async create(data: IBaixaEstoque|IBaixaEstoque[]): Promise<IBaixaEstoque> {
+  public async create(data: IBaixaEstoque | IBaixaEstoque[]): Promise<IBaixaEstoque> {
     const BaixaEstoque = (await instanceDB()).model('BaixaEstoque');
     const baixa = (await new BaixaEstoque(data).save()).toObject() as IBaixaEstoque;
 
@@ -74,5 +74,19 @@ export class RepositoryBaixaEstoque implements IRepository<IBaixaEstoque> {
 
   public async update(id: string, data: IBaixaEstoque): Promise<{ result: IBaixaEstoque, modifiedPaths: string }> {
     return null;
+  }
+
+  public async summarizeAndGetSum() {
+    const BaixaEstoque = (await instanceDB()).model('BaixaEstoque');
+
+    return await BaixaEstoque.aggregate([
+      { $unwind: "$itens" },
+      {
+        $group: {
+          _id: "$itens.item",
+          total: { $sum: "$itens.quantidade" },
+        },
+      },
+    ]);
   }
 }

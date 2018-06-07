@@ -59,16 +59,21 @@ export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
 
     if (!fields || utils.normalizeFields(fields).split(" ").some((field) => field === 'quantidade')) {
       const lancamentos = await this.repoLancamentoEstoque.summarizeAndGetSum();
+      const baixas = await this.repoBaixaEstoque.summarizeAndGetSum();
 
       itensEstoque.forEach((item) => {
         const lancamento = lancamentos.find((l) => l._id.toString() === item._id.toString());
+        const baixa = baixas.find((b) => b._id.toString() === item._id.toString());
 
-        if (!lancamento) {
-          item.quantidade = item.quantidadeInicial;
-          return;
+        item.quantidade = item.quantidadeInicial;
+
+        if (lancamento) {
+          item.quantidade += lancamento.total;
         }
 
-        item.quantidade = item.quantidadeInicial + lancamento.total;
+        if (baixa) {
+          item.quantidade -= baixa.total;
+        }
       });
     }
 

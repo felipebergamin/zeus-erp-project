@@ -90,8 +90,6 @@ export class RepositoryLancamentosEstoque implements IRepository<ILancamentoEsto
       },
     ]);
 
-    // tslint:disable-next-line:no-console
-    console.log(inspect(result));
     return result;
   }
 
