@@ -57,7 +57,7 @@ export class RepositoryItemEstoque implements IRepository<IItemEstoque> {
 
     const itensEstoque = (await query.exec()).map((el) => el.toObject()) as IItemEstoque[];
 
-    if (utils.normalizeFields(fields).split(" ").some((field) => field === 'quantidade')) {
+    if (!fields || utils.normalizeFields(fields).split(" ").some((field) => field === 'quantidade')) {
       const lancamentos = await this.repoLancamentoEstoque.summarizeAndGetSum();
 
       itensEstoque.forEach((item) => {
