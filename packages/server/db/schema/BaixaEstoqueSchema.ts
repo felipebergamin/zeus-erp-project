@@ -10,6 +10,10 @@ export = new Schema({
     type: Schema.Types.ObjectId,
   },
 
+  descricao: {
+    required: true,
+    type: String,
+  },
   itens: [new Schema({
     item: {
       ref: 'ItemEstoque',
