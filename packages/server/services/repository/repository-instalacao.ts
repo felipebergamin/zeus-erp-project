@@ -14,13 +14,29 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
     const {
       cliente,
       dataAgenda,
+      dataPagamento,
+      observacoesAtendente,
       tecnicoResponsavel,
+      cobrado,
+      modoPagamento,
+      observacoesPagamento,
+      pago,
+      recebidoPor,
+      valor,
     } = data;
 
     const instalacao = new Instalacao({
       cliente,
+      cobrado,
       dataAgenda,
+      dataPagamento,
+      modoPagamento,
+      observacoesAtendente,
+      observacoesPagamento,
+      pago,
+      recebidoPor,
       tecnicoResponsavel,
+      valor,
     });
 
     return (await instalacao.save()).toObject() as IInstalacao;
@@ -76,12 +92,20 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
     if (!instalacao) {
       throw new NotFoundError(`Instalação ${id} não encontrada!`);
     }
-    if (tecnicoResponsavel) {
-      instalacao.set({ tecnicoResponsavel });
-    }
-    if (dataAgenda) {
-      instalacao.set({ dataAgenda });
-    }
+
+    // remove propriedades que não podem ser alteradas livremente
+    const {
+      cancelada,
+      dataHoraCancelada,
+      motivoCancelamento,
+      concluida,
+      dataHoraConclusao,
+      cliente,
+      protocolo,
+      ...updateData,
+    } = data;
+
+    instalacao.set(updateData);
 
     if (!instalacao.isModified()) {
       return null;

@@ -17,5 +17,25 @@ export = [
     .exists().withMessage("O técnico responsável deve ser informado")
     .isMongoId().withMessage("O _id do técnico parece inválido"),
 
+  check("cobrado")
+    .exists().withMessage("O campo é obrigatório")
+    .isBoolean().withMessage("O valor do campo é inválido"),
+
+  check("dataPagamento")
+    .optional()
+    .isISO8601().withMessage("O formato da data de pagamento é inválido"),
+
+  check("modoPagamento")
+    .optional()
+    .isIn(["cheque", "cartao", "dinheiro"]).withMessage("O modo de pagamento é inválido"),
+
+  check("pago")
+    .optional()
+    .isBoolean().withMessage("O valor é inválido"),
+
+  check("valor")
+    .optional()
+    .isFloat().withMessage("O valor pago é inválido"),
+
   processValidationResult,
 ];

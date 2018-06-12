@@ -8,6 +8,7 @@ const schema = new Schema({
   },
   dataHoraCancelada: Date,
   motivoCancelamento: String,
+  observacoesAtendente: String,
 
   concluida: {
     default: false,
@@ -33,6 +34,26 @@ const schema = new Schema({
     required: [true, 'Um técnico deve ser designado para a intalação!'],
     type: Schema.Types.ObjectId,
   },
+
+  cobrado: {
+    default: true,
+    type: Boolean,
+  },
+  dataPagamento: Date,
+  modoPagamento: {
+    enum: [ 'cartao', 'dinheiro', 'cheque' ],
+    type: String,
+  },
+  observacoesPagamento: String,
+  pago: {
+    default: false,
+    type: Boolean,
+  },
+  recebidoPor: {
+    ref: 'Usuario',
+    type: Schema.Types.ObjectId,
+  },
+  valor: Number,
 
   alteradoEm: require('../fields/alterado_em'),
   criadoEm: require('../fields/criado_em'),

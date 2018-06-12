@@ -6,6 +6,7 @@ export interface IInstalacao {
   cancelada: boolean;
   dataHoraCancelada: Date;
   motivoCancelamento: string;
+  observacoesAtendente?: string;
 
   concluida: boolean;
   dataAgenda: Date;
@@ -14,6 +15,14 @@ export interface IInstalacao {
   cliente: string|ICliente;
   protocolo: string;
   tecnicoResponsavel: string|IUsuario;
+
+  cobrado: boolean;
+  dataPagamento: Date;
+  modoPagamento?: string;
+  observacoesPagamento?: string;
+  pago: boolean;
+  recebidoPor?: string|IUsuario;
+  valor?: number;
 
   alteradoEm: Date;
   criadoEm: Date;
