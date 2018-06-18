@@ -46,44 +46,84 @@ export = [
         .length === 10;
     }).withMessage("O número do telefone fixo parece inválido"),
 
-  check("autoAtrelarMac")
+  check("enderecoCobranca")
+    .exists().withMessage("O endereço de cobrança deve ser informado"),
+
+  check("pontosDeAcesso")
+    .exists().withMessage("Nenhum ponto de ativação foi especificado"),
+
+  check("pontosDeAcesso.*.autoAtrelarMac")
+    .optional({ checkFalsy: true })
+    .isBoolean().withMessage("O valor do campo é inválido"),
+
+  check("pontosDeAcesso.*.ipAddress")
+    .optional({ checkFalsy: true })
+    .isIP(4).withMessage("O endereço IP é inválido"),
+
+  check("pontosDeAcesso.*.login")
+    .exists().withMessage("O login deve ser informado")
+    .isEmail().withMessage("O login PPPoE parece inválido"),
+
+  check("pontosDeAcesso.*.macAddress")
+    .optional({ checkFalsy: true })
+    .isMACAddress().withMessage("O endereço MAC parece inválido"),
+
+  check("pontosDeAcesso.*.macOnu")
+    .optional({ checkFalsy: true })
+    .isAlphanumeric().withMessage("O MAC da ONU deve ser alfanumérico"),
+
+  check("pontosDeAcesso.*.olt")
+    .optional({ checkFalsy: true })
+    .isMongoId().withMessage("O ID da OLT é inválido"),
+
+  check("pontosDeAcesso.*.passwd")
+    .exists().withMessage("A senha PPPoE deve ser informada"),
+
+  check("pontosDeAcesso.*.ponNo")
+    .optional({ checkFalsy: true })
+    .isNumeric().withMessage("O número da PON é inválido"),
+
+  check("pontosDeAcesso.*.slotNo")
+    .optional({ checkFalsy: true }).withMessage("O número do Slot é inválido"),
+
+  check("pontosDeAcesso.*.plano")
+    .exists().withMessage("O plano deve ser informado")
+    .isMongoId().withMessage("O ID do plano é inválido"),
+
+  check("pontosDeAcesso.*.incluirNaCobranca")
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("O valor é inválido"),
 
-  check("ipAddress")
+  check("pontosDeAcesso.*.endereco.bairro")
+    .exists().withMessage("O bairro deve ser informado"),
+
+  check("pontosDeAcesso.*.endereco.cep")
+    .exists().withMessage("O CEP deve ser informado"),
+
+  check("pontosDeAcesso.*.endereco.cidade")
+    .exists().withMessage("A cidade deve ser informada"),
+
+  check("pontosDeAcesso.*.endereco.estado")
+    .exists().withMessage("O estado deve ser informado"),
+
+  check("pontosDeAcesso.*.endereco.ibge")
     .optional({ checkFalsy: true })
-    .isIP(4).withMessage("Deve ser um IPv4 válido"),
+    .isNumeric().withMessage("O código do IBGE é inválido"),
 
-  check("login")
-    .exists().withMessage("O login deve ser informado")
-    .isEmail().withMessage("O login parece inválido")
-    .custom((login: string) => {
-      return login.endsWith("@acetech.net.br")
-        || login.endsWith("@acetech.com.br");
-    }).withMessage("O login não termina com o domínio da Ace Tech"),
-
-  check("macAddress")
+  check("pontosDeAcesso.*.endereco.latitude")
     .optional({ checkFalsy: true })
-    .isMACAddress().withMessage("O MAC é inválido"),
+    .isFloat().withMessage("A latitude não é um número válido"),
 
-  check("olt")
+  check("pontosDeAcesso.*.endereco.longitude")
     .optional({ checkFalsy: true })
-    .isMongoId().withMessage("A OLT é inválida"),
+    .isFloat().withMessage("A longitude não é um número válido"),
 
-  check("passwd")
-    .exists().withMessage("Uma senha deve ser informada")
-    .isLength({ min: 4 }).withMessage("A senha deve ter mais de 4 dígitos"),
+  check("pontosDeAcesso.*.endereco.logradouro")
+    .exists().withMessage("O logradouro deve ser informado"),
 
-  check("ponNo", "Verifique a PON informada")
-    .optional({ checkFalsy: true })
-    .isInt(),
-
-  check("slotNo", "Verifique o SLOT informado")
-    .optional({ checkFalsy: true })
-    .isInt(),
-
-  check("plano")
-    .exists().withMessage("O plano do cliente deve ser informado")
-    .isMongoId().withMessage("O plano é inválido"),
+  check("pontosDeAcesso.*.endereco.numero")
+    .exists().withMessage("O número da casa deve ser informado")
+    .isAlphanumeric(),
 
   check("autoBloquear")
     .exists().withMessage("O campo deve ser informado")
@@ -96,10 +136,6 @@ export = [
   check("diaVencimento")
     .exists().withMessage("O valor deve ser informado")
     .isInt().withMessage("O valor é inválido"),
-
-  check("ibge")
-    .optional({ checkFalsy: true })
-    .isNumeric().withMessage("O cód. IBGE deve ser um valor numérico"),
 
   processValidationResult,
 ];

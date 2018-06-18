@@ -23,26 +23,9 @@ const schema = new Schema({
   numeroCelular: require('../fields/numero_celular'),
   telefoneFixo: require('../fields/telefone_fixo'),
 
-  /* informações de conexão */
-  autoAtrelarMac: require('../fields/auto_atrelar_mac'),
-  ipAddress: require('../fields/ip_address'),
-  login: require('../fields/login'),
-  macAddress: String,
-  macOnu: String,
-  olt: {
-    ref: "OLT",
-    type: Schema.Types.ObjectId,
-  },
-  passwd: require('../fields/passwd'),
-  ponNo: Number,
-  slotNo: Number,
+  pontosDeAcesso: [ require('./PontoAcessoSchema') ],
 
-  plano: require('../fields/plano'),
-
-  /* informações de endereço */
-  enderecoResidencial: require('./Endereco'),
-
-  enderecoCorrespondencia: require('./Endereco'),
+  enderecoCobranca: require('./Endereco'),
 
   /* informações financeiras */
   autoBloquear: require('../fields/auto_bloquear'),

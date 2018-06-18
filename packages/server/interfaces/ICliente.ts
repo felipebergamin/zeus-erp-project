@@ -2,6 +2,7 @@ import { IContaBancaria } from "./IContaBancaria";
 import { IEndereco } from "./IEndereco";
 import { IOLT } from "./IOLT";
 import { IPlano } from "./IPlano";
+import { IPontoDeAcesso } from "./IPontoDeAcesso";
 
 export interface ICliente {
   _id: string;
@@ -24,23 +25,10 @@ export interface ICliente {
   numeroCelular: string;
   telefoneFixo: string;
 
-  /* informações de conexão */
-  autoAtrelarMac: boolean;
-  ipAddress: string;
-  login: string;
-  macAddress: string;
-  macOnu: string;
-  olt: string|IOLT;
-  passwd: string;
-  ponNo: number;
-  slotNo: number;
-
-  plano: string|IPlano;
+  pontosDeAcesso: [ IPontoDeAcesso ];
 
   /* informações de endereço */
-  enderecoResidencial: IEndereco;
-
-  enderecoCorrespondencia: IEndereco;
+  enderecoCobranca: IEndereco;
 
   /* informações financeiras */
   autoBloquear: boolean;
