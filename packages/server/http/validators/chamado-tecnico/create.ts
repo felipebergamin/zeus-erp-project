@@ -1,8 +1,6 @@
-import { Request, Response } from "express";
 import { check } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
 
-import { validateCPF } from "../fields/validateCPF";
 import processValidationResult = require("../processValidationResult");
 
 export = [
@@ -17,6 +15,10 @@ export = [
   check("cliente")
     .exists().withMessage("O cliente atendido pelo chamado deve ser informado")
     .isMongoId().withMessage("O cliente é inválido"),
+
+  check("pontoAcesso")
+    .exists().withMessage("O ponto de acesso deve ser informado")
+    .isMongoId().withMessage("O valor do campo é inválido"),
 
   check("prioridade")
     .optional()

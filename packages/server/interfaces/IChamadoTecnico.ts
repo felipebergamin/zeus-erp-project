@@ -1,4 +1,5 @@
 import { ICliente } from "./ICliente";
+import { IPontoDeAcesso } from "./IPontoDeAcesso";
 import { IUsuario } from "./IUsuario";
 
 export interface IChamadoTecnico {
@@ -21,6 +22,8 @@ export interface IChamadoTecnico {
   motivoAbertura: string;
 
   cliente: string|ICliente;
+  pontoAcesso: string|IPontoDeAcesso;
+
   protocolo: string;
   tecnico: string|IUsuario;
 }

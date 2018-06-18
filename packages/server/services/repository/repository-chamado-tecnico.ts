@@ -69,7 +69,7 @@ export class RepositoryChamadoTecnico implements IRepository<IChamadoTecnico> {
       abertoPor,
       cliente,
       protocolo,
-      ...newData, // apenas as propriedades restantes podem ser modificadas
+      ...newData // apenas as propriedades restantes podem ser modificadas
     } = data;
 
     if (!chamado) {

@@ -53,6 +53,12 @@ const schema = new Schema({
     required: [true, "O cliente deve ser especificado"],
     type: Schema.Types.ObjectId,
   },
+  pontoAcesso: {
+    ref: "Cliente.pontosDeAcesso",
+    required: [ true, "O ponto de acesso deve ser informado" ],
+    type: Schema.Types.ObjectId,
+  },
+
   prioridade: {
     default: 'normal',
     enum: [
