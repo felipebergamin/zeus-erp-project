@@ -9,6 +9,10 @@ export = [
     .exists().withMessage("O cliente deve ser informado")
     .isMongoId().withMessage("O _id do cliente parece inválido"),
 
+  check("pontoAcesso")
+    .exists().withMessage("O ponto de acesso da instalação deve ser informado")
+    .isMongoId().withMessage("O valor do campo é inválido"),
+
   check("dataAgenda")
     .exists().withMessage("A instalação deve ter uma data na agenda")
     .isISO8601().withMessage("A data é inválida"),
@@ -22,19 +26,19 @@ export = [
     .isBoolean().withMessage("O valor do campo é inválido"),
 
   check("dataPagamento")
-    .optional()
+    .optional({ checkFalsy: true })
     .isISO8601().withMessage("O formato da data de pagamento é inválido"),
 
   check("modoPagamento")
-    .optional()
+    .optional({ checkFalsy: true })
     .isIn(["cheque", "cartao", "dinheiro"]).withMessage("O modo de pagamento é inválido"),
 
   check("pago")
-    .optional()
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("O valor é inválido"),
 
   check("valor")
-    .optional()
+    .optional({ checkFalsy: true })
     .isFloat().withMessage("O valor pago é inválido"),
 
   processValidationResult,

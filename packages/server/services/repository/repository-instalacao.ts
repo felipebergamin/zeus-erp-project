@@ -23,6 +23,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
       pago,
       recebidoPor,
       valor,
+      pontoAcesso
     } = data;
 
     const instalacao = new Instalacao({
@@ -37,6 +38,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
       recebidoPor,
       tecnicoResponsavel,
       valor,
+      pontoAcesso
     });
 
     return (await instalacao.save()).toObject() as IInstalacao;
@@ -102,7 +104,7 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
       dataHoraConclusao,
       cliente,
       protocolo,
-      ...updateData,
+      ...updateData
     } = data;
 
     instalacao.set(updateData);

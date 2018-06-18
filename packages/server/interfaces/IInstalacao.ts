@@ -1,5 +1,6 @@
 import { ICliente } from "./ICliente";
 import { IUsuario } from "./IUsuario";
+import { IPontoDeAcesso } from "./IPontoDeAcesso";
 
 export interface IInstalacao {
   _id: string;
@@ -15,6 +16,7 @@ export interface IInstalacao {
   cliente: string|ICliente;
   protocolo: string;
   tecnicoResponsavel: string|IUsuario;
+  pontoAcesso: string|IPontoDeAcesso;
 
   cobrado: boolean;
   dataPagamento: Date;

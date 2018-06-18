@@ -25,6 +25,11 @@ const schema = new Schema({
     required: [true, 'A instalação deve ter um cliente associado!'],
     type: Schema.Types.ObjectId,
   },
+  pontoAcesso: {
+    ref: 'Cliente.pontosDeAcesso',
+    required: true,
+    type: Schema.Types.ObjectId,
+  },
   protocolo: {
     type: String,
     unique: [true, "Erro ao gerar protocolo, o protocolo não é único!"],
@@ -41,7 +46,7 @@ const schema = new Schema({
   },
   dataPagamento: Date,
   modoPagamento: {
-    enum: [ 'cartao', 'dinheiro', 'cheque' ],
+    enum: [ null, 'cartao', 'dinheiro', 'cheque' ],
     type: String,
   },
   observacoesPagamento: String,
