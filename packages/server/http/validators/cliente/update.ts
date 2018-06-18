@@ -55,11 +55,11 @@ export = [
     .exists().withMessage("Nenhum ponto de ativação foi especificado"),
 
   check("pontosDeAcesso.*.autoAtrelarMac")
-    .optional()
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("O valor do campo é inválido"),
 
   check("pontosDeAcesso.*.ipAddress")
-    .optional()
+    .optional({ checkFalsy: true })
     .isIP(4).withMessage("O endereço IP é inválido"),
 
   check("pontosDeAcesso.*.login")
@@ -67,33 +67,33 @@ export = [
     .isEmail().withMessage("O login PPPoE parece inválido"),
 
   check("pontosDeAcesso.*.macAddress")
-    .optional()
+    .optional({ checkFalsy: true })
     .isMACAddress().withMessage("O endereço MAC parece inválido"),
 
   check("pontosDeAcesso.*.macOnu")
-    .optional()
+    .optional({ checkFalsy: true })
     .isAlphanumeric().withMessage("O MAC da ONU deve ser alfanumérico"),
 
   check("pontosDeAcesso.*.olt")
-    .optional()
+    .optional({ checkFalsy: true })
     .isMongoId().withMessage("O ID da OLT é inválido"),
 
   check("pontosDeAcesso.*.passwd")
     .exists().withMessage("A senha PPPoE deve ser informada"),
 
   check("pontosDeAcesso.*.ponNo")
-    .optional()
+    .optional({ checkFalsy: true })
     .isNumeric().withMessage("O número da PON é inválido"),
 
   check("pontosDeAcesso.*.slotNo")
-    .optional().withMessage("O número do Slot é inválido"),
+    .optional({ checkFalsy: true }).withMessage("O número do Slot é inválido"),
 
   check("pontosDeAcesso.*.plano")
     .exists().withMessage("O plano deve ser informado")
     .isMongoId().withMessage("O ID do plano é inválido"),
 
   check("pontosDeAcesso.*.incluirNaCobranca")
-    .optional()
+    .optional({ checkFalsy: true })
     .isBoolean().withMessage("O valor é inválido"),
 
   check("pontosDeAcesso.*.endereco.bairro")
@@ -109,15 +109,15 @@ export = [
     .exists().withMessage("O estado deve ser informado"),
 
   check("pontosDeAcesso.*.endereco.ibge")
-    .optional()
+    .optional({ checkFalsy: true })
     .isNumeric().withMessage("O código do IBGE é inválido"),
 
   check("pontosDeAcesso.*.endereco.latitude")
-    .optional()
+    .optional({ checkFalsy: true })
     .isFloat().withMessage("A latitude não é um número válido"),
 
   check("pontosDeAcesso.*.endereco.longitude")
-    .optional()
+    .optional({ checkFalsy: true })
     .isFloat().withMessage("A longitude não é um número válido"),
 
   check("pontosDeAcesso.*.endereco.logradouro")
