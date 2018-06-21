@@ -288,12 +288,12 @@ export class Remessa {
     // 235 a 274 - nome do pagador
     line += boleto.cliente.nome.toUpperCase().padEnd(40, " ");
     // 275 a 314 - endereco completo
-    line += `${boleto.cliente.enderecoCorrespondencia.logradouro} ${boleto.cliente.enderecoCorrespondencia.numero}`
+    line += `${boleto.cliente.enderecoCobranca.logradouro} ${boleto.cliente.enderecoCobranca.numero}`
       .padEnd(40, " ");
     // 315 a 326 - primeira mensagem
     line += " ".repeat(12);
     // 327 a 334 - cep
-    line += boleto.cliente.enderecoCorrespondencia.cep.replace("-", "");
+    line += boleto.cliente.enderecoCobranca.cep.replace("-", "");
     // 335 a 394 - sacador avalista ou segunda mensagem
     line += " ".repeat(60);
     // 395 a 400 - numero sequencial do registro
