@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Schema } from "mongoose";
 import { plugin as generateProtocolPlugin } from "../plugins/generate-protocol";
 
 const schema = new Schema({
@@ -30,8 +30,32 @@ const schema = new Schema({
   imagemAssinatura: {
     type: String,
   },
-  justificativaFechamento: {
+  observacoesTecnico: {
     type: String,
+  },
+  problema: {
+    ref: 'ProblemaChamado',
+    type: Schema.Types.ObjectId,
+  },
+
+  boletoCobranca: {
+    ref: "BoletoBancario",
+    type: Schema.Types.ObjectId,
+  },
+  formaPagamento: {
+    enum: [ null, 'cheque', 'dinheiro', 'cartao', 'boleto' ],
+    type: String,
+  },
+  /* se o chamado deveria ser cobrado de acordo com as regras da empresa */
+  geraCobranca: {
+    type: Boolean,
+  },
+  /* isentar a cobrança mesmo se o chamado deveria ter sido cobrado */
+  isentarCobranca: {
+    type: Boolean,
+  },
+  valorACobrar: {
+    type: Number,
   },
 
   abertoPor: {

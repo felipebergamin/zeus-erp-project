@@ -1,6 +1,6 @@
 import { ICliente } from "./ICliente";
-import { IUsuario } from "./IUsuario";
 import { IPontoDeAcesso } from "./IPontoDeAcesso";
+import { IUsuario } from "./IUsuario";
 
 export interface IInstalacao {
   _id: string;

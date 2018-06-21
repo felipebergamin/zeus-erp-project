@@ -1,3 +1,4 @@
+import { IBoletoBancario } from "./IBoletoBancario";
 import { ICliente } from "./ICliente";
 import { IPontoDeAcesso } from "./IPontoDeAcesso";
 import { IUsuario } from "./IUsuario";
@@ -15,7 +16,7 @@ export interface IChamadoTecnico {
   finalizado: boolean;
   finalizadoEm: Date;
   imagemAssinatura: string;
-  justificativaFechamento: string;
+  observacoesTecnico?: string;
 
   abertoPor: string|IUsuario;
   mensagem: string;
@@ -26,4 +27,10 @@ export interface IChamadoTecnico {
 
   protocolo: string;
   tecnico: string|IUsuario;
+
+  problema?: string;
+  boletoCobranca?: string|IBoletoBancario;
+  geraCobranca?: boolean;
+  isentarCobranca?: boolean;
+  valorACobrar?: number;
 }

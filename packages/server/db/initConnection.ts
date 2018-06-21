@@ -17,6 +17,7 @@ import logSchema = require("./schema/LogSchema");
 import oltSchema = require("./schema/OLTSchema");
 import perfilUsuarioSchema = require("./schema/PerfilUsuarioSchema");
 import planoSchema = require("./schema/PlanoSchema");
+import problemaChamadoSchema = require("./schema/ProblemaChamadoSchema");
 import arquivoRemessaSchema = require("./schema/Remessa");
 import arquivoRetornoSchema = require("./schema/Retorno");
 import usuarioSchema = require("./schema/UsuarioSchema");
@@ -47,6 +48,7 @@ db.then((mongoClient: typeof mongoose) => {
   mongoClient.model("ItemEstoque", itemEstoqueSchema, 'itensEstoque');
   mongoClient.model("BaixaEstoque", baixaEstoqueSchema, 'baixasEstoque');
   mongoClient.model("LancamentoEstoque", lancamentosEstoqueSchema, 'lancamentosEstoque');
+  mongoClient.model("ProblemaChamado", problemaChamadoSchema, 'problemaschamado');
   debug("models registrados");
   return mongoClient;
 });

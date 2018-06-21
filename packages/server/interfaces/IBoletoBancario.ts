@@ -7,11 +7,11 @@ export interface IBoletoBancario {
   _id?: string;
   alteradoEm?: Date;
   baixado?: boolean;
-  carne: string|ICarne;
+  carne?: string|ICarne;
   cliente: string|ICliente;
   contaBancaria: string|IContaBancaria;
   criadoEm?: Date;
-  dataBaixa: Date;
+  dataBaixa?: Date;
   dataPagamento?: Date;
   dataVencimento: Date;
   digitoNossoNumero?: string;

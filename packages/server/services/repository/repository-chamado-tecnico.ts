@@ -1,12 +1,22 @@
+import * as moment from 'moment';
 import { Document } from "mongoose";
 
 import { instanceDB } from "../../db/initConnection";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IChamadoTecnico } from "../../interfaces/IChamadoTecnico";
 import { IRepository } from "../../interfaces/IRepository";
+import { RepositoryBoleto } from "./repository-boleto";
+import { RepositoryCliente } from "./repository-cliente";
+import { RepositoryProblemaChamado } from "./repository-problema-chamado";
 import * as utils from "./utils";
 
 export class RepositoryChamadoTecnico implements IRepository<IChamadoTecnico> {
+
+  constructor(
+    private repoProblemasChamado: RepositoryProblemaChamado,
+    private repoBoleto: RepositoryBoleto,
+    private repoCliente: RepositoryCliente,
+  ) {}
 
   public async create(data: IChamadoTecnico): Promise<IChamadoTecnico> {
     const ChamadoTecnico = (await instanceDB()).model("ChamadoTecnico");
@@ -65,7 +75,7 @@ export class RepositoryChamadoTecnico implements IRepository<IChamadoTecnico> {
       finalizado,
       finalizadoEm,
       imagemAssinatura,
-      justificativaFechamento,
+      observacoesTecnico,
       abertoPor,
       cliente,
       protocolo,
@@ -116,7 +126,7 @@ export class RepositoryChamadoTecnico implements IRepository<IChamadoTecnico> {
     return (await chamado.save()).toObject() as IChamadoTecnico;
   }
 
-  public async finalize(id: string, imagemAssinatura: string, justificativaFechamento: string):
+  public async finalize(id: string, { imagemAssinatura, observacoesTecnico, problema }: { imagemAssinatura: string, observacoesTecnico: string, problema: string }):
     Promise<IChamadoTecnico> {
 
     const ChamadoTecnico = (await instanceDB()).model("ChamadoTecnico");
@@ -133,14 +143,58 @@ export class RepositoryChamadoTecnico implements IRepository<IChamadoTecnico> {
       throw new Error("Impossível finalizar um chamado cancelado");
     }
 
+    /* const {
+      imagemAssinatura,
+      observacoesTecnico,
+      problema,
+    } = data; */
+
+    const objProblema = await this.repoProblemasChamado.get(problema);
+
+    if (!objProblema) {
+      throw new Error("O problema informado não existe no sistema");
+    }
+
     chamado.set({
       finalizado: true,
       finalizadoEm: new Date(),
+      geraCobranca: objProblema.geraCobranca,
       imagemAssinatura,
-      justificativaFechamento,
+      observacoesTecnico,
+      problema,
+      valorACobrar: objProblema.valorCobrado,
     });
 
     return (await chamado.save()).toObject() as IChamadoTecnico;
+  }
+
+  public async gerarCobranca(id: string) {
+    const ChamadoTecnico = (await instanceDB()).model("ChamadoTecnico");
+    const chamado = await ChamadoTecnico.findById(id);
+
+    if (!chamado) {
+      throw new NotFoundError("Chamado não encontrado");
+    }
+
+    if (chamado.get("geraCobranca")) {
+      const valor = +chamado.get("valorACobrar");
+      const cliente = await this.repoCliente.get(chamado.get("cliente"));
+
+      if (!Number.isNaN(valor) && valor > 0) {
+        const boleto = await this.repoBoleto.create({
+          cliente: cliente._id,
+          contaBancaria: cliente.contaBancaria,
+          dataVencimento: moment().add(15, "d").toDate(),
+          valorCobranca: valor,
+        });
+
+        return boleto;
+      } else {
+        throw new Error("O valor de cobrança do boleto é inválido");
+      }
+    } else {
+      throw new Error("O chamado não tem motivo para ser cobrado");
+    }
   }
 
 }

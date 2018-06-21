@@ -20,6 +20,7 @@ import logRouter = require('./http/routers/LogRouter');
 import oltRouter = require('./http/routers/OLTRouter');
 import perfilUsuarioRouter = require('./http/routers/PerfilUsuarioRouter');
 import apiPlanoRouter = require('./http/routers/PlanoRouter');
+import apiProblemaChamadoRouter = require('./http/routers/problema-chamado.router');
 import apiUsuarioRouter = require('./http/routers/UsuarioRouter');
 
 /* MIDDLEWARES */
@@ -57,6 +58,7 @@ app.use('/api/retorno', authMiddleware, apiRetornoRouter);
 app.use('/api/itemestoque', authMiddleware, apiItemEstoqueRouter);
 app.use('/api/baixaestoque', authMiddleware, apiBaixaEstoqueRouter);
 app.use('/api/lancamentoestoque', authMiddleware, apiLancamentoEstoqueRouter);
+app.use('/api/problemachamado', authMiddleware, apiProblemaChamadoRouter);
 app.use('/api/auth', apiLoginRouter);
 
 export = app;

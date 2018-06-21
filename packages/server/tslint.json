@@ -6,7 +6,9 @@
     "jsRules": {},
     "rules": {
       "quotemark": false,
-      "trailing-comma": false
+      "trailing-comma": false,
+      "max-line-length": false,
+      "curly": false
     },
     "rulesDirectory": []
 }

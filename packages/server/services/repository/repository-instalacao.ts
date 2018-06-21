@@ -35,10 +35,10 @@ export class RepositoryInstalacao implements IRepository<IInstalacao> {
       observacoesAtendente,
       observacoesPagamento,
       pago,
+      pontoAcesso,
       recebidoPor,
       tecnicoResponsavel,
       valor,
-      pontoAcesso
     });
 
     return (await instalacao.save()).toObject() as IInstalacao;

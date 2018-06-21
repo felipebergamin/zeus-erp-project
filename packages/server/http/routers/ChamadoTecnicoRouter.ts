@@ -1,12 +1,23 @@
 import { Request, Response, Router } from "express";
+
 import { ChamadoTecnicoController } from "../controllers/ChamadoTecnicoController";
 
-import { RepositoryChamadoTecnico } from "../../services/repository/repository-chamado-tecnico";
 import cancelChamadoValidator = require("../validators/chamado-tecnico/cancel");
 import createChamadoValidator = require("../validators/chamado-tecnico/create");
 import finalizeChamadoValidator = require("../validators/chamado-tecnico/finalize");
 
-const controller = new ChamadoTecnicoController(new RepositoryChamadoTecnico());
+import { RepositoryBoleto } from "../../services/repository/repository-boleto";
+import { RepositoryChamadoTecnico } from "../../services/repository/repository-chamado-tecnico";
+import { RepositoryCliente } from "../../services/repository/repository-cliente";
+import { RepositoryProblemaChamado } from "../../services/repository/repository-problema-chamado";
+
+const repoChamado = new RepositoryChamadoTecnico(
+  new RepositoryProblemaChamado(),
+  new RepositoryBoleto(),
+  new RepositoryCliente(),
+);
+
+const controller = new ChamadoTecnicoController(repoChamado);
 const router = Router();
 
 router.route("/")

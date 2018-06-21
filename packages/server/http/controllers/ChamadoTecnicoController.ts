@@ -79,9 +79,8 @@ export class ChamadoTecnicoController {
   public async finalize(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { imagemAssinatura, justificativaFechamento } = req.body;
 
-      const chamado = await this.repoChamado.finalize(req.params.id, imagemAssinatura, justificativaFechamento);
+      const chamado = await this.repoChamado.finalize(id, req.body);
 
       res.json(chamado);
       log.info(`finalizou o chamado ${chamado.protocolo}, IP: ${req.ip}`, req.user._id, chamado._id);
