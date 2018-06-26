@@ -28,7 +28,7 @@ export class ChamadoTecnicoController {
     try {
       const { fields, populate } = req.query;
       const { id } = req.params;
-      const chamado = await this.repoChamado.get(id);
+      const chamado = await this.repoChamado.get(id, { fields, populate });
       res.json(chamado);
     } catch (err) {
       handleError(err, res);
