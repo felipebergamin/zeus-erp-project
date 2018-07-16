@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  graphQlURI: 'https://zeusapi.acetech.net.br/graphql'
 };
