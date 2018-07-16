@@ -2,6 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { MatSidenavModule, MatIconModule } from '@angular/material';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 
@@ -10,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
     AppComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
     MatSidenavModule,
