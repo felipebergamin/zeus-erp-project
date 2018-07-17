@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatCardModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSlideToggleModule } from '@angular/material';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -15,7 +21,8 @@ import { LoginComponent } from './login/login.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule
   ],
   declarations: [LoginComponent]
 })

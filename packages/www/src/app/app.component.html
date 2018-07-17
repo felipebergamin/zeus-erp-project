@@ -1,16 +1,15 @@
-<app-navbar class="mat-elevation-z6"></app-navbar>
+<app-navbar class="mat-elevation-z6" *ngIf="authService.isAuthenticated | async"></app-navbar>
 
 <mat-sidenav-container (backdropClick)="close('backdrop')">
   <mat-sidenav mode="side" opened="true" #sidenav (keydown.escape)="close('escape')" disableClose>
-
   </mat-sidenav>
 
   <div class="docs-component-sidenav-content">
-    <app-component-page-header (toggleSidenav)="sidenav.toggle()"></app-component-page-header>
+    <app-component-page-header (toggleSidenav)="sidenav.toggle()" *ngIf="authService.isAuthenticated | async"></app-component-page-header>
 
     <div class="docs-component-sidenav-inner-content">
       <div class="docs-component-sidenav-body-content">
-        <app-sidebar></app-sidebar>
+        <app-sidebar *ngIf="authService.isAuthenticated | async"></app-sidebar>
 
         <div class="component-viewer">
           <router-outlet></router-outlet>

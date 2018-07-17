@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AuthService } from './core/services/auth.service';
 
 
 @Component({
@@ -10,6 +10,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class AppComponent {
   @ViewChild('sidenav') sidenav: MatSidenav;
+
+  constructor(public authService: AuthService) {
+  }
 
   reason = '';
 
