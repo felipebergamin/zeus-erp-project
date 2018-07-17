@@ -13,21 +13,8 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
     name: 'Clientes',
     items: [
       {
-        name: 'Add',
-        path: '/cliente/add',
-      },
-      {
-        name: 'Desativados',
-        path: '/cliente/desativados',
-      }
-    ]
-  },
-  {
-    name: 'Provedor',
-    items: [
-      {
-        name: 'Contas Bancárias',
-        path: '/contasbancarias',
+        name: 'Listar',
+        path: '/cliente',
       }
     ]
   }

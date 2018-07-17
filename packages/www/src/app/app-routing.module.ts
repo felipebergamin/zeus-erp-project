@@ -6,6 +6,11 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: 'src/app/auth/auth.module#AuthModule',
+  },
+  {
+    path: 'cliente',
+    loadChildren: 'src/app/cliente/cliente.module#ClienteModule',
+    canLoad: [ AuthGuard ]
   }
 ];
 

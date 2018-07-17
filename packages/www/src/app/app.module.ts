@@ -1,11 +1,14 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { MatSidenavModule, MatIconModule } from '@angular/material';
+import { MatSidenavModule, MatIconModule, MatPaginatorIntl } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ApolloConfigModule } from './apollo-config.module';
+import { AuthModule } from './auth/auth.module';
+import { MatPaginatorIntlPtBr } from './mat-paginator-pt-br';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -17,9 +20,16 @@ import { ApolloConfigModule } from './apollo-config.module';
     BrowserAnimationsModule,
     SharedModule,
     MatSidenavModule,
-    MatIconModule
+    MatIconModule,
+    AuthModule,
+    CoreModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useClass: MatPaginatorIntlPtBr
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

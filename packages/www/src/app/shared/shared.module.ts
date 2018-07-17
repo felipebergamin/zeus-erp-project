@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { RouterModule } from '@angular/router';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { PageHeaderComponent } from './component-page-header/page-header.component';
@@ -14,7 +15,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
-    CdkAccordionModule
+    CdkAccordionModule,
+    RouterModule
   ],
   declarations: [
     NavbarComponent,

@@ -1,3 +1,3 @@
 export class Usuario {
-  _id: number;
+  _id?: number;
 }
