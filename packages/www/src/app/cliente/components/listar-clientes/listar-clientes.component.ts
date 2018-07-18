@@ -11,7 +11,7 @@ import { PageEvent } from '@angular/material';
 })
 export class ListarClientesComponent implements OnInit {
   /* paginator */
-  displayedColumns: string[] = ['nome', 'cidade'];
+  displayedColumns: string[] = ['menu', 'nome', 'cidade'];
   pageSizeOptions = [25, 50, 75, 100];
   totalItensPaginator = 0;
   pageEvent: PageEvent;
@@ -31,7 +31,6 @@ export class ListarClientesComponent implements OnInit {
     this.clienteService.simpleList({ first: 25, offset: 0, excluded: false })
       .subscribe(
         (res => {
-          console.log(res);
           this._dataSource.next(res.listCustomers);
           this.totalItensPaginator = res.totalCustomers;
         })
@@ -39,7 +38,7 @@ export class ListarClientesComponent implements OnInit {
   }
 
   onPaginationChange(event: PageEvent) {
-    this.clienteService.simpleList({ first: event.pageSize, offset: event.pageIndex, excluded: false })
+    this.clienteService.simpleList({ first: event.pageSize, offset: event.pageIndex * event.pageSize, excluded: false })
       .subscribe(res => {
         this._dataSource.next(res.listCustomers);
         this.totalItensPaginator = res.totalCustomers;
