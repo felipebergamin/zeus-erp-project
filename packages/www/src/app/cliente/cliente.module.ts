@@ -20,6 +20,7 @@ import { FormClienteComponent } from './components/form-cliente/form-cliente.com
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     ListarClientesComponent,
     FormClienteComponent,
+    ListarPontosAcessoComponent,
   ],
   providers: [
     {

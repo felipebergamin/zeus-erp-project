@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListarClientesComponent } from './components/listar-clientes/listar-clientes.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { FormClienteComponent } from './components/form-cliente/form-cliente.component';
+import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,11 @@ const routes: Routes = [
   {
     path: 'add',
     component: FormClienteComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'pa',
+    component: ListarPontosAcessoComponent,
     canActivate: [ AuthGuard ],
   },
 ];
