@@ -1,0 +1,138 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (submit)="onFormSubmit()">
+    <div fxLayout="column">
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Nome" formControlName="nome">
+        </mat-form-field>
+      </div>
+      <!-- div row -->
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <mat-select placeholder="Tipo Pessoa" #tipopessoa formControlName="tipoPessoa">
+            <mat-option value="fisica">
+              Fisica
+            </mat-option>
+            <mat-option value="juridica">
+              Juridica
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput [placeholder]="(tipopessoa.value == 'juridica') ? 'CNPJ' : 'CPF'" formControlName="cpfCnpj">
+          <mat-error *ngIf="form.get('cpfCnpj').hasError('invalid')">
+            CPF/CNPJ inválido
+          </mat-error>
+          <mat-error *ngIf="form.get('cpfCnpj').hasError('alreadyExists')">
+            CPF/CNPJ já existe no sistema
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput [placeholder]="(tipopessoa.value == 'juridica') ? 'Inscrição Estadual' : 'RG'" formControlName="rgIe">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput [matDatepicker]="picker" placeholder="Data de Nascimento" formControlName="dataNascimento">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <!-- div row -->
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="40%">
+          <input type="email" matInput placeholder="E-mail" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%">
+          <input matInput placeholder="Telefone Fixo" formControlName="telefoneFixo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%">
+          <input matInput placeholder="Telefone Celular" formControlName="numeroCelular">
+        </mat-form-field>
+      </div>
+      <!-- div row -->
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="80%">
+          <input matInput placeholder="Logradouro" formControlName="logradouro">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Número" formControlName="numero">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="80%">
+          <input matInput placeholder="Bairro" formControlName="bairro">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="CEP" formControlName="cep">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Cidade" formControlName="cidade">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Estado" formControlName="estado">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Complemento" formControlName="complemento">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Latitude" formControlName="latitude">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Longitude" formControlName="longitude">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="100%">
+          <textarea matInput placeholder="Tags" formControlName="tags"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <mat-form-field fxFlex="25%">
+          <input type="number" matInput placeholder="Dia de Vencimento" formControlName="diaVencimento">
+        </mat-form-field>
+
+        <mat-checkbox fxFlex="25%" formControlName="autoBloquear">Auto Bloquear</mat-checkbox>
+
+        <mat-form-field fxFlex="50%">
+          <mat-select placeholder="Conta Bancaria" formControlName="contaBancaria">
+            <mat-option *ngFor="let cb of contasBancarias" [value]="cb._id">
+              {{ cb.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="100%">
+          <textarea matInput placeholder="Observações" formControlName="observacoes"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button mat-raised-button color="accent" type="submit">Salvar</button>
+      </div>
+
+    </div>
+    <!-- div column -->
+  </form>
+</div>

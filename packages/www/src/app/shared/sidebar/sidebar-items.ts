@@ -15,7 +15,11 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
       {
         name: 'Listar',
         path: '/cliente',
-      }
+      },
+      {
+        name: 'Novo',
+        path: '/cliente/add'
+      },
     ]
   }
 ];

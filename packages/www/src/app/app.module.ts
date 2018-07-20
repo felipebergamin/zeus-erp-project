@@ -1,6 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { MatSidenavModule, MatIconModule, MatPaginatorIntl } from '@angular/material';
+import { MatSidenavModule, MatIconModule, MatPaginatorIntl, DateAdapter } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +29,11 @@ import { CoreModule } from './core/core.module';
     {
       provide: MatPaginatorIntl,
       useClass: MatPaginatorIntlPtBr
-    }
+    },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
   ],
   bootstrap: [AppComponent]
 })
