@@ -1,0 +1,124 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div fxLayout="column">
+      <span>Novo Ponto de acesso para o cliente {{ cliente?.nome }}</span>
+
+      <br>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <input type="email" matInput placeholder="Login" formControlName="login">
+          <mat-error *ngIf="form.get('login').hasError('alreadyExists')">
+            Login já existe no sistema
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Senha" formControlName="passwd">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="start center">
+        <mat-form-field fxFlex="20%">
+          <mat-select placeholder="Plano" formControlName="plano">
+            <mat-option *ngFor="let plano of listaPlanos$ | async" [value]="plano._id">
+              {{ plano.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <mat-select placeholder="IP Pool" formControlName="pool">
+            <mat-option *ngFor="let pool of listaPools$ | async" [value]="pool._id">
+              {{ pool.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Endereço IP" formControlName="ipAddress">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Endereço MAC" formControlName="macAddress">
+        </mat-form-field>
+
+        <mat-checkbox fxFlex="20%" formControlName="autoAtrelarMac">Auto atrelar MAC</mat-checkbox>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="center center">
+        <mat-form-field fxFlex="25%">
+          <mat-select placeholder="OLT" formControlName="olt">
+            <mat-option *ngFor="let olt of listaOlts$ | async" [value]="olt._id">
+              {{ olt.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Slot Nº" formControlName="slotNo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Pon Nº" formControlName="ponNo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="MAC ONU" formControlName="macOnu">
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="80%">
+          <input matInput placeholder="Logradouro" formControlName="logradouro">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Número" formControlName="numero">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="80%">
+          <input matInput placeholder="Bairro" formControlName="bairro">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="CEP" formControlName="cep">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Cidade" formControlName="cidade">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <input matInput placeholder="Estado" formControlName="estado">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Complemento" formControlName="complemento">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Latitude" formControlName="latitude">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%">
+          <input matInput placeholder="Longitude" formControlName="longitude">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <!-- <button mat-raised-button color="accent">Cadastrar</button> -->
+        <button mat-fab class="floating-fab">
+          <mat-icon aria-label="Example icon-button with a heart icon">done</mat-icon>
+        </button>
+      </div>
+    </div>
+    <!-- column -->
+  </form>
+</div>

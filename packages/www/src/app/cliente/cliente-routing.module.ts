@@ -4,6 +4,7 @@ import { ListarClientesComponent } from './components/listar-clientes/listar-cli
 import { AuthGuard } from '../auth/auth.guard';
 import { FormClienteComponent } from './components/form-cliente/form-cliente.component';
 import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
+import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-ponto-acesso.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'add',
     component: FormClienteComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'pa/novo/:cliente',
+    component: FormPontoAcessoComponent,
     canActivate: [ AuthGuard ],
   },
   {

@@ -6,6 +6,10 @@ export interface ListarClientes {
   totalCustomers: number;
 }
 
+export interface GetClienteByIdQuery {
+  getCustomerByID: Cliente;
+}
+
 export interface ClienteInput {
   cpfCnpj: string;
   dataNascimento: string;
@@ -44,6 +48,10 @@ export interface CpfAlreadyExistsQuery {
   cpfCnpjAlreadyExists: boolean;
 }
 
+export interface BuscaClienteQuery {
+  searchCustomer: Cliente[];
+}
+
 export const LISTAR_CLIENTES = gql`
   query listarUsuarios($first: Int!, $offset: Int!, $excluded: Boolean!) {
     listCustomers(first: $first, offset: $offset, excluded: $excluded) {
@@ -68,5 +76,25 @@ export const ADD_CLIENTE_MUTATION = gql`
 export const CPF_CNPJ_ALREADY_EXISTS_QUERY = gql`
   query cpfAleradyExists($cpfCnpj: String!) {
     cpfCnpjAlreadyExists(cpfCnpj: $cpfCnpj)
+  }
+`;
+
+export const BUSCAR_CLIENTES = gql`
+  query searchCliente($search: BuscaClienteInput!) {
+    searchCustomer(values: $search) {
+      _id
+      nome
+      cidade
+    }
+  }
+`;
+
+export const GET_CLIENTE_COM_ID = gql`
+  query getById($id: Int!) {
+    getCustomerByID(id: $id) {
+      _id
+      nome
+      cpfCnpj
+    }
   }
 `;

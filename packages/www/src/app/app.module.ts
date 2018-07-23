@@ -10,6 +10,7 @@ import { ApolloConfigModule } from './apollo-config.module';
 import { AuthModule } from './auth/auth.module';
 import { MatPaginatorIntlPtBr } from './mat-paginator-pt-br';
 import { CoreModule } from './core/core.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CoreModule } from './core/core.module';
     MatIconModule,
     AuthModule,
     CoreModule,
+    RouterModule,
   ],
   providers: [
     {

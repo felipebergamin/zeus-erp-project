@@ -11,7 +11,12 @@ import {
   ClienteInput,
   CpfAlreadyExistsQuery,
   ListarClientes,
+  BUSCAR_CLIENTES,
+  BuscaClienteQuery,
+  GET_CLIENTE_COM_ID,
+  GetClienteByIdQuery,
 } from './cliente.graphql';
+import { Cliente } from '../../models/Cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +61,28 @@ export class ClienteService {
       }
     }).pipe(
       map(res => res.data.cpfCnpjAlreadyExists)
+    );
+  }
+
+  search(values: any): Observable<Cliente[]> {
+    return this.apollo.query<BuscaClienteQuery>({
+      query: BUSCAR_CLIENTES,
+      variables: {
+        search: values
+      }
+    }).pipe(
+      map(res => res.data.searchCustomer)
+    );
+  }
+
+  getById(id: number): Observable<Cliente> {
+    return this.apollo.query<GetClienteByIdQuery>({
+      query: GET_CLIENTE_COM_ID,
+      variables: {
+        id,
+      },
+    }).pipe(
+      map(res => res.data.getCustomerByID)
     );
   }
 }

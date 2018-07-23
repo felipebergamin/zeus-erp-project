@@ -19,8 +19,9 @@ import { ListarClientesComponent } from './components/listar-clientes/listar-cli
 import { FormClienteComponent } from './components/form-cliente/form-cliente.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
+import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-ponto-acesso.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/l
     MatDatepickerModule,
     MatMomentDateModule,
     MatCheckboxModule,
+    FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule
   ],
@@ -44,6 +46,7 @@ import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/l
     ListarClientesComponent,
     FormClienteComponent,
     ListarPontosAcessoComponent,
+    FormPontoAcessoComponent,
   ],
   providers: [
     {

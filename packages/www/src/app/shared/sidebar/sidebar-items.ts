@@ -21,6 +21,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/cliente/add'
       },
       {
+        name: 'Novo Ponto de Acesso',
+        path: '/cliente/pa/novo',
+      },
+      {
         name: 'Listar Pontos de Acesso',
         path: '/cliente/pa',
       },
