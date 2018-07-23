@@ -25,5 +25,14 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/cliente/pa',
       },
     ]
-  }
+  },
+  {
+    name: 'Provedor',
+    items: [
+      {
+        name: 'Listar OLT\'s',
+        path: '/provedor/olts',
+      },
+    ]
+  },
 ];
