@@ -29,7 +29,7 @@ export class ListarOltsComponent implements OnInit {
   }
 
   onPaginationChange(event: PageEvent) {
-    this.refreshData({ first: event.pageIndex, offset: event.pageIndex * event.pageSize, nopaginate: false });
+    this.refreshData({ first: event.pageSize, offset: event.pageIndex * event.pageSize, nopaginate: false });
   }
 
   private refreshData({ first, offset, nopaginate }) {
