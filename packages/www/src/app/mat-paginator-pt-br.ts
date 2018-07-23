@@ -4,6 +4,8 @@ export class MatPaginatorIntlPtBr extends MatPaginatorIntl {
   itemsPerPageLabel = 'Itens/Página';
   nextPageLabel = 'Próxima';
   previousPageLabel = 'Anterior';
+  firstPageLabel = 'Primeira Página';
+  lastPageLabel = 'Última Página';
 
   getRangeLabel = function (page, pageSize, length) {
     if (length === 0 || pageSize === 0) {
