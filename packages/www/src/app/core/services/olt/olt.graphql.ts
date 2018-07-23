@@ -6,6 +6,12 @@ export interface ListarOLTQuery {
   totalOlts: number;
 }
 
+export interface OLTInput {
+  ip: string;
+  nome: string;
+  obs?: string;
+}
+
 export const LISTAR_OLT_QUERY = gql`
   query listarOlts($first: Int, $offset: Int, $nopaginate: Boolean) {
     listarOLTs(first: $first, offset: $offset, nopaginate: $nopaginate) {
@@ -15,5 +21,15 @@ export const LISTAR_OLT_QUERY = gql`
       createdAt
     }
     totalOlts
+  }
+`;
+
+export const CREATE_OLT_MUTATION = gql`
+  mutation createOLT($input: OLTInput!) {
+    createOLT(input: $input) {
+      _id
+      nome
+      createdAt
+    }
   }
 `;
