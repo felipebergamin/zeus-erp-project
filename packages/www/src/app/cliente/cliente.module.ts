@@ -11,6 +11,8 @@ import {
   MatDatepickerModule,
   MatCheckboxModule,
   MatSnackBarModule,
+  MatBottomSheetModule,
+  MatListModule,
 } from '@angular/material';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
@@ -22,6 +24,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
 import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-ponto-acesso.component';
+import { ClienteActionSheetComponent } from './components/cliente-action-sheet/cliente-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -40,13 +43,19 @@ import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-po
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatBottomSheetModule,
+    MatListModule,
   ],
   declarations: [
     ListarClientesComponent,
     FormClienteComponent,
     ListarPontosAcessoComponent,
     FormPontoAcessoComponent,
+    ClienteActionSheetComponent,
+  ],
+  entryComponents: [
+    ClienteActionSheetComponent,
   ],
   providers: [
     {

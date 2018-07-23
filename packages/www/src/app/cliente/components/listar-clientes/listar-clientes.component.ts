@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { ClienteService } from '../../../core/services/cliente/cliente.service';
 import { Cliente } from '../../../core/models/Cliente';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatBottomSheet } from '@angular/material';
+import { ClienteActionSheetComponent } from '../cliente-action-sheet/cliente-action-sheet.component';
 
 @Component({
   selector: 'app-listar-clientes',
@@ -20,7 +21,8 @@ export class ListarClientesComponent implements OnInit {
   _dataSource = new ReplaySubject<Cliente[]>(1);
 
   constructor(
-    private clienteService: ClienteService
+    private bottomSheet: MatBottomSheet,
+    private clienteService: ClienteService,
   ) { }
 
   get dataSource() {
@@ -43,6 +45,12 @@ export class ListarClientesComponent implements OnInit {
         this._dataSource.next(res.listCustomers);
         this.totalItensPaginator = res.totalCustomers;
       });
+  }
+
+  openBottomSheet(cli: Cliente) {
+    this.bottomSheet.open(ClienteActionSheetComponent, {
+      data: cli
+    });
   }
 
 }
