@@ -36,7 +36,7 @@ export class FormOltComponent implements OnInit {
     this.oltService.create(this.form.value)
       .subscribe(
         (created) => {
-          this.snackbar.open(`OLT ${created.nome} criada!`);
+          this.snackbar.open(`OLT ${created._id} - ${created.nome} criada!`, 'Ok', { duration: 2000 });
           this.router.navigate(['/', 'provedor', 'olts']);
         }
       );
