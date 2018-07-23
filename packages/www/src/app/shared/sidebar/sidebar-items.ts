@@ -33,6 +33,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Listar OLT\'s',
         path: '/provedor/olts',
       },
+      {
+        name: 'Nova OLT',
+        path: '/provedor/olts/add',
+      }
     ]
   },
 ];
