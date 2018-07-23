@@ -11,7 +11,12 @@ const routes: Routes = [
     path: 'cliente',
     loadChildren: 'src/app/cliente/cliente.module#ClienteModule',
     canLoad: [ AuthGuard ]
-  }
+  },
+  {
+    path: 'provedor',
+    loadChildren: 'src/app/provedor/provedor.module#ProvedorModule',
+    canLoad: [ AuthGuard ],
+  },
 ];
 
 @NgModule({
