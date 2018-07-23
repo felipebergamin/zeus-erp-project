@@ -14,12 +14,12 @@ export class PlanoService {
     private apollo: Apollo
   ) { }
 
-  listar(variables: { first?: number, offset?: number, nopaginate?: boolean }): Observable<Plano[]> {
+  listar(variables?: { first?: number, offset?: number, nopaginate?: boolean }): Observable<ListarPlanosQuery> {
     return this.apollo.query<ListarPlanosQuery>({
       query: LISTAR_PLANOS_QUERY,
       variables
     }).pipe(
-      map(res => res.data.listarPlanos)
+      map(res => res.data)
     );
   }
 }

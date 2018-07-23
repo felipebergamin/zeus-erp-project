@@ -15,6 +15,7 @@ import {
 import { ProvedorRoutingModule } from './provedor-routing.module';
 import { ListarOltsComponent } from './olt/listar-olts/listar-olts.component';
 import { FormOltComponent } from './olt/form-olt/form-olt.component';
+import { ListarPlanosComponent } from './plano/listar-planos/listar-planos.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,6 @@ import { FormOltComponent } from './olt/form-olt/form-olt.component';
     MatSnackBarModule,
     FlexLayoutModule,
   ],
-  declarations: [ListarOltsComponent, FormOltComponent]
+  declarations: [ListarOltsComponent, FormOltComponent, ListarPlanosComponent]
 })
 export class ProvedorModule { }

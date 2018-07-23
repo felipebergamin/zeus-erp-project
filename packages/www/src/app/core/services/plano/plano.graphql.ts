@@ -3,6 +3,7 @@ import { Plano } from '../../models/Plano';
 
 export interface ListarPlanosQuery {
   listarPlanos: Plano[];
+  totalPlanos: number;
 }
 
 export const LISTAR_PLANOS_QUERY = gql`
@@ -10,6 +11,9 @@ export const LISTAR_PLANOS_QUERY = gql`
     listarPlanos(first: $first, offset: $offset, nopaginate: $nopaginate) {
       _id
       nome
+      valorMensal
+      createdAt
     }
+    totalPlanos
   }
 `;
