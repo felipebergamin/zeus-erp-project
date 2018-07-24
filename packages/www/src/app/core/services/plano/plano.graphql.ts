@@ -6,6 +6,14 @@ export interface ListarPlanosQuery {
   totalPlanos: number;
 }
 
+export interface PlanoInput {
+  descricao?: string;
+  nome: string;
+  valorMensal: number;
+  velocidadeDownload: number;
+  velocidadeUpload: number;
+}
+
 export const LISTAR_PLANOS_QUERY = gql`
   query listarPlanos($first: Int, $offset: Int, $nopaginate: Boolean) {
     listarPlanos(first: $first, offset: $offset, nopaginate: $nopaginate) {
@@ -15,5 +23,14 @@ export const LISTAR_PLANOS_QUERY = gql`
       createdAt
     }
     totalPlanos
+  }
+`;
+
+export const CREATE_PLANO_MUTATION = gql`
+  mutation createPlano($input: PlanoInput!) {
+    createPlano(input: $input) {
+      _id
+      createdAt
+    }
   }
 `;

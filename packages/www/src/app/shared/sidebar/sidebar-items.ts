@@ -41,6 +41,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Listar Planos',
         path: '/provedor/planos',
       },
+      {
+        name: 'Novo Plano',
+        path: '/provedor/planos/add',
+      },
     ]
   },
 ];

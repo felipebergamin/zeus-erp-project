@@ -4,6 +4,7 @@ import { ListarOltsComponent } from './olt/listar-olts/listar-olts.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { FormOltComponent } from './olt/form-olt/form-olt.component';
 import { ListarPlanosComponent } from './plano/listar-planos/listar-planos.component';
+import { FormPlanoComponent } from './plano/form-plano/form-plano.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'olts',
     component: ListarOltsComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'planos/add',
+    component: FormPlanoComponent,
     canActivate: [ AuthGuard ],
   },
   {

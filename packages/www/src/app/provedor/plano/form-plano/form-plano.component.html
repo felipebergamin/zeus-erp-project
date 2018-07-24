@@ -1,0 +1,48 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div fxLayout="column">
+
+      <div fxLayout="row" fxLayoutGap="1em">
+
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Nome do Plano" formControlName="nome">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <span matPrefix>R$ &nbsp;</span>
+          <input matInput placeholder="Valor Mensal" formControlName="valorMensal">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Velocidade Download" formControlName="velocidadeDownload">
+          <span matSuffix>Kbps</span>
+          <mat-hint>Velocidade de download do plano em Kbps</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Velocidade Upload" formControlName="velocidadeUpload">
+          <span matSuffix>Kbps</span>
+          <mat-hint>Velocidade de upload do plano em Kbps</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+
+        <mat-form-field fxFlex="100%">
+          <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
+          <mat-hint>Descrição do plano</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <button mat-fab class="floating-fab">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
