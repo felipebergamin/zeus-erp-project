@@ -1,0 +1,41 @@
+import { ArquivoRemessaModel } from "../models/ArquivoRemessaModel";
+import { ArquivoRetornoModel } from "../models/ArquivoRetornoModel";
+import { BaixaEstoqueModel } from "../models/BaixaEstoqueModel";
+import { BoletoModel } from "../models/BoletoModel";
+import { CarneModel } from "../models/CarneModel";
+import { ChamadoModel } from "../models/ChamadoModel";
+import { ClienteModel } from "../models/ClienteModel";
+import { ContaBancariaModel } from "../models/ContaBancariaModel";
+import { InstalacaoModel } from "../models/InstalacaoModel";
+import { ItemEstoqueModel } from "../models/ItemEstoqueModel";
+import { LancamentoEstoqueModel } from "../models/LancamentoEstoqueModel";
+import { OcorrenciaBancariaModel } from "../models/OcorrenciaBancariaModel";
+import { OLTModel } from "../models/OLTModel";
+import { PerfilUsuarioModel } from "../models/PerfilUsuarioModel";
+import { PlanoModel } from "../models/PlanoModel";
+import { PontoAcessoModel } from "../models/PontoAcessoModel";
+import { PoolIPModel } from "../models/PoolIPModel";
+import { ProblemaChamadoModel } from "../models/ProblemaChamadoModel";
+import { UsuarioModel } from "../models/UsuarioModel";
+
+export interface ModelsInterface {
+  ArquivoRemessa?: ArquivoRemessaModel;
+  ArquivoRetorno?: ArquivoRetornoModel;
+  BaixaEstoque?: BaixaEstoqueModel;
+  Boleto?: BoletoModel;
+  Carne?: CarneModel;
+  Chamado?: ChamadoModel;
+  Cliente?: ClienteModel;
+  ContaBancaria?: ContaBancariaModel;
+  Instalacao?: InstalacaoModel;
+  ItemEstoque?: ItemEstoqueModel;
+  LancamentoEstoque?: LancamentoEstoqueModel;
+  OcorrenciaBancaria?: OcorrenciaBancariaModel;
+  OLT?: OLTModel;
+  PerfilUsuario?: PerfilUsuarioModel;
+  Plano?: PlanoModel;
+  PontoAcesso?: PontoAcessoModel;
+  PoolIP?: PoolIPModel;
+  ProblemaChamado?: ProblemaChamadoModel;
+  Usuario?: UsuarioModel;
+}

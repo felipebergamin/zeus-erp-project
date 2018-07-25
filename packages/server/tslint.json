@@ -8,7 +8,9 @@
       "quotemark": false,
       "trailing-comma": false,
       "max-line-length": false,
-      "curly": false
+      "curly": false,
+      "interface-name": false,
+      "no-string-literal": false
     },
     "rulesDirectory": []
 }
