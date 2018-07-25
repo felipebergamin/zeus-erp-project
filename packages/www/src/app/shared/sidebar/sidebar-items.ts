@@ -54,6 +54,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Listar Contas Bancárias',
         path: '/financeiro/contasbancarias',
       },
+      {
+        name: 'Nova Conta Bancária',
+        path: '/financeiro/contasbancarias/add',
+      },
     ]
   },
 ];

@@ -1,0 +1,89 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (submit)="onFormSubmit()">
+
+    <div fxLayout="column">
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Nome" formControlName="nome">
+          <mat-hint>Nome da conta no sistema</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Cedente" formControlName="cedente">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Código Cedente" formControlName="codigoCedente">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="Carteira" formControlName="carteira">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="60%">
+          <input matInput placeholder="Nº Agência" formControlName="numeroAgencia">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="40%">
+          <input matInput placeholder="Dígito" formControlName="digitoAgencia">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="60%">
+          <input matInput placeholder="Número da Conta" formControlName="numeroConta">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="40%">
+          <input matInput placeholder="Dígito da Conta" formControlName="digitoConta">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Nosso Número" formControlName="nossoNumero">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Próxima Remessa" formControlName="proximaRemessa">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Percentual de multa por atraso" formControlName="multaVencimento">
+          <span matSuffix>%</span>
+          <mat-hint>Multa aplicada após vencimento</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Percentual de multa por dia de atraso" formControlName="multaDia">
+          <span matSuffix>%</span>
+          <mat-hint>Multa aplicada por dia de atraso</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <button mat-fab class="floating-fab">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<pre>
+  {{ form.value | json }}
+</pre>

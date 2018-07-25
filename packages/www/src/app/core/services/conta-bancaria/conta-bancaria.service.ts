@@ -2,8 +2,14 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 
-import { LISTAR_CONTAS_BANCARIAS, ListarContasBancarias } from './conta-bancaria.graphql';
+import {
+  CRIAR_CONTA_BANCARIA_MUTATION,
+  LISTAR_CONTAS_BANCARIAS,
+  ContaBancariaInput,
+  ListarContasBancarias,
+} from './conta-bancaria.graphql';
 import { Observable } from 'rxjs';
+import { ContaBancaria } from '../../models/ContaBancaria';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +29,15 @@ export class ContaBancariaService {
       }
     }).pipe(
       map(res => res.data)
+    );
+  }
+
+  create(input: ContaBancariaInput): Observable<ContaBancaria> {
+    return this.apollo.mutate({
+      mutation: CRIAR_CONTA_BANCARIA_MUTATION,
+      variables: { input },
+    }).pipe(
+      map(res => res.data.createBankAccount)
     );
   }
 }
