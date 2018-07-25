@@ -47,4 +47,13 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
       },
     ]
   },
+  {
+    name: 'Financeiro',
+    items: [
+      {
+        name: 'Listar Contas Bancárias',
+        path: '/financeiro/contasbancarias',
+      },
+    ]
+  },
 ];
