@@ -34,6 +34,13 @@ import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.compone
     MatSnackBarModule,
     FlexLayoutModule,
   ],
-  declarations: [ListarOltsComponent, FormOltComponent, ListarPlanosComponent, FormPlanoComponent, ListarPoolsIpComponent, FormPoolIpComponent]
+  declarations: [
+    ListarOltsComponent,
+    FormOltComponent,
+    ListarPlanosComponent,
+    FormPlanoComponent,
+    ListarPoolsIpComponent,
+    FormPoolIpComponent,
+  ]
 })
 export class ProvedorModule { }
