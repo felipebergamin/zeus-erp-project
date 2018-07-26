@@ -11,6 +11,7 @@ export const LISTAR_POOLS_QUERY = gql`
     listarIPPools(first: $first, offset: $offset, nopaginate: $nopaginate) {
       _id
       nome
+      cidr
     }
   }
 `;

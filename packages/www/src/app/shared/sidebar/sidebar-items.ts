@@ -45,6 +45,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Novo Plano',
         path: '/provedor/planos/add',
       },
+      {
+        name: 'IP Pools',
+        path: '/provedor/pools',
+      },
     ]
   },
   {

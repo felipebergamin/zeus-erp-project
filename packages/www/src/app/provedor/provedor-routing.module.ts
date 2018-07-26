@@ -5,6 +5,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { FormOltComponent } from './olt/form-olt/form-olt.component';
 import { ListarPlanosComponent } from './plano/listar-planos/listar-planos.component';
 import { FormPlanoComponent } from './plano/form-plano/form-plano.component';
+import { ListarPoolsIpComponent } from './pool-ip/listar-pools-ip/listar-pools-ip.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
   {
     path: 'planos',
     component: ListarPlanosComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'pools',
+    component: ListarPoolsIpComponent,
     canActivate: [ AuthGuard ],
   },
 ];
