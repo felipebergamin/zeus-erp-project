@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material';
-import { Cliente } from '../../../core/models/Cliente';
 import { Router } from '@angular/router';
+
+import { Cliente } from '../../../core/models/Cliente';
 
 @Component({
   selector: 'app-cliente-action-sheet',

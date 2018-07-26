@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ListarClientesComponent } from './components/listar-clientes/listar-clientes.component';
+
 import { AuthGuard } from '../auth/auth.guard';
-import { FormClienteComponent } from './components/form-cliente/form-cliente.component';
-import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
-import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-ponto-acesso.component';
+
+import { FormClienteComponent } from './cliente/form-cliente/form-cliente.component';
+import { ListarClientesComponent } from './cliente/listar-clientes/listar-clientes.component';
+
+import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
+import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 
 const routes: Routes = [
   {

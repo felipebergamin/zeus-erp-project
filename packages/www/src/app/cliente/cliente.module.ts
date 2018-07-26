@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   MatTableModule,
   MatPaginatorModule,
@@ -14,17 +18,14 @@ import {
   MatBottomSheetModule,
   MatListModule,
 } from '@angular/material';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { ClienteRoutingModule } from './cliente-routing.module';
-import { ListarClientesComponent } from './components/listar-clientes/listar-clientes.component';
-import { FormClienteComponent } from './components/form-cliente/form-cliente.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ListarPontosAcessoComponent } from './components/listar-pontos-acesso/listar-pontos-acesso.component';
-import { FormPontoAcessoComponent } from './components/form-ponto-acesso/form-ponto-acesso.component';
-import { ClienteActionSheetComponent } from './components/cliente-action-sheet/cliente-action-sheet.component';
+import { ListarClientesComponent } from './cliente/listar-clientes/listar-clientes.component';
+import { FormClienteComponent } from './cliente/form-cliente/form-cliente.component';
+import { ClienteActionSheetComponent } from './cliente/cliente-action-sheet/cliente-action-sheet.component';
+
+import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
+import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 
 @NgModule({
   imports: [
