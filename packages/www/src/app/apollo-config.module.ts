@@ -57,7 +57,12 @@ export class ApolloConfigModule {
         authMiddleware.concat(http)
       ]),
       cache: new InMemoryCache(),
-      connectToDevTools: !environment.production
+      connectToDevTools: !environment.production,
+      defaultOptions: {
+        query: {
+          fetchPolicy: 'no-cache',
+        },
+      },
     });
   }
 
