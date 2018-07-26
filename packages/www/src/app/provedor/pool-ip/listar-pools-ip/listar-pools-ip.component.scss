@@ -1,3 +1,20 @@
 table {
   width: 100%;
 }
+
+button.floating-fab {
+  position: fixed;
+  bottom: 2em;
+  right: 4em;
+  transition: 1s;
+
+  mat-icon {
+    transition: transform .25s;
+  }
+
+  &.hover-rotate:hover {
+    mat-icon {
+      transform: rotate(180deg);
+    }
+  }
+}

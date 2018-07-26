@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 
 import { LISTAR_POOLS_QUERY, ListarPoolsQuery, IPPoolInput, CRIAR_IP_POOL_MUTATION } from './ip-pool.graphql';
 import { IPPool } from '../../models/IPPool';
+import { DataProxy } from 'apollo-cache';
+import { FetchResult } from 'apollo-link';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +20,9 @@ export class IpPoolService {
   listar(variables: { first?: number, offset?: number, nopaginate?: boolean }) {
     return this.apollo.query<ListarPoolsQuery>({
       query: LISTAR_POOLS_QUERY,
-      variables
+      variables,
     }).pipe(
-      map(res => res.data.listarIPPools),
+      map(res => res.data),
     );
   }
 

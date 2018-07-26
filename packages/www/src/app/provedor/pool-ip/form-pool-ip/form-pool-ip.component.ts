@@ -34,7 +34,7 @@ export class FormPoolIpComponent implements OnInit {
     this.poolService.create(this.form.value)
       .subscribe(
         (created) => {
-          this.snackbar.open(`Pool criado! (${created._id})`);
+          this.snackbar.open(`Pool criado! (${created._id})`, 'Ok', { duration: 4000 });
           this.router.navigate(['/provedor/pools']);
         }
       );

@@ -84,7 +84,7 @@ export class FormPontoAcessoComponent implements OnInit {
 
         this.listaOlts$ = this.oltService.listar({ nopaginate: true }).pipe(map(res => res.listarOLTs));
         this.listaPlanos$ = this.planoService.listar({ nopaginate: true }).pipe(map(res => res.listarPlanos));
-        this.listaPools$ = this.poolService.listar({ nopaginate: true });
+        this.listaPools$ = this.poolService.listar({ nopaginate: true }).pipe(map(res => res.listarIPPools));
 
         this.form.get('login').valueChanges
           .pipe(debounceTime(600))

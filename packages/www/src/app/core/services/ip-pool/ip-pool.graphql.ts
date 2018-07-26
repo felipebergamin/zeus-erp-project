@@ -4,6 +4,7 @@ import { IPPool } from '../../models/IPPool';
 
 export interface ListarPoolsQuery {
   listarIPPools: IPPool[];
+  totalIPPools: number;
 }
 
 export interface IPPoolInput {
@@ -18,6 +19,7 @@ export const LISTAR_POOLS_QUERY = gql`
       nome
       cidr
     }
+    totalIPPools
   }
 `;
 

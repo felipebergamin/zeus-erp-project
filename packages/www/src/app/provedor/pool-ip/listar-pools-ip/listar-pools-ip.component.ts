@@ -26,8 +26,9 @@ export class ListarPoolsIpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.poolService.listar({ first: 10, offset: 0 })
-      .subscribe(res => this._rs.next(res));
+    const first = this.pageSizeOptions[0];
+
+    this.refreshTableData({ first, offset: 0, nopaginate: false });
   }
 
   onPaginationChange(event: PageEvent) {
@@ -39,7 +40,10 @@ export class ListarPoolsIpComponent implements OnInit {
 
   private refreshTableData({ first, offset, nopaginate }: { first: number, offset: number, nopaginate: boolean }) {
     this.poolService.listar({ first, offset, nopaginate })
-      .subscribe(res => this._rs.next(res));
+      .subscribe(res => {
+        this._rs.next(res.listarIPPools);
+        this.totalItensPaginator = res.totalIPPools;
+      });
   }
 
 }
