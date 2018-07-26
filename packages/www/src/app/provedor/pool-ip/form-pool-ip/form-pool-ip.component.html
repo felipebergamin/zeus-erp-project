@@ -1,0 +1,32 @@
+<div class="mat-elevation-z6">
+
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div fxLayout="column">
+      
+      <div fxLayout="row">
+
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="Nome" formControlName="nome">
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row">
+
+        <mat-form-field fxFlex="100%">
+          <input matInput placeholder="CIDR" formControlName="cidr">
+          <mat-hint>Ex: 192.168.80.0/23</mat-hint>
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <button mat-fab class="floating-fab">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    
+    </div> <!-- ./column -->
+  </form>
+</div>
