@@ -21,6 +21,10 @@ export const ipPoolResolvers = {
         offset
       });
     }),
+
+    totalIPPools: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
+      return context.db.PoolIP.count();
+    }),
   },
 
   Mutation: {

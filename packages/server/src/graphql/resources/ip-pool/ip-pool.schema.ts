@@ -17,6 +17,7 @@ export const ipPoolTypes = `
 export const ipPoolQueries = `
   listarIPPools(first: Int, offset: Int, nopaginate: Boolean): [ IPPool! ]!
   getPoolByID(id: Int!): IPPool
+  totalIPPools: Int
 `;
 
 export const ipPoolMutations = `
