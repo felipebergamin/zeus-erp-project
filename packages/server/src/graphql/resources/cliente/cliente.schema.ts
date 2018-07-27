@@ -99,6 +99,7 @@ export const clienteQueries = `
   cpfCnpjAlreadyExists(cpfCnpj: String!): Boolean
   totalCustomers: Int
   searchCustomer(values: BuscaClienteInput!): [ Cliente! ]!
+  valorTotalMensalidadeCliente(clienteID: Int!): Float
 `;
 
 export const clienteMutations = `

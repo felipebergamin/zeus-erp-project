@@ -53,6 +53,27 @@ export const clienteResolvers = {
 
       return context.db.Cliente.findAll({ where: values });
     }),
+
+    valorTotalMensalidadeCliente: compose(...authResolvers)(async (parent, { clienteID }, context: ResolverContext, info) => {
+      let valorTotal = 0;
+      const pas = await context.db.PontoAcesso.findAll({
+        attributes: ['_id', 'plano', 'cliente'],
+        where: { cliente: clienteID, incluirNaCobranca: true },
+
+        include: [
+          {
+            attributes: ['_id', 'valorMensal'],
+            model: context.db.Plano,
+            required: true,
+          }
+        ]
+      });
+
+      pas.forEach((pa: any) => {
+        valorTotal += pa.Plano.valorMensal;
+      });
+      return valorTotal;
+    }),
   },
 
   Mutation: {
