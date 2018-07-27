@@ -50,7 +50,7 @@ export const boletoResolvers = {
     }),
 
     pesquisarBoletos: compose(...authResolvers)((parent, { searchVals }, context: ResolverContext, info) => {
-      return context.db.Boleto.findAll(searchVals);
+      return context.db.Boleto.findAll({ where: searchVals });
     }),
   },
 
