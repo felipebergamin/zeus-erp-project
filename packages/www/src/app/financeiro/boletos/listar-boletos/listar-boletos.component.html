@@ -33,6 +33,11 @@
 
     <ng-container matColumnDef="vencimento">
       <th mat-header-cell *matHeaderCellDef>Vencimento</th>
+      <td mat-cell *matCellDef="let boleto">{{ boleto.dataVencimento | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="processamento">
+      <th mat-header-cell *matHeaderCellDef>Vencimento</th>
       <td mat-cell *matCellDef="let boleto">{{ boleto.createdAt | date:'dd/MM/yyyy' }}</td>
     </ng-container>
 

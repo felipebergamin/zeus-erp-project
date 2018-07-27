@@ -10,7 +10,7 @@ import { PageEvent } from '@angular/material';
   styleUrls: ['./listar-boletos.component.scss']
 })
 export class ListarBoletosComponent implements OnInit {
-  displayedColumns = ['menu', 'numero', 'nomeCliente', 'valorCobrado', 'valorPago', 'vencimento'];
+  displayedColumns = ['menu', 'numero', 'nomeCliente', 'valorCobrado', 'valorPago', 'vencimento', 'processamento'];
   totalItensPaginator = 0;
   pageSizeOptions = [50, 75, 100, 150];
   private _rs = new ReplaySubject<Boleto[]>(1);
