@@ -129,6 +129,14 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         name: 'cliente',
       }
     });
+
+    pontoAcesso.belongsTo(models.Plano, {
+      foreignKey: {
+        allowNull: false,
+        field: 'plano',
+        name: 'plano',
+      }
+    });
   };
 
   return pontoAcesso;
