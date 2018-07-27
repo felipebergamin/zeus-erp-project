@@ -48,6 +48,10 @@ export const boletoResolvers = {
 
       return context.db.Boleto.findById(idBoleto);
     }),
+
+    pesquisarBoletos: compose(...authResolvers)((parent, { searchVals }, context: ResolverContext, info) => {
+      return context.db.Boleto.findAll(searchVals);
+    }),
   },
 
   Mutation: {
