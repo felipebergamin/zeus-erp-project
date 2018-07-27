@@ -25,4 +25,9 @@ export class ClienteActionSheetComponent implements OnInit {
     this.router.navigate(['/', 'cliente', 'pa', 'novo', cli._id]);
   }
 
+  detalhes(cli: Cliente) {
+    this.sheetRef.dismiss();
+    this.router.navigate(['/', 'cliente', 'detalhe', cli._id]);
+  }
+
 }

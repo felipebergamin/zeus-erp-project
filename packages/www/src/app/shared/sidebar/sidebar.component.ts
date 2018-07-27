@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { SIDEBAR_ITEMS } from './sidebar-items';
+import { ComponentPageTitle } from '../page-title/page-title';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,13 +18,19 @@ import { SIDEBAR_ITEMS } from './sidebar-items';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private componentPageTitle: ComponentPageTitle,
+  ) { }
 
   ngOnInit() {
   }
 
   get items() {
     return SIDEBAR_ITEMS;
+  }
+
+  updatePageTitle(item) {
+    this.componentPageTitle.title = item.name;
   }
 
 }

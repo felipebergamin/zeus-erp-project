@@ -1,3 +1,5 @@
+import { ContaBancaria } from './ContaBancaria';
+
 export class Cliente {
   _id?: number;
 
@@ -27,7 +29,7 @@ export class Cliente {
 
   /* informações financeiras */
   autoBloquear?: boolean;
-  contaBancaria?: number;
+  contaBancaria?: ContaBancaria;
   diaVencimento?: number;
   observacoes?: string;
 }

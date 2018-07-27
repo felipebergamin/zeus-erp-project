@@ -17,6 +17,9 @@ import {
   MatSnackBarModule,
   MatBottomSheetModule,
   MatListModule,
+  MatCardModule,
+  MatTreeModule,
+  MatDialogModule,
 } from '@angular/material';
 
 import { ClienteRoutingModule } from './cliente-routing.module';
@@ -26,6 +29,8 @@ import { ClienteActionSheetComponent } from './cliente/cliente-action-sheet/clie
 
 import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
+import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
+import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.component';
 
 @NgModule({
   imports: [
@@ -47,6 +52,8 @@ import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso
     MatSnackBarModule,
     MatBottomSheetModule,
     MatListModule,
+    MatCardModule,
+    MatDialogModule,
   ],
   declarations: [
     ListarClientesComponent,
@@ -54,9 +61,12 @@ import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso
     ListarPontosAcessoComponent,
     FormPontoAcessoComponent,
     ClienteActionSheetComponent,
+    DetalhesClienteComponent,
+    LancarBoletoComponent,
   ],
   entryComponents: [
     ClienteActionSheetComponent,
+    LancarBoletoComponent,
   ],
   providers: [
     {

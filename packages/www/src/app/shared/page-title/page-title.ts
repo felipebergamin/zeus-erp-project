@@ -6,7 +6,7 @@ import {Title} from '@angular/platform-browser';
  */
 @Injectable()
 export class ComponentPageTitle {
-  _title = '';
+  _title = 'Ace Tech';
 
   get title(): string { return this._title; }
 
@@ -15,7 +15,7 @@ export class ComponentPageTitle {
     if (title !== '') {
       title = `${title} | `;
     }
-    this.bodyTitle.setTitle(`${title}Angular Material`);
+    this.bodyTitle.setTitle(`${title}Zeus`);
   }
 
   constructor(private bodyTitle: Title) { }

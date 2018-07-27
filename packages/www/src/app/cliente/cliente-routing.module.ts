@@ -8,6 +8,7 @@ import { ListarClientesComponent } from './cliente/listar-clientes/listar-client
 
 import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
+import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: 'add',
     component: FormClienteComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'detalhe/:clienteID',
+    component: DetalhesClienteComponent,
     canActivate: [ AuthGuard ],
   },
   {

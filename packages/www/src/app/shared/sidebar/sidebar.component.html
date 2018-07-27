@@ -7,7 +7,7 @@
       </button>
       <ul [@bodyExpansion]="panel.expanded ? 'expanded' : 'collapsed'">
         <li *ngFor="let item of category.items">
-          <a [routerLink]="item.path">
+          <a [routerLink]="item.path" (click)="updatePageTitle(item)">
             {{item.name}}
           </a>
         </li>

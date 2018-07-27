@@ -15,6 +15,8 @@ import {
   BuscaClienteQuery,
   GET_CLIENTE_COM_ID,
   GetClienteByIdQuery,
+  VALOR_TOTAL_MENSALIDADE_QUERY,
+  ValorMensalidadeQuery,
 } from './cliente.graphql';
 import { Cliente } from '../../models/Cliente';
 
@@ -75,14 +77,25 @@ export class ClienteService {
     );
   }
 
-  getById(id: number): Observable<Cliente> {
+  getById(id: number): Observable<GetClienteByIdQuery> {
     return this.apollo.query<GetClienteByIdQuery>({
       query: GET_CLIENTE_COM_ID,
       variables: {
         id,
       },
     }).pipe(
-      map(res => res.data.getCustomerByID)
+      map(res => res.data)
+    );
+  }
+
+  valorMensalidade(clienteID: number): Observable<number> {
+    return this.apollo.query<ValorMensalidadeQuery>({
+      query: VALOR_TOTAL_MENSALIDADE_QUERY,
+      variables: {
+        clienteID
+      }
+    }).pipe(
+      map(res => +res.data.valorTotalMensalidadeCliente)
     );
   }
 }

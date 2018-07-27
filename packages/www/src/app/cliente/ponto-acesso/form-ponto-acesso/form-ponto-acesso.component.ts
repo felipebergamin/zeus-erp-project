@@ -74,6 +74,7 @@ export class FormPontoAcessoComponent implements OnInit {
     }
 
     this.clienteService.getById(idCliente)
+      .pipe(map(res => res.getCustomerByID))
       .subscribe(cliente => {
         if (!cliente) {
           this.router.navigate(['/', 'cliente', 'pa']);

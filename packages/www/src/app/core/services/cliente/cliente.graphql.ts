@@ -8,6 +8,7 @@ export interface ListarClientes {
 
 export interface GetClienteByIdQuery {
   getCustomerByID: Cliente;
+  valorTotalMensalidadeCliente: number;
 }
 
 export interface ClienteInput {
@@ -50,6 +51,10 @@ export interface CpfAlreadyExistsQuery {
 
 export interface BuscaClienteQuery {
   searchCustomer: Cliente[];
+}
+
+export interface ValorMensalidadeQuery {
+  valorTotalMensalidadeCliente: number;
 }
 
 export const LISTAR_CLIENTES = gql`
@@ -95,6 +100,18 @@ export const GET_CLIENTE_COM_ID = gql`
       _id
       nome
       cpfCnpj
+      diaVencimento
+      contaBancaria {
+        _id
+        nome
+      }
     }
+    valorTotalMensalidadeCliente(clienteID: $id)
+  }
+`;
+
+export const VALOR_TOTAL_MENSALIDADE_QUERY = gql`
+  query valorMensalidade($clienteID: Int!) {
+    valorTotalMensalidadeCliente(clienteID: $clienteID)
   }
 `;
