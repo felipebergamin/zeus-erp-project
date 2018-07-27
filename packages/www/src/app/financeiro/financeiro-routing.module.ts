@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListarContasBancariasComponent } from './conta-bancaria/listar-contas-bancarias/listar-contas-bancarias.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { FormContaBancariaComponent } from './conta-bancaria/form-conta-bancaria/form-conta-bancaria.component';
+import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
     path: 'contasbancarias',
     component: ListarContasBancariasComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'boletos',
+    component: ListarBoletosComponent,
+    canActivate: [ AuthGuard ],
   },
 ];
 

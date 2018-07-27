@@ -15,6 +15,7 @@ import {
 import { FormContaBancariaComponent } from './conta-bancaria/form-conta-bancaria/form-conta-bancaria.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   declarations: [
     ListarContasBancariasComponent,
     FormContaBancariaComponent,
+    ListarBoletosComponent,
   ]
 })
 export class FinanceiroModule { }
