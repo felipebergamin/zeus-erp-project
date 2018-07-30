@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { PontoAcesso } from '../../models/PontoAcesso';
 
 export interface ListaPontosAcesso {
   listarPontosDeAcesso: [{
@@ -43,6 +44,10 @@ export interface LoginExistsQuery {
   loginAlreadyExists: boolean;
 }
 
+export interface PontoAcessoPorClienteQuery {
+  pontoDeAcessoPorCliente: PontoAcesso[];
+}
+
 export const CREATE_PA_MUTATION = gql`
   mutation createPA($input: CreatePontoAcessoInput!) {
     addPontoDeAcesso(input: $input) {
@@ -72,5 +77,20 @@ export const LISTAR_PONTOS_ACESSO = gql`
 export const LOGIN_EXISTS_QUERY = gql`
   query loginExists($login: String!) {
     loginAlreadyExists(login: $login)
+  }
+`;
+
+export const PONTO_ACESSO_POR_CLIENTE_QUERY = gql`
+  query pontoDeAcessoPorCliente($idCliente: Int!) {
+    pontoDeAcessoPorCliente(idCliente: $idCliente) {
+      _id
+      login
+      plano {
+        _id
+        nome
+      }
+      logradouro
+      numero
+    }
   }
 `;

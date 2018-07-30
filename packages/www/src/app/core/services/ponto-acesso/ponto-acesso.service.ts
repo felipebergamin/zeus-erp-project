@@ -7,9 +7,11 @@ import {
   LISTAR_PONTOS_ACESSO,
   LOGIN_EXISTS_QUERY,
   CREATE_PA_MUTATION,
+  PONTO_ACESSO_POR_CLIENTE_QUERY,
   CreatePontoAcessoInput,
   ListaPontosAcesso,
   LoginExistsQuery,
+  PontoAcessoPorClienteQuery,
 } from './ponto-acesso.graphql';
 import { PontoAcesso } from '../../models/PontoAcesso';
 
@@ -50,6 +52,15 @@ export class PontoAcessoService {
       }
     }).pipe(
       map(res => res.data.loginAlreadyExists)
+    );
+  }
+
+  pasDoCliente(idCliente: number): Observable<PontoAcesso[]> {
+    return this.apollo.query<PontoAcessoPorClienteQuery>({
+      query: PONTO_ACESSO_POR_CLIENTE_QUERY,
+      variables: { idCliente },
+    }).pipe(
+      map(res => res.data.pontoDeAcessoPorCliente)
     );
   }
 }
