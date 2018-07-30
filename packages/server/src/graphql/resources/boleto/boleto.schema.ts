@@ -61,10 +61,11 @@ export const boletoTypes = `
 `;
 
 export const boletoQueries = `
-  listarBoletos: [ Boleto! ]!
+  listarBoletos(first: Int, offset: Int): [ Boleto! ]!
   listarBoletosPorCliente(clienteID: Int!): [ Boleto! ]!
   getBoletoComID(id: Int!): Boleto
   pesquisarBoletos(searchVals: PesquisaBoletoInput!): [ Boleto! ]!
+  totalBoletos: Int
 `;
 
 export const boletoMutations = `

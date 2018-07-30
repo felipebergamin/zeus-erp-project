@@ -28,8 +28,15 @@ export const boletoResolvers = {
   },
 
   Query: {
-    listarBoletos: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
-      return context.db.Boleto.findAll();
+    listarBoletos: compose(...authResolvers)((parent, { first = 50, offset = 0 }, context: ResolverContext, info) => {
+      return context.db.Boleto.findAll({
+        limit: first,
+        offset,
+      });
+    }),
+
+    totalBoletos: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
+      return context.db.Boleto.count();
     }),
 
     listarBoletosPorCliente: compose(...authResolvers)((parent, { clienteID }, context: ResolverContext, info) => {
