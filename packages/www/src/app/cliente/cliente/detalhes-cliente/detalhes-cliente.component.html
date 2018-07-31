@@ -5,34 +5,41 @@
 
   <mat-card-content>
 
-    <table mat-table [dataSource]="carnes">
-      <ng-container matColumnDef="menu">
-        <th mat-header-cell *matHeaderCellDef>Opções</th>
-        <td mat-cell *matCellDef="let carne">
-          <button mat-icon-button>
-            <mat-icon aria-label="Options">menu</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    <mat-expansion-panel *ngFor="let carne of carnes">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Carnê {{ carne.descricao }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ carne.boletos.length }} parcelas
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-      <ng-container matColumnDef="idCarne">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell *matCellDef="let carne"> {{ carne._id }} </td>
-      </ng-container>
+      <mat-list>
+        <mat-list-item *ngFor="let boleto of carne.boletos">
+          <small>Nº &nbsp;</small>
+          {{ boleto._id }}
 
-      <ng-container matColumnDef="descricaoCarne">
-        <th mat-header-cell *matHeaderCellDef>Descricao</th>
-        <td mat-cell *matCellDef="let carne"> {{ carne.descricao }} </td>
-      </ng-container>
+          <div class="spacer"></div>
+          <small>Cobrado: &nbsp;</small>
+          {{ boleto.valorCobranca | currency:'BRL' }}
 
-      <ng-container matColumnDef="qtdeParcelasCarne">
-        <th mat-header-cell *matHeaderCellDef>Parcelas</th>
-        <td mat-cell *matCellDef="let carne"> {{ carne.boletos?.length }} </td>
-      </ng-container>
+          <div class="spacer"></div>
+          <small>Pago: &nbsp;</small>
+          {{ boleto.pago ? 'sim' : 'não' }}
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsForCarne"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsForCarne;"></tr>
-    </table>
+          <div class="spacer"></div>
+          <small>Valor Pago: &nbsp;</small>
+          {{ boleto.valorPago | currency:'BRL' }}
+
+          <div class="spacer"></div>
+          <small>Vencimento &nbsp;</small>
+          {{ boleto.dataVencimento | date:'dd/MM/yy' }}
+
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
 
   </mat-card-content>
 

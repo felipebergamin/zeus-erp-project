@@ -61,7 +61,10 @@ export class DetalhesClienteComponent implements OnInit {
 
             this.carneService.listarCarnesPorCliente(this.cliente._id)
               .subscribe(
-                resCarnes => this.carnes = resCarnes
+                resCarnes => {
+                  this.carnes = resCarnes;
+                  console.log(this.carnes);
+                }
               );
           }
         );

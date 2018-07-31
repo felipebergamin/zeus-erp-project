@@ -18,8 +18,9 @@ import {
   MatBottomSheetModule,
   MatListModule,
   MatCardModule,
-  MatTreeModule,
   MatDialogModule,
+  MatExpansionModule,
+  MatDividerModule,
 } from '@angular/material';
 
 import { ClienteRoutingModule } from './cliente-routing.module';
@@ -54,6 +55,8 @@ import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.com
     MatListModule,
     MatCardModule,
     MatDialogModule,
+    MatExpansionModule,
+    MatDividerModule,
   ],
   declarations: [
     ListarClientesComponent,
