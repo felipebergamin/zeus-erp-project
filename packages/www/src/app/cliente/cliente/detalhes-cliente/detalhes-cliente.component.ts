@@ -10,6 +10,8 @@ import { ComponentPageTitle } from '../../../shared/page-title/page-title';
 import { LancarBoletoComponent } from '../lancar-boleto/lancar-boleto.component';
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-acesso.service';
+import { CarneService } from '../../../core/services/carne/carne.service';
+import { Carne } from '../../../core/models/Carne';
 
 @Component({
   selector: 'app-detalhes-cliente',
@@ -19,9 +21,11 @@ import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-ac
 export class DetalhesClienteComponent implements OnInit {
   displayedColumns = ['menu', 'numero', 'valor', 'vencimento'];
   displayedColumnsForPAs = ['paMenu', 'paLogin', 'paPlano', 'paEndereco'];
+  displayedColumnsForCarne = ['menu', 'descricaoCarne', 'idCarne', 'qtdeParcelasCarne'];
   cliente: Cliente;
   boletos: Boleto[] = [];
   pontosAcesso: PontoAcesso[] = [];
+  carnes: Carne[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -30,6 +34,7 @@ export class DetalhesClienteComponent implements OnInit {
     public pageTitle: ComponentPageTitle,
     private dialog: MatDialog,
     private paService: PontoAcessoService,
+    private carneService: CarneService,
   ) { }
 
   ngOnInit() {
@@ -52,6 +57,11 @@ export class DetalhesClienteComponent implements OnInit {
             this.paService.pasDoCliente(this.cliente._id)
               .subscribe(
                 resPAs => this.pontosAcesso = resPAs
+              );
+
+            this.carneService.listarCarnesPorCliente(this.cliente._id)
+              .subscribe(
+                resCarnes => this.carnes = resCarnes
               );
           }
         );
