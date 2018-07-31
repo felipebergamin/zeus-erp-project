@@ -1,4 +1,8 @@
+import { Promise } from 'bluebird';
+import * as moment from 'moment';
+
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
+import { BoletoInstance } from '../../../models/BoletoModel';
 import { CarneInstance } from "../../../models/CarneModel";
 import { throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
@@ -34,8 +38,55 @@ export const carneResolvers = {
 
   Mutation: {
     addCarne: compose(...authResolvers)((parent, { input }, context: ResolverContext, info) => {
+
       return context.db.sequelize.transaction((transaction) => {
-        return context.db.Carne.create(input, { transaction });
+        const {
+          cliente,
+          descricao,
+          parcelas,
+          valorParcelas,
+          primeiroVencimento,
+        } = input;
+
+        return context.db.Cliente.findById(cliente)
+          .then((clienteInstance) => {
+            const inicioCarne = moment(primeiroVencimento);
+
+            // verifica se a data de inicio do carnê é válida
+            if (!inicioCarne.isValid()) {
+              throw new Error('A data de início informada é inválida!');
+            }
+
+            return context.db.Carne.create({
+              cliente,
+              descricao,
+            }, { transaction })
+              .then(
+                (carne) => {
+                  const promises = [];
+
+                  // cria um loop que gera todos os boletos do carne
+                  for (let i = 0; i < parcelas; i++ , inicioCarne.add(1, 'month')) {
+                    promises.push(
+                      context.db.Boleto.create({
+                        carne: carne.get('_id'),
+                        cliente,
+                        contaBancaria: clienteInstance.get('contaBancaria'),
+                        // se o dia de vencimento é em um domingo,
+                        // joga para a segunda
+                        dataVencimento: (inicioCarne.day() === 0) ? inicioCarne.clone().add(1, 'day').toDate() : inicioCarne.toDate(),
+                        valorCobranca: valorParcelas,
+                      }, { transaction })
+                    );
+                  }
+
+                  return Promise.all(promises)
+                    .then((boletos: BoletoInstance[]) => {
+                      return carne;
+                    });
+                }
+              );
+          });
       });
     }),
 

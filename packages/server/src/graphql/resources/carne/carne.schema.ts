@@ -11,7 +11,7 @@ export const carneTypes = `
     descricao: String!
 
     parcelas: Int
-    valorParcelas: Int
+    valorParcelas: Float
     primeiroVencimento: String
   }
 `;

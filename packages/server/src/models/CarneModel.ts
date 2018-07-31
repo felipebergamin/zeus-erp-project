@@ -6,7 +6,7 @@ import { ModelsInterface } from '../interfaces/ModelsInterface';
 export interface CarneAttributes {
   cliente: number;
   descricao: string;
-  _id: number;
+  _id?: number;
 }
 
 export interface CarneInstance extends Sequelize.Instance<CarneAttributes> {
