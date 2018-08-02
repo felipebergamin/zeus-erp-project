@@ -6,7 +6,6 @@ import { ModelsInterface } from '../interfaces/ModelsInterface';
 
 export interface UsuarioAttributes {
   _id?: number;
-  ativo?: boolean;
   email?: string;
   login?: string;
   nome?: string;

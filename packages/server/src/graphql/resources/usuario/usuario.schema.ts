@@ -1,7 +1,6 @@
 export const usuarioTypes = `
   type Usuario {
     _id: ID!
-    ativo: Boolean!
     email: String!
     login: String!
     nome: String!
@@ -15,7 +14,6 @@ export const usuarioTypes = `
   }
 
   input UsuarioInput {
-    ativo: Boolean
     email: String
     login: String
     nome: String
@@ -27,7 +25,8 @@ export const usuarioTypes = `
 `;
 
 export const usuarioQueries = `
-  listUsers(first: Int, offset: Int, excluded: Boolean): [ Usuario! ]!
+  listUsers(first: Int, offset: Int): [ Usuario! ]!
+  totalUsers: Int
 `;
 
 export const usuarioMutations = `
