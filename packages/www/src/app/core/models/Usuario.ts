@@ -1,10 +1,12 @@
+import { PerfilUsuario } from './PerfilUsuario';
+
 export class Usuario {
   _id?: number;
   email?: string;
   login?: string;
   nome?: string;
   passwd?: string;
-  perfil?: number;
+  perfil?: PerfilUsuario;
   telegramID?: string;
   tipo?: string;
 

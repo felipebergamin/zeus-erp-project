@@ -79,6 +79,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Usuários',
         path: '/sistema/usuarios',
       },
+      {
+        name: 'Perfil de Usuário',
+        path: '/sistema/perfilusuario',
+      },
     ]
   },
 ];

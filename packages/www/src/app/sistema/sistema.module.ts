@@ -9,6 +9,7 @@ import {
   MatButtonModule,
   MatIconModule,
 } from '@angular/material';
+import { ListarPerfisUsuarioComponent } from './perfil-usuario/listar-perfis-usuario/listar-perfis-usuario.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import {
     MatButtonModule,
     MatIconModule,
   ],
-  declarations: [ListarUsuariosComponent]
+  declarations: [ListarUsuariosComponent, ListarPerfisUsuarioComponent]
 })
 export class SistemaModule { }
