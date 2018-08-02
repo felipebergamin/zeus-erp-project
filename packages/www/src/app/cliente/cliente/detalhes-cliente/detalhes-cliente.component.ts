@@ -12,6 +12,7 @@ import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-acesso.service';
 import { CarneService } from '../../../core/services/carne/carne.service';
 import { Carne } from '../../../core/models/Carne';
+import { LancarCarneComponent } from '../lancar-carne/lancar-carne.component';
 
 @Component({
   selector: 'app-detalhes-cliente',
@@ -81,6 +82,18 @@ export class DetalhesClienteComponent implements OnInit {
         }
       }
     );
+  }
+
+  novoCarne(cliente: Cliente) {
+    this.dialog.open(LancarCarneComponent, {
+      data: { cliente }
+    }).afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.carnes = [result, ...this.carnes];
+        }
+      }
+    )
   }
 
 }

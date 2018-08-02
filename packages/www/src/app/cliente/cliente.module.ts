@@ -32,6 +32,7 @@ import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
 import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.component';
+import { LancarCarneComponent } from './cliente/lancar-carne/lancar-carne.component';
 
 @NgModule({
   imports: [
@@ -66,10 +67,12 @@ import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.com
     ClienteActionSheetComponent,
     DetalhesClienteComponent,
     LancarBoletoComponent,
+    LancarCarneComponent,
   ],
   entryComponents: [
     ClienteActionSheetComponent,
     LancarBoletoComponent,
+    LancarCarneComponent,
   ],
   providers: [
     {

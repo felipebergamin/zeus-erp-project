@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <div fxLayout="column">
+
+    <mat-form-field>
+      <input matInput placeholder="Descrição" formControlName="descricao">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Qtde Parcelas" formControlName="parcelas">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Valor Parcelas" formControlName="valorParcelas">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="datePickerPrimeiroVencimento" [min]="today" placeholder="Primeiro Vencimento" formControlName="primeiroVencimento">
+      <mat-datepicker-toggle matSuffix [for]="datePickerPrimeiroVencimento"></mat-datepicker-toggle>
+      <mat-datepicker #datePickerPrimeiroVencimento></mat-datepicker>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button type="button" mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-stroked-button>Ok</button>
+    </div>
+
+  </div>
+</form>
