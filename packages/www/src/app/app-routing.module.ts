@@ -22,6 +22,11 @@ const routes: Routes = [
     loadChildren: 'src/app/financeiro/financeiro.module#FinanceiroModule',
     canLoad: [ AuthGuard ],
   },
+  {
+    path: 'sistema',
+    loadChildren: 'src/app/sistema/sistema.module#SistemaModule',
+    canLoad: [ AuthGuard ],
+  },
 ];
 
 @NgModule({
