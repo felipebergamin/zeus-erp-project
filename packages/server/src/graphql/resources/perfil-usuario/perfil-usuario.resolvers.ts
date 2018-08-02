@@ -8,9 +8,16 @@ import { compose } from "../../composable/composable.resolver";
 export const perfilUsuarioResolvers = {
 
   Query: {
-    listUserProfiles: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
-      return context.db.PerfilUsuario.findAll();
-    })
+    listarPerfisUsuario: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
+      return context.db.PerfilUsuario.findAll({
+        limit: first,
+        offset,
+      });
+    }),
+
+    totalPerfisUsuario: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
+      return context.db.PerfilUsuario.count();
+    }),
   },
 
   Mutation: {
