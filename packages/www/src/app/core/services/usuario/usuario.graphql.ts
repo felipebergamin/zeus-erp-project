@@ -6,6 +6,16 @@ export interface ListarUsuariosQuery {
   totalUsers: number;
 }
 
+export interface CriarUsuarioInput {
+  email: string;
+  login: string;
+  nome: string;
+  passwd: string;
+  perfil: number;
+  telegramID?: string;
+  tipo: string;
+}
+
 export const LISTAR_USUARIOS_QUERY = gql`
   query listarUsuarios($first:Int, $offset:Int) {
     listUsers(first:$first, offset:$offset) {
@@ -19,5 +29,14 @@ export const LISTAR_USUARIOS_QUERY = gql`
       }
     }
     totalUsers
+  }
+`;
+
+export const CRIAR_USUARIO_MUTATION = gql`
+  mutation addusuario($input: UsuarioInput!) {
+    createUser(input: $input) {
+      _id
+      createdAt
+    }
   }
 `;

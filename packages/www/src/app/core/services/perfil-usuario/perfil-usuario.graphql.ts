@@ -7,8 +7,8 @@ export interface ListarPerfisUsuarioQuery {
 }
 
 export const LISTAR_PERFIS_USUARIO_QUERY = gql`
-  query listarPerfis($first: Int, $offset: Int) {
-    listarPerfisUsuario(first: $first, offset: $offset) {
+  query listarPerfis($first: Int, $offset: Int, $nopaginate: Boolean) {
+    listarPerfisUsuario(first: $first, offset: $offset, nopaginate: $nopaginate) {
       _id
       nome
       createdAt

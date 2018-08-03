@@ -80,6 +80,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/sistema/usuarios',
       },
       {
+        name: 'Novo Usuário',
+        path: '/sistema/usuarios/add',
+      },
+      {
         name: 'Perfil de Usuário',
         path: '/sistema/perfilusuario',
       },

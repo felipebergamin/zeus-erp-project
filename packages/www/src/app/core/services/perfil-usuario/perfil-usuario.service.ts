@@ -12,7 +12,7 @@ export class PerfilUsuarioService {
 
   constructor(private apollo: Apollo) { }
 
-  listar(variables: { first?: number, offset?: number } = {}): Observable<ListarPerfisUsuarioQuery> {
+  listar(variables: { first?: number, offset?: number, nopaginate?: boolean } = {}): Observable<ListarPerfisUsuarioQuery> {
     return this.apollo.query<ListarPerfisUsuarioQuery>({
       query: LISTAR_PERFIS_USUARIO_QUERY,
       variables,
