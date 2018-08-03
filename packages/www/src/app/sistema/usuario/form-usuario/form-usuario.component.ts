@@ -1,31 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { PerfilUsuarioService } from '../../../core/services/perfil-usuario/perfil-usuario.service';
 import { PerfilUsuario } from '../../../core/models/PerfilUsuario';
 import { valueIn } from '../../../form-validators/value-in';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
+import { ActivatedRoute } from '../../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-form-usuario',
   templateUrl: './form-usuario.component.html',
   styleUrls: ['./form-usuario.component.scss']
 })
-export class FormUsuarioComponent implements OnInit, OnDestroy {
+export class FormUsuarioComponent implements OnInit {
   form: FormGroup;
   tiposUsuario = [ 'tecnico', 'gerente', 'atendente', 'desenvolvedor', 'outro' ];
-  listaPerfis$ = new BehaviorSubject<PerfilUsuario[]>([]);
+  listaPerfis: PerfilUsuario[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private perfilService: PerfilUsuarioService,
     private usuarioService: UsuarioService,
     private snackbar: MatSnackBar,
     private location: Location,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -39,13 +37,9 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
       tipo: [null, [Validators.required, valueIn(this.tiposUsuario)]],
     });
 
-    this.perfilService.listar({ nopaginate: true })
-      .pipe(map(res => res.listarPerfisUsuario))
-      .subscribe(this.listaPerfis$);
-  }
-
-  ngOnDestroy() {
-    this.listaPerfis$.complete();
+    this.route.data.subscribe(
+      data => this.listaPerfis = data.listaPerfis
+    );
   }
 
   onFormSubmit() {

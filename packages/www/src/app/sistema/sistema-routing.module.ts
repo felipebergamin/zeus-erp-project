@@ -5,12 +5,16 @@ import { AuthGuard } from '../auth/auth.guard';
 import { ListarPerfisUsuarioComponent } from './perfil-usuario/listar-perfis-usuario/listar-perfis-usuario.component';
 import { FormUsuarioComponent } from './usuario/form-usuario/form-usuario.component';
 import { FormPerfilUsuarioComponent } from './perfil-usuario/form-perfil-usuario/form-perfil-usuario.component';
+import { ListaPerfisUsuarioResolver } from '../core/services/perfil-usuario/lista-perfis-usuario-resolver.service';
 
 const routes: Routes = [
   {
     path: 'usuarios/add',
     component: FormUsuarioComponent,
     canActivate: [ AuthGuard ],
+    resolve: {
+      listaPerfis: ListaPerfisUsuarioResolver,
+    }
   },
   {
     path: 'usuarios',

@@ -37,7 +37,7 @@
 
         <mat-form-field fxFlex="40%">
           <mat-select placeholder="Perfil do Usuário" formControlName="perfil">
-            <mat-option *ngFor="let perfil of listaPerfis$ | async" [value]="perfil._id">
+            <mat-option *ngFor="let perfil of listaPerfis" [value]="perfil._id">
               {{ perfil.nome }}
             </mat-option>
           </mat-select>
