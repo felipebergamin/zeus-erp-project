@@ -6,6 +6,9 @@ export interface PerfilUsuarioAttributes {
   _id: number;
   nome: string;
 
+  leitura: boolean;
+  escrita: boolean;
+
   alterarClientes: boolean;
   bloquearClientes: boolean;
   criarClientes: boolean;
@@ -17,8 +20,7 @@ export interface PerfilUsuarioAttributes {
   criarBoletos: boolean;
   gerarRemessa: boolean;
   importarRetorno: boolean;
-  receberBoletos: boolean;
-  removerBoletos: boolean;
+  pedirBaixaBoleto: boolean;
   visualizarBoletos: boolean;
 
   alterarUsuarios: boolean;
@@ -36,6 +38,7 @@ export interface PerfilUsuarioAttributes {
   alterarInstalacao: boolean;
   cancelarInstalacao: boolean;
   visualizarInstalacao: boolean;
+  finalizarInstalacao: boolean;
 
   acessaAppTecnico: boolean;
   acessoTelegram: boolean;
@@ -58,6 +61,15 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     nome: {
       allowNull: false,
       type: dataTypes.STRING,
+    },
+
+    leitura: {
+      defaultValue: false,
+      type: dataTypes.BOOLEAN,
+    },
+    escrita: {
+      defaultValue: false,
+      type: dataTypes.BOOLEAN,
     },
 
     alterarClientes: {
@@ -101,11 +113,7 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },
-    receberBoletos: {
-      defaultValue: false,
-      type: dataTypes.BOOLEAN,
-    },
-    removerBoletos: {
+    pedirBaixaBoleto: {
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },
@@ -165,6 +173,10 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.BOOLEAN,
     },
     visualizarInstalacao: {
+      defaultValue: false,
+      type: dataTypes.BOOLEAN,
+    },
+    finalizarInstalacao: {
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },

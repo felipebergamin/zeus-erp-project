@@ -4,6 +4,9 @@ export const perfilTypes = `
     _id: ID!
     nome: String!
 
+    leitura: Boolean!
+    escrita: Boolean!
+
     alterarClientes: Boolean!
     bloquearClientes: Boolean!
     criarClientes: Boolean!
@@ -16,24 +19,25 @@ export const perfilTypes = `
     gerarRemessa: Boolean!
     importarRetorno: Boolean!
     receberBoletos: Boolean!
-    removerBoletos: Boolean!
     visualizarBoletos: Boolean!
-
+    pedirBaixaBoleto: Boolean!
+    
     alterarUsuarios: Boolean!
     criarUsuarios: Boolean!
     removerUsuarios: Boolean!
     visualizarUsuarios: Boolean!
-
+    
     abrirChamadoTecnico: Boolean!
     alterarChamadoTecnico: Boolean!
     cancelarChamadoTecnico: Boolean!
     fecharChamadoTecnico: Boolean!
     visualizarChamados: Boolean!
-
+    
     abrirInstalacao: Boolean!
     alterarInstalacao: Boolean!
     cancelarInstalacao: Boolean!
     visualizarInstalacao: Boolean!
+    finalizarInstalacao: Boolean!
 
     acessaAppTecnico: Boolean!
     acessoTelegram: Boolean!
@@ -47,6 +51,9 @@ export const perfilTypes = `
   input PerfilUsuarioInput {
     nome: String!
 
+    leitura: Boolean!
+    escrita: Boolean!
+
     alterarClientes: Boolean!
     bloquearClientes: Boolean!
     criarClientes: Boolean!
@@ -58,9 +65,8 @@ export const perfilTypes = `
     criarBoletos: Boolean!
     gerarRemessa: Boolean!
     importarRetorno: Boolean!
-    receberBoletos: Boolean!
-    removerBoletos: Boolean!
     visualizarBoletos: Boolean!
+    pedirBaixaBoleto: Boolean!
 
     alterarUsuarios: Boolean!
     criarUsuarios: Boolean!
@@ -77,6 +83,7 @@ export const perfilTypes = `
     alterarInstalacao: Boolean!
     cancelarInstalacao: Boolean!
     visualizarInstalacao: Boolean!
+    finalizarInstalacao: Boolean!
 
     acessaAppTecnico: Boolean!
     acessoTelegram: Boolean!
