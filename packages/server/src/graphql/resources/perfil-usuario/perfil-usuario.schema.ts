@@ -86,7 +86,7 @@ export const perfilTypes = `
 `;
 
 export const perfilQueries = `
-  listarPerfisUsuario(first: Int, offset: Int): [ PerfilUsuario! ]!
+  listarPerfisUsuario(first: Int, offset: Int, nopaginate: Boolean): [ PerfilUsuario! ]!
   totalPerfisUsuario: Int
 `;
 

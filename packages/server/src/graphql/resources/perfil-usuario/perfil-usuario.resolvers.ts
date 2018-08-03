@@ -8,11 +8,17 @@ import { compose } from "../../composable/composable.resolver";
 export const perfilUsuarioResolvers = {
 
   Query: {
-    listarPerfisUsuario: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
-      return context.db.PerfilUsuario.findAll({
-        limit: first,
-        offset,
-      });
+    listarPerfisUsuario: compose(...authResolvers)((parent, { first = 10, offset = 0, nopaginate = false }, context: ResolverContext, info) => {
+      return nopaginate ?
+        context.db.PerfilUsuario.findAll({
+          limit: first,
+          offset,
+          paranoid: !nopaginate,
+        }) :
+        context.db.PerfilUsuario.findAll({
+          limit: first,
+          offset,
+        });
     }),
 
     totalPerfisUsuario: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
