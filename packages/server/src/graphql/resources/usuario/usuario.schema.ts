@@ -14,13 +14,13 @@ export const usuarioTypes = `
   }
 
   input UsuarioInput {
-    email: String
-    login: String
-    nome: String
-    passwd: String
+    email: String!
+    login: String!
+    nome: String!
+    passwd: String!
     perfil: Int!
     telegramID: String
-    tipo: String
+    tipo: String!
   }
 `;
 
