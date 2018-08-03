@@ -11,12 +11,15 @@ import {
   MatFormFieldModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatTabsModule,
+  MatSlideToggleModule,
 } from '@angular/material';
 
 import { SistemaRoutingModule } from './sistema-routing.module';
 import { ListarUsuariosComponent } from './usuario/listar-usuarios/listar-usuarios.component';
 import { ListarPerfisUsuarioComponent } from './perfil-usuario/listar-perfis-usuario/listar-perfis-usuario.component';
 import { FormUsuarioComponent } from './usuario/form-usuario/form-usuario.component';
+import { FormPerfilUsuarioComponent } from './perfil-usuario/form-perfil-usuario/form-perfil-usuario.component';
 
 @NgModule({
   imports: [
@@ -32,7 +35,9 @@ import { FormUsuarioComponent } from './usuario/form-usuario/form-usuario.compon
     MatFormFieldModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTabsModule,
+    MatSlideToggleModule,
   ],
-  declarations: [ListarUsuariosComponent, ListarPerfisUsuarioComponent, FormUsuarioComponent]
+  declarations: [ListarUsuariosComponent, ListarPerfisUsuarioComponent, FormUsuarioComponent, FormPerfilUsuarioComponent]
 })
 export class SistemaModule { }

@@ -2,6 +2,9 @@ export interface PerfilUsuario {
   _id?: number;
   nome?: string;
 
+  leitura: boolean;
+  escrita: boolean;
+
   alterarClientes?: boolean;
   bloquearClientes?: boolean;
   criarClientes?: boolean;
@@ -13,8 +16,7 @@ export interface PerfilUsuario {
   criarBoletos?: boolean;
   gerarRemessa?: boolean;
   importarRetorno?: boolean;
-  receberBoletos?: boolean;
-  removerBoletos?: boolean;
+  pedirBaixaBoleto?: boolean;
   visualizarBoletos?: boolean;
 
   alterarUsuarios?: boolean;
@@ -32,6 +34,7 @@ export interface PerfilUsuario {
   alterarInstalacao?: boolean;
   cancelarInstalacao?: boolean;
   visualizarInstalacao?: boolean;
+  finalizarInstalacao?: boolean;
 
   acessaAppTecnico?: boolean;
   acessoTelegram?: boolean;

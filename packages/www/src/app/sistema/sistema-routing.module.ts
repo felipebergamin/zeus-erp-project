@@ -4,6 +4,7 @@ import { ListarUsuariosComponent } from './usuario/listar-usuarios/listar-usuari
 import { AuthGuard } from '../auth/auth.guard';
 import { ListarPerfisUsuarioComponent } from './perfil-usuario/listar-perfis-usuario/listar-perfis-usuario.component';
 import { FormUsuarioComponent } from './usuario/form-usuario/form-usuario.component';
+import { FormPerfilUsuarioComponent } from './perfil-usuario/form-perfil-usuario/form-perfil-usuario.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'usuarios',
     component: ListarUsuariosComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'perfilusuario/add',
+    component: FormPerfilUsuarioComponent,
     canActivate: [ AuthGuard ],
   },
   {

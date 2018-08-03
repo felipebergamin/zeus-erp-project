@@ -87,6 +87,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Perfil de Usuário',
         path: '/sistema/perfilusuario',
       },
+      {
+        name: 'Novo Perfil de Usuário',
+        path: '/sistema/perfilusuario/add'
+      }
     ]
   },
 ];
