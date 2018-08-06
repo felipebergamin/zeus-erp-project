@@ -4,6 +4,9 @@ export const problemaChamadoTypes = `
     descricao: String!
     geraCobranca: Boolean!
     valorCobrado: Float
+
+    createdAt: String
+    updatedAt: String
   }
 
   input ProblemaChamadoInput {

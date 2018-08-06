@@ -7,6 +7,9 @@ export interface ProblemaChamadoAttributes {
   descricao?: string;
   geraCobranca?: boolean;
   valorCobrado?: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ProblemaChamadoInstance extends Sequelize.Instance<ProblemaChamadoAttributes> {}
