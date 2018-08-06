@@ -27,6 +27,11 @@ const routes: Routes = [
     loadChildren: 'src/app/sistema/sistema.module#SistemaModule',
     canLoad: [ AuthGuard ],
   },
+  {
+    path: 'suporte',
+    loadChildren: 'src/app/suporte/suporte.module#SuporteModule',
+    canLoad: [ AuthGuard ],
+  },
 ];
 
 @NgModule({
