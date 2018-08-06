@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ProblemaChamadoInput, ADD_PROBLEMA_CHAMADO_MUTATION } from './problema-chamado.graphql';
+import { ProblemaChamadoInput, ADD_PROBLEMA_CHAMADO_MUTATION, ListarProblemasChamadoQuery, LISTAR_PROBLEMAS_CHAMADO_QUERY } from './problema-chamado.graphql';
 import { ProblemaChamado } from '../../models/ProblemaChamado';
 
 @Injectable({
@@ -19,6 +19,15 @@ export class ProblemaChamadoService {
       variables: { input },
     }).pipe(
       map(res => res.data.addProblemaChamado)
+    );
+  }
+
+  listar(variables?: { first: number, offset: number }): Observable<ListarProblemasChamadoQuery> {
+    return this.apollo.query<ListarProblemasChamadoQuery>({
+      query: LISTAR_PROBLEMAS_CHAMADO_QUERY,
+      variables,
+    }).pipe(
+      map(res => res.data)
     );
   }
 }

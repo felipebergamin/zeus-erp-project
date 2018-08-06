@@ -1,0 +1,42 @@
+<div class="mat-elevation-z6">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="menu">
+      <th mat-header-cell *matHeaderCellDef>Opções</th>
+      <td mat-cell *matCellDef="let problema">
+        <button mat-icon-button>
+          <mat-icon aria-label="Options">menu</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let problema"> {{ problema._id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descricao">
+      <th mat-header-cell *matHeaderCellDef>Descrição</th>
+      <td mat-cell *matCellDef="let problema"> {{ problema.descricao }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="geraCobranca">
+      <th mat-header-cell *matHeaderCellDef>Gera Cobrança</th>
+      <td mat-cell *matCellDef="let problema"> {{ problema.geraCobranca ? 'Sim' : 'Não' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valorCobrado">
+      <th mat-header-cell *matHeaderCellDef>Valor Cobrado</th>
+      <td mat-cell *matCellDef="let problema"> {{ problema.valorCobrado | currency:'BRL' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="criadoEm">
+      <th mat-header-cell *matHeaderCellDef>Data Cadastro</th>
+      <td mat-cell *matCellDef="let problema"> {{ problema.createdAt | date:'dd/MM/yyyy HH:mm' }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
+</div>

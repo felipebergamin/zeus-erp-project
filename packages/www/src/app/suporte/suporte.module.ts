@@ -9,10 +9,13 @@ import {
   MatCheckboxModule,
   MatIconModule,
   MatSnackBarModule,
+  MatTableModule,
+  MatPaginatorModule,
 } from '@angular/material';
 
 import { SuporteRoutingModule } from './suporte-routing.module';
 import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-chamado/form-problema-chamado.component';
+import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
 
 @NgModule({
   imports: [
@@ -26,7 +29,9 @@ import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-c
     MatCheckboxModule,
     MatIconModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
-  declarations: [FormProblemaChamadoComponent]
+  declarations: [FormProblemaChamadoComponent, ListarProblemasChamadoComponent]
 })
 export class SuporteModule { }
