@@ -9,6 +9,7 @@ import { ListarClientesComponent } from './cliente/listar-clientes/listar-client
 import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
+import { ListaContasBancariasResolver } from '../core/services/conta-bancaria/lista-contas-bancarias-resolver.service';
 
 const routes: Routes = [
   {
@@ -20,6 +21,9 @@ const routes: Routes = [
     path: 'add',
     component: FormClienteComponent,
     canActivate: [ AuthGuard ],
+    resolve: {
+      contasBancarias: ListaContasBancariasResolver,
+    },
   },
   {
     path: 'detalhe/:clienteID',

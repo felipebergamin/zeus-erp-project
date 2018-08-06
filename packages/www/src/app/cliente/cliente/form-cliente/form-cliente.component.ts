@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 import { ClienteService } from '../../../core/services/cliente/cliente.service';
-import { ContaBancariaService } from '../../../core/services/conta-bancaria/conta-bancaria.service';
 import { ContaBancaria } from '../../../core/models/ContaBancaria';
 import { CPFCNPJValidator } from '../../../form-validators/cpf-cnpj-validator';
 import { valueIn } from '../../../form-validators/value-in';
@@ -21,16 +21,13 @@ export class FormClienteComponent implements OnInit {
 
   constructor(
     private clienteService: ClienteService,
-    private contaBancariaService: ContaBancariaService,
     private fb: FormBuilder,
     private snackbar: MatSnackBar,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.contaBancariaService.list({ nopaginate: true })
-      .subscribe((res) => this.contasBancarias = res.listBankAccounts);
-
     this.form = this.fb.group({
       cpfCnpj: [null, [Validators.required, Validators.minLength(11)], CpfCnpjAlreadyExists(this.clienteService)],
       dataNascimento: [null, Validators.required],
@@ -58,6 +55,10 @@ export class FormClienteComponent implements OnInit {
       diaVencimento: [10, [Validators.required, valueIn([10, 20, 30])]],
       observacoes: [null],
     }, { validator: CPFCNPJValidator });
+
+    this.route.data.subscribe(
+      data => this.contasBancarias = data.contasBancarias
+    );
   }
 
   onFormSubmit() {
