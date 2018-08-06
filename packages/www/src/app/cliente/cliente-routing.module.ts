@@ -14,6 +14,9 @@ import { ListaPlanosResolver } from '../core/services/plano/lista-planos-resolve
 import { ListaIpPoolResolver } from '../core/services/ip-pool/lista-ip-pool-resolver.service';
 import { ListaOltResolver } from '../core/services/olt/lista-olt-resolver.service';
 import { ClienteByIdResolver } from '../core/services/cliente/cliente-by-id-resolver.service';
+import { BoletosPorClienteResolver } from '../core/services/boleto/boletos-por-cliente-resolver.service';
+import { PontosAcessoPorClienteResolver } from '../core/services/ponto-acesso/pontos-acesso-por-cliente-resolver.service';
+import { CarnesPorClienteResolver } from '../core/services/carne/carnes-por-cliente-resolver.service';
 
 const routes: Routes = [
   {
@@ -30,9 +33,15 @@ const routes: Routes = [
     },
   },
   {
-    path: 'detalhe/:clienteID',
+    path: 'detalhe/:cliente',
     component: DetalhesClienteComponent,
     canActivate: [ AuthGuard ],
+    resolve: {
+      cliente: ClienteByIdResolver,
+      boletos: BoletosPorClienteResolver,
+      pontosAcesso: PontosAcessoPorClienteResolver,
+      carnes: CarnesPorClienteResolver,
+    }
   },
   {
     path: 'pa/novo/:cliente',
