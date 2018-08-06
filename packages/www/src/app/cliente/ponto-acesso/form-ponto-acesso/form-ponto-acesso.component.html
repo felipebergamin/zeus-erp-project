@@ -21,7 +21,7 @@
       <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="start center">
         <mat-form-field fxFlex="20%">
           <mat-select placeholder="Plano" formControlName="plano">
-            <mat-option *ngFor="let plano of listaPlanos$ | async" [value]="plano._id">
+            <mat-option *ngFor="let plano of listaPlanos" [value]="plano._id">
               {{ plano.nome }}
             </mat-option>
           </mat-select>
@@ -29,7 +29,7 @@
 
         <mat-form-field fxFlex="20%">
           <mat-select placeholder="IP Pool" formControlName="pool">
-            <mat-option *ngFor="let pool of listaPools$ | async" [value]="pool._id">
+            <mat-option *ngFor="let pool of listaPools" [value]="pool._id">
               {{ pool.nome }}
             </mat-option>
           </mat-select>
@@ -49,7 +49,7 @@
       <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="center center">
         <mat-form-field fxFlex="25%">
           <mat-select placeholder="OLT" formControlName="olt">
-            <mat-option *ngFor="let olt of listaOlts$ | async" [value]="olt._id">
+            <mat-option *ngFor="let olt of listaOlts" [value]="olt._id">
               {{ olt.nome }}
             </mat-option>
           </mat-select>

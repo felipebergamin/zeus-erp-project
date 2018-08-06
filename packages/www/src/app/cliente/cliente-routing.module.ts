@@ -10,6 +10,10 @@ import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
 import { ListaContasBancariasResolver } from '../core/services/conta-bancaria/lista-contas-bancarias-resolver.service';
+import { ListaPlanosResolver } from '../core/services/plano/lista-planos-resolver.service';
+import { ListaIpPoolResolver } from '../core/services/ip-pool/lista-ip-pool-resolver.service';
+import { ListaOltResolver } from '../core/services/olt/lista-olt-resolver.service';
+import { ClienteByIdResolver } from '../core/services/cliente/cliente-by-id-resolver.service';
 
 const routes: Routes = [
   {
@@ -34,6 +38,12 @@ const routes: Routes = [
     path: 'pa/novo/:cliente',
     component: FormPontoAcessoComponent,
     canActivate: [ AuthGuard ],
+    resolve: {
+      listaPlanos: ListaPlanosResolver,
+      listaPools: ListaIpPoolResolver,
+      listaOlts: ListaOltResolver,
+      cliente: ClienteByIdResolver,
+    },
   },
   {
     path: 'pa',

@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
-import { ClienteService } from '../../../core/services/cliente/cliente.service';
 import { Cliente } from '../../../core/models/Cliente';
-import { PlanoService } from '../../../core/services/plano/plano.service';
 import { Plano } from '../../../core/models/Plano';
-import { IpPoolService } from '../../../core/services/ip-pool/ip-pool.service';
 import { IPPool } from '../../../core/models/IPPool';
 import { OLT } from '../../../core/models/OLT';
-import { OltService } from '../../../core/services/olt/olt.service';
 import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-acesso.service';
 
 @Component({
@@ -24,20 +20,16 @@ export class FormPontoAcessoComponent implements OnInit {
   form: FormGroup;
   cliente: Cliente;
 
-  listaPlanos$: Observable<Plano[]>;
-  listaPools$: Observable<IPPool[]>;
-  listaOlts$: Observable<OLT[]>;
+  listaPlanos: Plano[];
+  listaPools: IPPool[];
+  listaOlts: OLT[];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private clienteService: ClienteService,
-    private planoService: PlanoService,
-    private poolService: IpPoolService,
-    private oltService: OltService,
     private pontoAcessoService: PontoAcessoService,
     private fb: FormBuilder,
     private snackbar: MatSnackBar,
-    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -68,39 +60,33 @@ export class FormPontoAcessoComponent implements OnInit {
       cliente: [null, Validators.required],
     });
 
-    const idCliente = +this.activatedRoute.snapshot.paramMap.get('cliente');
-    if (isNaN(idCliente)) {
-      this.router.navigate(['/', 'cliente', 'pa']);
-    }
-
-    this.clienteService.getById(idCliente)
-      .pipe(map(res => res.getCustomerByID))
-      .subscribe(cliente => {
-        if (!cliente) {
-          this.router.navigate(['/', 'cliente', 'pa']);
-        }
-
-        this.form.patchValue({ cliente: cliente._id });
+    this.route.data.subscribe(
+      ({ cliente, listaPlanos, listaPools, listaOlts }) => {
+        this.listaPlanos = listaPlanos;
+        this.listaPools = listaPools;
+        this.listaOlts = listaOlts;
         this.cliente = cliente;
 
-        this.listaOlts$ = this.oltService.listar({ nopaginate: true }).pipe(map(res => res.listarOLTs));
-        this.listaPlanos$ = this.planoService.listar({ nopaginate: true }).pipe(map(res => res.listarPlanos));
-        this.listaPools$ = this.poolService.listar({ nopaginate: true }).pipe(map(res => res.listarIPPools));
+        if (!cliente) {
+          this.snackbar.open(`Erro, cliente não encontrado`, 'Ok');
+          this.location.back();
+        }
+      }
+    );
 
-        this.form.get('login').valueChanges
-          .pipe(debounceTime(600))
-          .subscribe(typedLogin => {
-            if (!typedLogin) { return null; }
+    this.form.get('login').valueChanges
+      .pipe(debounceTime(600))
+      .subscribe(typedLogin => {
+        if (!typedLogin) { return null; }
 
-            this.pontoAcessoService.loginAlreadyExists(typedLogin)
-              .subscribe(exists => {
+        this.pontoAcessoService.loginAlreadyExists(typedLogin)
+          .subscribe(exists => {
 
-                if (exists) {
-                  this.form.get('login').setErrors({
-                    alreadyExists: true
-                  });
-                }
+            if (exists) {
+              this.form.get('login').setErrors({
+                alreadyExists: true
               });
+            }
           });
       });
   }
@@ -117,7 +103,7 @@ export class FormPontoAcessoComponent implements OnInit {
         (created) => {
           if (created._id) {
             this.snackbar.open('PA cadastrado com sucesso!', 'Ok', { duration: 4000 });
-            return this.router.navigate(['/', 'cliente', 'pa']);
+            return this.location.back();
           }
 
           this.snackbar.open('Ops! Algo não parece bem, o servidor retornou um registro inválido', 'Ok');
