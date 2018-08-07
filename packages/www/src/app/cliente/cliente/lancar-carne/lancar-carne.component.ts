@@ -47,7 +47,7 @@ export class LancarCarneComponent implements OnInit {
             primeiroVencimento: this.proximoVencimento(cli.getCustomerByID.diaVencimento),
           });
         }
-      )
+      );
   }
 
   proximoVencimento(dia: number): moment.Moment {
@@ -74,7 +74,7 @@ export class LancarCarneComponent implements OnInit {
             this.snackbar.open(`Não foi possível criar o carnê. O servidor retornou dados inválidos!`);
             console.log(carneCriado);
           }
-        )
+        );
     }
   }
 
