@@ -18,6 +18,7 @@ import { pontoAcessoQueries } from "./resources/ponto-acesso/ponto-acesso.schema
 import { problemaChamadoQueries } from "./resources/problema-chamado/problema-chamado.schema";
 import { tokenQueries } from "./resources/token/token.schema";
 import { usuarioQueries } from "./resources/usuario/usuario.schema";
+import { fiberhomeQueries } from "./resources/fiberhome/fiberhome.schema";
 
 export const Query = `
   type Query {
@@ -41,5 +42,6 @@ export const Query = `
     ${lancamentoEstoqueQueries}
     ${arquivoRemessaQueries}
     ${arquivoRetornoQueries}
+    ${fiberhomeQueries}
   }
 `;

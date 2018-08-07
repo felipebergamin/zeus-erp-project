@@ -9,6 +9,7 @@ import { carneTypes } from './resources/carne/carne.schema';
 import { chamadoTypes } from './resources/chamado-tecnico/chamado-tecnico.schema';
 import { clienteTypes } from './resources/cliente/cliente.schema';
 import { contaBancariaTypes } from './resources/conta-bancaria/conta-bancaria.schema';
+import { fiberhomeTypes } from './resources/fiberhome/fiberhome.schema';
 import { instalacaoTypes } from './resources/instalacao/instalacao.schema';
 import { ipPoolTypes } from './resources/ip-pool/ip-pool.schema';
 import { itemEstoqueTypes } from './resources/item-estoque/item-estoque.schema';
@@ -30,6 +31,7 @@ import { carneResolvers } from './resources/carne/carne.resolvers';
 import { chamadoResolvers } from './resources/chamado-tecnico/chamado-tecnico.resolvers';
 import { clienteResolvers } from './resources/cliente/cliente.resolvers';
 import { contaBancariaResolvers } from './resources/conta-bancaria/conta-bancaria.resolvers';
+import { fiberhomeResolvers } from './resources/fiberhome/fiberhome.resolver';
 import { instalacaoResolvers } from './resources/instalacao/instalacao.resolvers';
 import { ipPoolResolvers } from './resources/ip-pool/ip-pool.resolvers';
 import { itemEstoqueResolvers } from './resources/item-estoque/item-estoque.resolvers';
@@ -79,6 +81,7 @@ const resolvers = merge(
   arquivoRemessaResolvers,
   arquivoRetornoResolvers,
   longIntResolverMap,
+  fiberhomeResolvers,
 );
 
 const schema = makeExecutableSchema({
@@ -106,7 +109,8 @@ const schema = makeExecutableSchema({
     baixaEstoqueTypes,
     lancamentoEstoqueTypes,
     arquivoRemessaTypes,
-    arquivoRetornoTypes
+    arquivoRetornoTypes,
+    fiberhomeTypes,
   ],
 });
 

@@ -18,6 +18,7 @@ import { pontoAcessoMutations } from "./resources/ponto-acesso/ponto-acesso.sche
 import { problemaChamadoMutations } from "./resources/problema-chamado/problema-chamado.schema";
 import { tokenMutations } from "./resources/token/token.schema";
 import { usuarioMutations } from "./resources/usuario/usuario.schema";
+import { fiberhomeMutations } from "./resources/fiberhome/fiberhome.schema";
 
 export const Mutation = `
   type Mutation {
@@ -41,5 +42,6 @@ export const Mutation = `
     ${lancamentoEstoqueMutations}
     ${arquivoRemessaMutations}
     ${arquivoRetornoMutations}
+    ${fiberhomeMutations}
   }
 `;
