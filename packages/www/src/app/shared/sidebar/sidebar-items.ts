@@ -93,4 +93,13 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
       }
     ]
   },
+  {
+    name: 'Suporte',
+    items: [
+      {
+        name: 'Problemas De Chamado',
+        path: '/suporte/problemas',
+      },
+    ]
+  },
 ];
