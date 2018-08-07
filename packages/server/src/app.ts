@@ -18,7 +18,7 @@ async function start() {
     );
 
     /* START SERVICES */
-    // FiberhomeService.instance();
+    FiberhomeService.instance();
     // expressApp.listen(3000, () => debug("server listening"));
   } catch (err) {
     debug(err.name + "\n" + err.stack);
