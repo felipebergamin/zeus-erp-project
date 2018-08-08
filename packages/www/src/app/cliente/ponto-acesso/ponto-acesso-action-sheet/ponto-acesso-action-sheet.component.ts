@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
-import { FiberhomeService } from '../../../core/services/fiberhome/fiberhome.service';
 import { ExibirSinalOnuComponent } from '../exibir-sinal-onu/exibir-sinal-onu.component';
 
 @Component({
@@ -15,7 +14,6 @@ export class PontoAcessoActionSheetComponent implements OnInit {
   constructor(
     @Inject(MAT_BOTTOM_SHEET_DATA) public pa: PontoAcesso,
     private sheetRef: MatBottomSheetRef<PontoAcessoActionSheetComponent>,
-    private fiberhome: FiberhomeService,
     private matDialog: MatDialog,
   ) { }
 
