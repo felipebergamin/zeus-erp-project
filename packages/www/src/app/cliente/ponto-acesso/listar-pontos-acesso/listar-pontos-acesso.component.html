@@ -3,7 +3,7 @@
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
       <td mat-cell *matCellDef="let pa">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="openBottomSheet(pa)">
           <mat-icon aria-label="Options">menu</mat-icon>
         </button>
       </td>

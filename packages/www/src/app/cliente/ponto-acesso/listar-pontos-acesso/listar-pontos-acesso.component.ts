@@ -3,7 +3,8 @@ import { ReplaySubject } from 'rxjs';
 
 import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-acesso.service';
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatBottomSheet } from '@angular/material';
+import { PontoAcessoActionSheetComponent } from '../ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
 
 @Component({
   selector: 'app-listar-pontos-acesso',
@@ -18,7 +19,8 @@ export class ListarPontosAcessoComponent implements OnInit {
   _dataSource = new ReplaySubject<PontoAcesso[]>(1);
 
   constructor(
-    private paService: PontoAcessoService
+    private paService: PontoAcessoService,
+    private bottomSheet: MatBottomSheet,
   ) { }
 
   get dataSource() {
@@ -39,6 +41,12 @@ export class ListarPontosAcessoComponent implements OnInit {
         this._dataSource.next(res.listarPontosDeAcesso);
         this.totalItensPaginator = res.totalPontosDeAcesso;
       });
+  }
+
+  openBottomSheet(pa: PontoAcesso) {
+    this.bottomSheet.open(PontoAcessoActionSheetComponent, {
+      data: pa
+    });
   }
 
 }
