@@ -27,18 +27,10 @@ export class PontoAcessoActionSheetComponent implements OnInit {
       return;
     }
 
-    this.fiberhome.consultarSinalPA(this.pa._id)
-      .subscribe(
-        sinal => {
-          this.sheetRef.dismiss();
-          this.matDialog.open(ExibirSinalOnuComponent, {
-            data: {
-              sinal,
-              pa: this.pa,
-            }
-          });
-        }
-      );
+    this.sheetRef.dismiss();
+    this.matDialog.open(ExibirSinalOnuComponent, {
+      data: this.pa
+    });
   }
 
 }
