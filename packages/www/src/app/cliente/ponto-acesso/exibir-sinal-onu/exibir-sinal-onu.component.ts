@@ -20,8 +20,7 @@ export class ExibirSinalOnuComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fiberhome.consultarSinalPA(this.pa._id)
-      .subscribe(sinal => this.sinal = sinal);
+    this.verificar();
   }
 
   verificar() {
