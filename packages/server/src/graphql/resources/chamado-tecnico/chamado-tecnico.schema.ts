@@ -25,6 +25,8 @@ export const chamadoTypes = `
     abertoPor: Usuario!
     mensagem: String!
     motivoAbertura: String!
+    sinalOnuAbertura: Float
+    sinalOnuFechamento: Float
 
     pontoAcesso: PontoAcesso!
 

@@ -32,6 +32,8 @@ export interface ChamadoAttributes {
   abertoPor?: number;
   mensagem?: string;
   motivoAbertura?: string;
+  sinalOnuAbertura?: number;
+  sinalOnuFechamento?: number;
 
   cliente?: number;
   pontoAcesso?: number;
@@ -111,6 +113,14 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     motivoAbertura: {
       allowNull: true,
       type: dataTypes.STRING,
+    },
+    sinalOnuAbertura: {
+      allowNull: true,
+      type: dataTypes.FLOAT,
+    },
+    sinalOnuFechamento: {
+      allowNull: true,
+      type: dataTypes.FLOAT,
     },
 
     prioridade: {
