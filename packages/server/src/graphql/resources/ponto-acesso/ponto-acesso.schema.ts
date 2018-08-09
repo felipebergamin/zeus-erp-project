@@ -83,6 +83,36 @@ export const pontoAcessoTypes = `
     plano: Int
     pool: Int
   }
+
+  input BuscarPontosAcesso {
+    autoAtrelarMac: Boolean
+    ipAddress: String
+    login: String
+    macAddress: String
+    macOnu: String
+    passwd: String
+    ponNo: String
+    slotNo: String
+    incluirNaCobranca: Boolean
+
+    bairro: String
+    cep: String
+    cidade: String
+    complemento: String
+    estado: String
+    latitude: Float
+    logradouro: String
+    longitude: Float
+    numero: String
+
+    olt: Int
+    plano: Int
+    pool: Int
+    cliente: Int
+
+    createdAt: String
+    updatedAt: String
+  }
 `;
 
 export const pontoAcessoQueries = `
@@ -91,6 +121,7 @@ export const pontoAcessoQueries = `
   pontoDeAcessoPorCliente(idCliente: Int!): [ PontoAcesso! ]!
   pontoDeAcessoPorID(id: Int!): PontoAcesso
   loginAlreadyExists(login: String!): Boolean
+  buscarPontosAcesso(searchVals: BuscarPontosAcesso!): [ PontoAcesso! ]!
 `;
 
 export const pontoAcessoMutations = `

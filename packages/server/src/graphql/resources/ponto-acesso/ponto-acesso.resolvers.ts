@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { PontoAcessoInstance } from "../../../models/PontoAcessoModel";
 import { throwError } from "../../../util/utils";
@@ -63,6 +65,15 @@ export const pontoAcessoResolvers = {
     loginAlreadyExists: compose(...authResolvers)((parent, { login }, context: ResolverContext, info) => {
       return context.db.PontoAcesso.count({ where: { login } })
         .then((count) => count > 0);
+    }),
+
+    buscarPontosAcesso: compose(...authResolvers)((parent, {searchVals}, context: ResolverContext, info) => {
+      if (searchVals.login) {
+        searchVals.login = {
+          [Op.like]: `%${searchVals.login}%`
+        };
+      }
+      return context.db.PontoAcesso.findAll({ where: searchVals });
     }),
   },
 
