@@ -59,10 +59,47 @@ export const chamadoTypes = `
     formaPagamento: String!
     isentarCobranca: Boolean!
   }
+
+  input BuscarChamadosInput {
+    cancelado: Boolean
+    canceladoEm: String
+    canceladoPor: Int
+    motivoCancelamento: String
+
+    finalizado: Boolean
+    finalizadoEm: String
+    imagemAssinatura: String
+    observacoesTecnico: String
+    problema: Int
+    tecnico: Int
+
+    boletoCobranca: Int
+    formaPagamento: String
+    geraCobranca: Boolean
+    isentarCobranca: Boolean
+    valorACobrar: Float
+    recebidoEm: String
+    recebidoPor: Int
+
+    abertoPor: Int
+    mensagem: String
+    motivoAbertura: String
+    sinalOnuAbertura: Float
+    sinalOnuFechamento: Float
+
+    pontoAcesso: Int
+
+    prioridade: String
+    protocolo: String
+
+    createdAt: String
+    updatedAt: String
+  }
 `;
 
 export const chamadoQueries = `
   listarChamados(first: Int, offset: Int): [ Chamado! ]!
+  buscarChamados(searchValues: BuscarChamadosInput!): [ Chamado! ]!
   chamadoByID(id: Int!): Chamado
 `;
 

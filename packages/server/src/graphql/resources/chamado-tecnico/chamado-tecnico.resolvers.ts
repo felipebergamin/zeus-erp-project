@@ -47,6 +47,10 @@ export const chamadoResolvers = {
     chamadoByID: compose(...authResolvers)((parent, { id }, context: ResolverContext, info) => {
       return context.db.Chamado.findById(id);
     }),
+
+    buscarChamados: compose(...authResolvers)((parent, { searchValues }, context: ResolverContext, info) => {
+      return context.db.Chamado.findAll({ where: searchValues });
+    }),
   },
 
   Mutation: {
