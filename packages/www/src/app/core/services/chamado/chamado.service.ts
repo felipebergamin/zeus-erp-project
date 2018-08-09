@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BUSCAR_CHAMADOS_QUERY, BuscarChamadosQuery } from './chamado.graphql';
+import { BUSCAR_CHAMADOS_QUERY, BuscarChamadosQuery, AbrirChamadoInput, ABRIR_CHAMADO_MUTATION } from './chamado.graphql';
 import { Chamado } from '../../models/Chamado';
 
 @Injectable({
@@ -20,6 +20,15 @@ export class ChamadoService {
       variables: { searchValues },
     }).pipe(
       map(res => res.data.buscarChamados)
+    );
+  }
+
+  abrirChamado(input: AbrirChamadoInput): Observable<Chamado> {
+    return this.apollo.mutate({
+      mutation: ABRIR_CHAMADO_MUTATION,
+      variables: { input },
+    }).pipe(
+      map(res => res.data.abrirChamado)
     );
   }
 }
