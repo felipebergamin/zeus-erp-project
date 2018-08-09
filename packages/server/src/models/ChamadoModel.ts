@@ -4,7 +4,7 @@ import * as Sequelize from 'sequelize';
 import { ModelsInterface } from '../interfaces/ModelsInterface';
 
 export type FormaPagamento = 'cheque' | 'dinheiro' | 'cartao' | 'boleto';
-export type Prioridade = 'baixa' | 'normal' | 'alta' | 'critica';
+export type Prioridade = 1 | 2 | 3 | 4;
 
 export interface ChamadoAttributes {
   _id?: number;
@@ -125,7 +125,12 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
 
     prioridade: {
       allowNull: false,
-      type: dataTypes.ENUM([ 'baixa', 'normal', 'alta', 'critica' ]),
+      type: dataTypes.TINYINT({ length: 3 }),
+      defaultValue: 3,
+      validate: {
+        min: { args: 1, msg: 'A prioridade deve estar entre 1 e 4' },
+        max: { args: 4, msg: 'A prioridade deve estar entre 1 e 4' },
+      },
     },
     protocolo: {
       allowNull: false,

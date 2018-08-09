@@ -30,7 +30,7 @@ export const chamadoTypes = `
 
     pontoAcesso: PontoAcesso!
 
-    prioridade: String!
+    prioridade: Int!
     protocolo: String!
 
     createdAt: String
@@ -41,7 +41,7 @@ export const chamadoTypes = `
     mensagem: String!
     motivoAbertura: String!
     pontoAcesso: Int!
-    prioridade: String!
+    prioridade: Int!
     tecnico: Int!
   }
 
@@ -89,7 +89,7 @@ export const chamadoTypes = `
 
     pontoAcesso: Int
 
-    prioridade: String
+    prioridade: Int
     protocolo: String
 
     createdAt: String
