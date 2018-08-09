@@ -12,6 +12,8 @@ import {
   ListaPontosAcesso,
   LoginExistsQuery,
   PontoAcessoPorClienteQuery,
+  BUSCAR_PONTOS_ACESSO_QUERY,
+  BuscarPontosAcessoQuery,
 } from './ponto-acesso.graphql';
 import { PontoAcesso } from '../../models/PontoAcesso';
 
@@ -61,6 +63,15 @@ export class PontoAcessoService {
       variables: { idCliente },
     }).pipe(
       map(res => res.data.pontoDeAcessoPorCliente)
+    );
+  }
+
+  buscar(searchValues: any): Observable<PontoAcesso[]> {
+    return this.apollo.query<BuscarPontosAcessoQuery>({
+      query: BUSCAR_PONTOS_ACESSO_QUERY,
+      variables: { searchValues },
+    }).pipe(
+      map(res => res.data.buscarPontosAcesso)
     );
   }
 }

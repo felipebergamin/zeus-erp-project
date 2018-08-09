@@ -48,6 +48,10 @@ export interface PontoAcessoPorClienteQuery {
   pontoDeAcessoPorCliente: PontoAcesso[];
 }
 
+export interface BuscarPontosAcessoQuery {
+  buscarPontosAcesso: PontoAcesso[];
+}
+
 export const CREATE_PA_MUTATION = gql`
   mutation createPA($input: CreatePontoAcessoInput!) {
     addPontoDeAcesso(input: $input) {
@@ -91,6 +95,23 @@ export const PONTO_ACESSO_POR_CLIENTE_QUERY = gql`
       }
       logradouro
       numero
+    }
+  }
+`;
+
+export const BUSCAR_PONTOS_ACESSO_QUERY = gql`
+  query buscarPAs($searchValues: BuscarPontosAcesso!) {
+    buscarPontosAcesso(searchVals: $searchValues) {
+      _id
+      login
+      logradouro
+      numero
+      cliente {
+        _id
+        nome
+      }
+      cidade
+      createdAt
     }
   }
 `;
