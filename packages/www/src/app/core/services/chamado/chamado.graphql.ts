@@ -21,9 +21,12 @@ export const BUSCAR_CHAMADOS_QUERY = gql`
       createdAt
       motivoAbertura
       finalizadoEm
+      abertoPor {
+        login
+      }
       tecnico {
         _id
-        nome
+        login
       }
       problema {
         descricao

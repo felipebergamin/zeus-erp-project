@@ -81,6 +81,11 @@
           <td mat-cell *matCellDef="let chamado"> {{ chamado.createdAt | date:'dd/MM/yyyy HH:mm' }} </td>
         </ng-container>
 
+        <ng-container matColumnDef="abertoPor">
+          <th mat-header-cell *matHeaderCellDef>Aberto Por</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.abertoPor?.login }} </td>
+        </ng-container>
+
         <ng-container matColumnDef="motivoAbertura">
           <th mat-header-cell *matHeaderCellDef>Motivo</th>
           <td mat-cell *matCellDef="let chamado"> {{ chamado.motivoAbertura }} </td>
@@ -98,7 +103,7 @@
 
         <ng-container matColumnDef="tecnico">
           <th mat-header-cell *matHeaderCellDef>Técnico</th>
-          <td mat-cell *matCellDef="let chamado"> {{ chamado.tecnico?.nome }} </td>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.tecnico?.login }} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

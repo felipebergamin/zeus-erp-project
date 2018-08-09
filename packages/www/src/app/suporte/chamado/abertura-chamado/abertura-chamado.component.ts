@@ -27,7 +27,7 @@ export class AberturaChamadoComponent implements OnInit, OnDestroy {
     { value: 3, viewValue: 'Normal' },
     { value: 4, viewValue: 'Baixa' },
   ];
-  displayedColumns = ['abertoEm', 'motivoAbertura', 'finalizadoEm', 'problema', 'tecnico'];
+  displayedColumns = ['abertoEm', 'motivoAbertura', 'abertoPor', 'finalizadoEm', 'problema', 'tecnico'];
   showDetailedInfo = false;
   pontosAcesso$ = new BehaviorSubject<PontoAcesso[]>([]);
   chamadosAnteriores$ = new BehaviorSubject<Chamado[]>([]);
