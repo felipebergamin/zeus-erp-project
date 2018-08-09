@@ -12,7 +12,7 @@ export const chamadoTypes = `
     imagemAssinatura: String
     observacoesTecnico: String
     problema: ProblemaChamado
-    tecnico: Usuario!
+    tecnico: Usuario
 
     boletoCobranca: Boleto
     formaPagamento: String
@@ -42,7 +42,7 @@ export const chamadoTypes = `
     motivoAbertura: String!
     pontoAcesso: Int!
     prioridade: Int!
-    tecnico: Int!
+    tecnico: Int
   }
 
   input CancelarChamadoInput {

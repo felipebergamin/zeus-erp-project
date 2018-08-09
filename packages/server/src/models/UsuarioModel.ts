@@ -80,7 +80,7 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
 
     usuario.hasMany(models.Chamado, {
       foreignKey: {
-        allowNull: false,
+        allowNull: true,
         field: 'tecnico',
         name: 'tecnico',
       }
