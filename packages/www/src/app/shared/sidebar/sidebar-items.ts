@@ -97,6 +97,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
     name: 'Suporte',
     items: [
       {
+        name: 'Abrir Chamado',
+        path: '/suporte/chamado/abrir',
+      },
+      {
         name: 'Problemas De Chamado',
         path: '/suporte/problemas',
       },

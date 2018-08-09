@@ -1,0 +1,117 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+
+    <div fxLayout="column">
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input type="text" placeholder="Ponto de Acesso" matInput [formControl]="autoCompleteControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectPA($event)">
+            <mat-option *ngFor="let pa of pontosAcesso$ | async" [value]="pa">
+              {{pa.login}} - {{pa.logradouro}}, {{pa.numero}} / {{pa.cidade}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+        <mat-form-field fxFlex="50%">
+          <mat-select placeholder="Motivo da Abertura" formControlName="motivoAbertura">
+            <mat-option *ngFor="let motivo of motivosAbertura" [value]="motivo">
+              {{motivo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <mat-select placeholder="Prioridade" formControlName="prioridade">
+            <mat-option *ngFor="let prioridade of prioridades" [value]="prioridade.value">
+              {{prioridade.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <textarea matInput placeholder="Mensagem" formControlName="mensagem"></textarea>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div *ngIf="showDetailedInfo">
+      <br>
+      <mat-divider></mat-divider>
+      <br>
+
+      <div fxLayout="column" fxLayoutGap=".5em">
+        <div>
+          <strong>RxPower: &nbsp;</strong>
+          {{ sinal?.RxPower }} -
+          <i>{{ sinal?.TxPowerR }}</i>
+        </div>
+
+        <div>
+          <strong>TxPower: &nbsp;</strong>
+          {{ sinal?.TxPower }} -
+          <i>{{ sinal?.RxPowerR }}</i>
+        </div>
+
+        <div>
+          <strong>Temperatura: &nbsp;</strong>
+          {{ sinal?.Temperature }} &deg; -
+          <i>{{ sinal?.TemperatureR }}</i>
+        </div>
+
+        <div>
+          <strong>Voltagem: &nbsp;</strong>
+          {{ sinal?.Voltage }} -
+          <i>{{ sinal?.VoltageR }}</i>
+        </div>
+      </div>
+
+      <br>
+      <mat-divider></mat-divider>
+      <br>
+
+      <table mat-table [dataSource]="chamadosAnteriores$">
+        <ng-container matColumnDef="abertoEm">
+          <th mat-header-cell *matHeaderCellDef>Aberto Em</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.createdAt | date:'dd/MM/yyyy HH:mm' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="motivoAbertura">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.motivoAbertura }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="finalizadoEm">
+          <th mat-header-cell *matHeaderCellDef>Finalizado Em</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.finalizadoEm | date:'dd/MM/yyyy HH:mm' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="problema">
+          <th mat-header-cell *matHeaderCellDef>Problema</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.problema?.descricao }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tecnico">
+          <th mat-header-cell *matHeaderCellDef>Técnico</th>
+          <td mat-cell *matCellDef="let chamado"> {{ chamado.tecnico?.nome }} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button type="reset" mat-button>Limpar</button>
+      <button mat-fab class="floating-fab">
+        <mat-icon>check</mat-icon>
+      </button>
+    </div>
+
+  </form>
+</div>

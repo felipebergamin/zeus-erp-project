@@ -36,6 +36,7 @@ export const ABRIR_CHAMADO_MUTATION = gql`
   mutation abrirChamado($input: AberturaChamadoInput!) {
     abrirChamado(input: $input) {
       _id
+      protocolo
     }
   }
 `;

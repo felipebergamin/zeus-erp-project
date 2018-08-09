@@ -11,11 +11,15 @@ import {
   MatSnackBarModule,
   MatTableModule,
   MatPaginatorModule,
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatDividerModule,
 } from '@angular/material';
 
 import { SuporteRoutingModule } from './suporte-routing.module';
 import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-chamado/form-problema-chamado.component';
 import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
+import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-chamado.component';
 
 @NgModule({
   imports: [
@@ -31,7 +35,10 @@ import { ListarProblemasChamadoComponent } from './problema-chamado/listar-probl
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatDividerModule,
   ],
-  declarations: [FormProblemaChamadoComponent, ListarProblemasChamadoComponent]
+  declarations: [FormProblemaChamadoComponent, ListarProblemasChamadoComponent, AberturaChamadoComponent]
 })
 export class SuporteModule { }
