@@ -5,7 +5,7 @@ import { Boleto } from './Boleto';
 import { ProblemaChamado } from './ProblemaChamado';
 
 export type FormaPagamento = 'cheque' | 'dinheiro' | 'cartao' | 'boleto';
-export type Prioridade = 'baixa' | 'normal' | 'alta' | 'critica';
+export type Prioridade = 1 | 2 | 3 | 4;
 
 export class Chamado {
   _id?: number;
