@@ -19,6 +19,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/felipebergamin/zeus#readme",
   "dependencies": {
+    "@felipebergamin/tl1-fiberhome": "^2.0.1",
     "apollo-server": "^2.0.0-rc.5",
     "apollo-server-express": "^2.0.0-rc.6",
     "bcrypt-nodejs": "0.0.3",
