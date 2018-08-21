@@ -5,10 +5,10 @@ import { ITransactionRetorno } from "./ITransactionRetorno";
 
 export interface IArquivoRetorno {
   criadoEm?: Date;
-  registros?: [ITransactionRetorno];
+  registros?: ITransactionRetorno[];
   trailler?: ITraillerRetorno;
 
-  contaBancaria: string|IContaBancaria;
+  contaBancaria: number|IContaBancaria;
   conteudoArquivo: string;
   dataGravacao: Date;
   nomeArquivo: string;

@@ -25,6 +25,11 @@ export class Retorno extends EventEmitter {
 
     const retorno = {
       registros: [],
+      contaBancaria: 0,
+      conteudoArquivo: '',
+      dataGravacao: null,
+      nomeArquivo: '',
+      quantidadeOperacoes: 0
     } as IArquivoRetorno;
 
     this.header = null;
