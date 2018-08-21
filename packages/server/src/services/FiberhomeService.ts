@@ -1,4 +1,4 @@
-import { TL1Client } from "node-tl1-fiberhome";
+import { TL1Client } from "@felipebergamin/tl1-fiberhome";
 
 import debug = require("../debug");
 
@@ -12,24 +12,33 @@ export class FiberhomeService {
         fhService = new FiberhomeService();
         const { TL1_IP, TL1_USER, TL1_PASSWD } = process.env;
 
-        fhService.tl1 = new TL1Client(TL1_IP, 3337);
-        await fhService.tl1.connect();
-        const loginResponse = await fhService.tl1.login(TL1_USER, TL1_PASSWD);
+        fhService.tl1Client = new TL1Client(TL1_IP, 3337);
+        await fhService.tl1Client.connect();
 
-        if (loginResponse.parsedResponse.completion_code.includes("COMPLD")) {
-          debug("conexão TL1 estabelecida");
+        fhService.tl1Client.login(TL1_USER, TL1_PASSWD)
+          .subscribe(
+            loginResult => {
+              if (loginResult.completion_code.includes('COMPLD')) {
+                debug('Login TL1 OK');
 
-          setInterval(() => {
-            fhService.tl1.handShake();
-          }, FiberhomeService.HANDSHAKE_INTERVAL);
+                // intervalo para handshake
+                setInterval(() => {
+                  fhService.tl1Client.handshake().subscribe(
+                    handshakeR => debug('Handshake TL1 %s', handshakeR.completion_code),
+                  );
+                }, FiberhomeService.HANDSHAKE_INTERVAL);
 
-          process.on('SIGINT', () => {
-            debug("SIGINT: fechando conexão TL1");
-            fhService.tl1.logout()
-              .then(fhService.tl1.end)
-              .catch(fhService.tl1.end);
-          });
-        }
+                process.on('SIGINT', () => {
+                  fhService.tl1Client.logout()
+                    .subscribe(logout => {
+                      debug('TL1 Logout %s', logout.completion_code);
+                      fhService.tl1Client.disconnect();
+                    });
+                })
+              }
+            }
+          );
+
       } catch (err) {
         throw err;
       }
@@ -39,9 +48,9 @@ export class FiberhomeService {
   }
 
   private static HANDSHAKE_INTERVAL = 1000 * 60 * (+process.env.TL1_HANDSHAKE_INTERVAL);
-  private tl1: TL1Client;
+  public tl1Client: TL1Client;
 
-  public async getOnuOpticalInfo(olt: string, slot: string | number, pon: string | number, onumac: string) {
+  /* public async getOnuOpticalInfo(olt: string, slot: string | number, pon: string | number, onumac: string) {
     return await this.tl1.lstOpticalModuleDDM({
       OLTID: olt,
       ONUID: onumac,
@@ -81,5 +90,5 @@ export class FiberhomeService {
       PVID,
       VLANMOD,
     });
-  }
+  } */
 }

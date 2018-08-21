@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { compose } from "../../composable/composable.resolver";
 import { authResolvers } from "../../composable/auth.resolver";
@@ -18,24 +20,18 @@ export const fiberhomeResolvers = {
         const olt = await context.db.OLT.findById(paInstance.get('olt'));
         throwError(!olt, `O Cliente não está associado a nenhuma OLT!`);
 
-        const sinal = await (await FiberhomeService.instance())
-          .getOnuOpticalInfo(olt.get('ip'), paInstance.get('slotNo'), paInstance.get('ponNo'), paInstance.get('macOnu'));
-
-        return sinal.parsedResponse.values[0];
+        return (await FiberhomeService.instance()).tl1Client
+          .getOpticalModuleInformation({
+            OLTID: olt.get('ip'),
+            PONID: `NA-NA-${paInstance.get('slotNo')}-${paInstance.get('ponNo')}`,
+            ONUIDTYPE: 'MAC',
+            ONUID: paInstance.get('macOnu'),
+          })
+          .pipe(map(res => res.result.values.pop()))
+          .toPromise();
       } catch (err) {
         throw new Error(`${err.name}: ${err.message}`);
       }
-    }),
-
-    // consultarSinalONU(olt: Int!, slot: Int!, pon: Int!, onuMac: String!): SinalONU
-    consultarSinalONU: compose(...authResolvers)(async (parent, { olt, slot, pon, onuMac }, context: ResolverContext, info) => {
-      const oltInstance = await context.db.OLT.findById(olt);
-      throwError(!oltInstance, `OLT ${olt} não encontrada!`);
-
-      const sinal = await (await FiberhomeService.instance())
-        .getOnuOpticalInfo(oltInstance.get('ip'), slot, pon, onuMac);
-
-      return sinal.parsedResponse.values[0];
     }),
   },
 

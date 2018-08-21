@@ -18,7 +18,6 @@ export const fiberhomeTypes = `
 
 export const fiberhomeQueries = `
   consultarSinalONUPA(pontoAcesso: Int!): SinalONU
-  consultarSinalONU(olt: Int!, slot: Int!, pon: Int!, onuMac: String!): SinalONU
 `;
 
 export const fiberhomeMutations = ``;
