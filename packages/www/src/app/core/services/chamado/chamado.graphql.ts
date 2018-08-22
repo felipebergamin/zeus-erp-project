@@ -14,6 +14,11 @@ export interface AbrirChamadoInput {
   tecnico: number;
 }
 
+export interface ListarChamadosAbertos {
+  listarChamadosAbertos: Chamado[];
+  totalChamadosAbertos: number;
+}
+
 export const BUSCAR_CHAMADOS_QUERY = gql`
   query buscarChamados($searchValues: BuscarChamadosInput!) {
     buscarChamados(searchValues: $searchValues) {
@@ -41,5 +46,27 @@ export const ABRIR_CHAMADO_MUTATION = gql`
       _id
       protocolo
     }
+  }
+`;
+
+export const LISTAR_CHAMADOS_ABERTOS = gql`
+  query listarChamados($first: Int, $offset: Int) {
+    listarChamadosAbertos(first: $first, offset: $offset) {
+      _id
+      protocolo
+      motivoAbertura
+      prioridade
+      pontoAcesso {
+        login
+      }
+      abertoPor {
+        login
+      }
+
+      finalizado
+      cancelado
+      createdAt
+    }
+    totalChamadosAbertos
   }
 `;

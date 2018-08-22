@@ -3,8 +3,15 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BUSCAR_CHAMADOS_QUERY, BuscarChamadosQuery, AbrirChamadoInput, ABRIR_CHAMADO_MUTATION } from './chamado.graphql';
 import { Chamado } from '../../models/Chamado';
+import {
+  BUSCAR_CHAMADOS_QUERY,
+  BuscarChamadosQuery,
+  AbrirChamadoInput,
+  ABRIR_CHAMADO_MUTATION,
+  ListarChamadosAbertos,
+  LISTAR_CHAMADOS_ABERTOS
+} from './chamado.graphql';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +37,12 @@ export class ChamadoService {
     }).pipe(
       map(res => res.data.abrirChamado)
     );
+  }
+
+  chamadosAbertos(variables: { first: number, offset: number }): Observable<ListarChamadosAbertos> {
+    return this.apollo.query<ListarChamadosAbertos>({
+      query: LISTAR_CHAMADOS_ABERTOS,
+      variables,
+    }).pipe(map(res => res.data));
   }
 }
