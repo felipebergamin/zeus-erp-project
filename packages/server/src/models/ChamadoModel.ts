@@ -73,7 +73,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     },
 
     finalizado: {
-      type: dataTypes.BOOLEAN
+      defaultValue: false,
+      type: dataTypes.BOOLEAN,
     },
     finalizadoEm: {
       allowNull: true,
