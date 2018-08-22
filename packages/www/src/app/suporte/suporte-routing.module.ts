@@ -4,6 +4,7 @@ import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-c
 import { AuthGuard } from '../auth/auth.guard';
 import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
 import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-chamado.component';
+import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-abertos.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'chamado/abrir',
     component: AberturaChamadoComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'chamado/aberto',
+    component: ChamadosAbertosComponent,
     canActivate: [AuthGuard],
   },
 ];

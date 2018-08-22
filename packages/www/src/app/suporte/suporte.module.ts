@@ -20,6 +20,7 @@ import { SuporteRoutingModule } from './suporte-routing.module';
 import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-chamado/form-problema-chamado.component';
 import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
 import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-chamado.component';
+import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-abertos.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,6 @@ import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-ch
     MatAutocompleteModule,
     MatDividerModule,
   ],
-  declarations: [FormProblemaChamadoComponent, ListarProblemasChamadoComponent, AberturaChamadoComponent]
+  declarations: [FormProblemaChamadoComponent, ListarProblemasChamadoComponent, AberturaChamadoComponent, ChamadosAbertosComponent]
 })
 export class SuporteModule { }
