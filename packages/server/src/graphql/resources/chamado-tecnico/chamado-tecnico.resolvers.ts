@@ -44,6 +44,20 @@ export const chamadoResolvers = {
       });
     }),
 
+    listarChamadosAbertos: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
+      return context.db.Chamado.findAll({
+        where: { finalizado: false, cancelado: false },
+        limit: first,
+        offset,
+      })
+    }),
+
+    totalChamadosAbertos: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
+      return context.db.Chamado.count({
+        where: { finalizado: false, cancelado: false },
+      });
+    }),
+
     chamadoByID: compose(...authResolvers)((parent, { id }, context: ResolverContext, info) => {
       return context.db.Chamado.findById(id);
     }),

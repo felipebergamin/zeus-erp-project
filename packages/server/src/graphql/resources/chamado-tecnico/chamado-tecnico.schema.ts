@@ -99,6 +99,8 @@ export const chamadoTypes = `
 
 export const chamadoQueries = `
   listarChamados(first: Int, offset: Int): [ Chamado! ]!
+  listarChamadosAbertos(first: Int, offset: Int): [ Chamado! ]!
+  totalChamadosAbertos: Int
   buscarChamados(searchValues: BuscarChamadosInput!): [ Chamado! ]!
   chamadoByID(id: Int!): Chamado
 `;
