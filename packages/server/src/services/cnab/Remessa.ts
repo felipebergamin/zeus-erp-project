@@ -81,9 +81,10 @@ export class Remessa {
 
     // se devem ser enviados boletos de um único cliente, adiciona na query
     if ("cliente" in options) {
-      if (!isNaN(+options.cliente)) {
+      debug('Enviar apenas boletos do cliente', options.cliente);
+      if (!isNaN(parseInt(options.cliente, 10))) {
         where.cliente = options.cliente;
-      } else {
+      } else if (!!options.cliente) {
         throw new Error(`ID do cliente é inválido`);
       }
     }
