@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.component';
 import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.component';
+import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.compon
     FormContaBancariaComponent,
     ListarBoletosComponent,
     GerarRemessaComponent,
+    ListarRemessasComponent,
   ],
   providers: [
     {

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { ArquivoRemessa } from '../../models/ArquivoRemessa';
 
 export interface GerarRemessaInput {
   contaBancaria: number;
@@ -12,6 +13,11 @@ export interface GerarRemessaInput {
   reenviarRemetidos: boolean;
 }
 
+export interface ListarArquivosRemessaQuery {
+  listarArquivosRemessa: ArquivoRemessa[];
+  totalArquivosRemessa: number;
+}
+
 export const GERAR_REMESSA_MUTATION = gql`
   mutation gerarRemessa($input: GerarArquivoRemessaInput!) {
     gerarArquivoRemessa(input: $input) {
@@ -19,5 +25,19 @@ export const GERAR_REMESSA_MUTATION = gql`
       quantidadeOperacoes
       nomeArquivo
     }
+  }
+`;
+
+export const LISTAR_REMESSAS_QUERY = gql`
+  query listarRemessas($first: Int, $offset: Int) {
+    listarArquivosRemessa(first: $first, offset: $offset) {
+      _id
+      nomeArquivo
+      quantidadeOperacoes
+      contaBancaria {
+        nome
+      }
+    }
+    totalArquivosRemessa
   }
 `;

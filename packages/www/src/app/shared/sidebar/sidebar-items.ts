@@ -69,7 +69,11 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
       {
         name: 'Listar Boletos',
         path: '/financeiro/boletos',
-      }
+      },
+      {
+        name: 'Remessa Bancária',
+        path: '/financeiro/cnab/remessa',
+      },
     ]
   },
   {
