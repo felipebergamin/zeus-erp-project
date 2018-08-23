@@ -26,9 +26,9 @@ export const arquivoRemessaResolvers = {
   },
 
   Mutation: {
-    gerarArquivoRemessa: compose(...authResolvers)(async (parent, args, context: ResolverContext, info) => {
-      const contaBancaria = await context.db.ContaBancaria.findById(args.contaBancaria);
-      return new Remessa().generate(contaBancaria, args);
+    gerarArquivoRemessa: compose(...authResolvers)(async (parent, {input}, context: ResolverContext, info) => {
+      const contaBancaria = await context.db.ContaBancaria.findById(input.contaBancaria);
+      return new Remessa().generate(contaBancaria, input);
     }),
 
     deleteArquivoRemessa: compose(...authResolvers)((parent, { id }, context: ResolverContext, info) => {
