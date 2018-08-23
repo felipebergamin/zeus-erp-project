@@ -1,10 +1,14 @@
 import moment = require("moment");
+import * as Debug from 'debug';
+import { Op } from 'sequelize';
 
 import db from '../../models';
 import { ArquivoRemessaAttributes, ArquivoRemessaInstance } from "../../models/ArquivoRemessaModel";
 import { BoletoInstance } from "../../models/BoletoModel";
 import { ContaBancariaInstance } from "../../models/ContaBancariaModel";
 import { throwError } from "../../util/utils";
+
+const debug = Debug('zeus:cnab');
 
 export interface RemessaOptions {
   dataInicio?: Date;
@@ -32,6 +36,9 @@ export class Remessa {
 
   public async generate(contaBancaria: ContaBancariaInstance, options: RemessaOptions = {}): Promise<ArquivoRemessaInstance> {
     throwError(!contaBancaria, `Conta bancária inexistente`);
+
+    debug('Gerando nova remessa para conta bancaria %d %s', contaBancaria.get('_id'), contaBancaria.get('nome'));
+    debug('Options', JSON.stringify(options));
 
     this.stringData = [];
     this.contadorRegistros = counter();
@@ -61,24 +68,27 @@ export class Remessa {
     // inclui ou não pedidos de baixa
     where.enviarPedidoBaixa = normalizeBoolean(options.enviarPedidoBaixa);
 
-    // se a data de início foi informada, adiciona na query
-    if ("dataInicio" in options && moment(options.dataInicio).isValid()) {
-      where.dataVencimento = { $gte: options.dataInicio };
-    }
+    // se o intervalo de datas a ser enviada na remessa foi definida
+    if (("dataInicio" in options && moment(options.dataInicio).isValid())
+      && ("dataFim" in options && moment(options.dataFim).isValid())) {
 
-    // se a data fim foi informada, adiciona na query
-    if ("dataFim" in options && moment(options.dataFim).isValid()) {
-      if (!where.dataVencimento) {
-        where.dataVencimento = {};
-      }
-
-      where.dataVencimento.$lte = options.dataFim;
+      debug('Intervalo de datas especificado, definindo a query');
+      where.dataVencimento = {
+        [Op.gte]: moment(options.dataInicio).toDate(),
+        [Op.lte]: moment(options.dataFim).toDate(),
+      };
     }
 
     // se devem ser enviados boletos de um único cliente, adiciona na query
-    if ("cliente" in options && typeof options.cliente === 'string') {
-      where.cliente = options.cliente;
+    if ("cliente" in options) {
+      if (!isNaN(+options.cliente)) {
+        where.cliente = options.cliente;
+      } else {
+        throw new Error(`ID do cliente é inválido`);
+      }
     }
+
+    debug('Where', JSON.stringify(where));
 
     // busca no banco os boletos passando a query montada
     const todosBoletos = await db.Boleto.findAll({ where });
@@ -86,50 +96,65 @@ export class Remessa {
     // se não há boletos com os critérios selecionados
     throwError(todosBoletos.length === 0, 'Não há boletos para enviar');
 
-    this.createHeaderLabel(contaBancaria);
+    const promises = [];
 
     todosBoletos.forEach((boleto: BoletoInstance) => {
+      debug('Processando boleto %d', boleto.get('_id'));
       // se o boleto nunca foi enviado para registro
       if (!boleto.get('registrado')) {
         // add o boleto para registro
-        this.enviaRegistroBoleto(boleto);
+        debug('%d enviado para registro', boleto.get('_id'));
+        promises.push(this.gerarPedidoRegistro(boleto));
         remessa.quantidadeOperacoes++;
       } else {
         // se o boleto precisa atualizar valor e o usuario permitiu atualizacao de valor
         if (boleto.get('enviarAtualizacaoValor')) {
           // add o boleto para atualizacao de valor
-          this.enviaAtualizacaoValor(boleto);
+          debug('%d enviado para atualização de valor', boleto.get('_id'));
+          promises.push(this.gerarAtualizacaoValor(boleto));
           remessa.quantidadeOperacoes++;
         }
 
         // se o boleto precisa de uma atualizacao de vencimento e o usuario permitiu essa operacao
         if (boleto.get('enviarAtualizacaoVencimento')) {
           // add o boleto para atualizacao de vencimento
-          this.enviaAtualizacaoVencimento(boleto);
+          debug('%d enviado para atualização de vencimento', boleto.get('_id'));
+          promises.push(this.gerarAtualizacaoVencimento(boleto));
           remessa.quantidadeOperacoes++;
         }
 
         // se precisa enviar um pedido de baixa do boleto e essa operacao foi permitida
         if (boleto.get('enviarPedidoBaixa')) {
           // add o boleto para pedido de baixa
-          this.enviaPedidoBaixa(boleto);
+          debug('%d enviado para baixa', boleto.get('_id'));
+          promises.push(this.gerarPedidoBaixa(boleto));
           remessa.quantidadeOperacoes++;
         }
       }
     });
 
-    remessa.conteudoArquivo = this.finalize();
+    this.stringData.push(this.createHeaderLabel(contaBancaria));
+
+    for await (const line of promises) {
+      this.stringData.push(line);
+    }
+
+    this.stringData.push(this.generateTrail());
+    remessa.conteudoArquivo = this.getFileContent();
     remessa.nomeArquivo = await this.generateFileName(remessa.diaGeracao, remessa.mesGeracao);
+    debug('Nome do Arquivo: %s', remessa.nomeArquivo);
+    debug('Quantidade de Operações %s', remessa.quantidadeOperacoes);
 
     return await db.sequelize.transaction((transaction) => {
+      debug('Incrementando Próxima Remessa');
       contaBancaria.increment('proximaRemessa', { transaction });
       return db.ArquivoRemessa.create(remessa, { transaction });
     });
   }
 
   private async generateFileName(diaGeracao: number, mesGeracao: number): Promise<string> {
-    const previousFiles = await db.ArquivoRemessa.findAll({ where: { diaGeracao, mesGeracao } });
-    const previousFilesCounter = previousFiles.length;
+    const previousFiles = await db.ArquivoRemessa.count({ where: { diaGeracao, mesGeracao } });
+    debug('generateFileName - %d já foram gerados hoje', previousFiles);
 
     mesGeracao += 1;
 
@@ -137,14 +162,17 @@ export class Remessa {
     fileName += diaGeracao.toString().padStart(2, "0");
     fileName += mesGeracao.toString().padStart(2, "0");
 
-    if (previousFilesCounter === 0) {
+    if (previousFiles === 0) {
       return `${fileName}.REM`;
     }
 
-    return `${fileName}${previousFilesCounter.toString().padStart(2, "0")}.REM`;
+    const filename = `${fileName}${previousFiles.toString().padStart(2, "0")}.REM`;
+    debug('generateFileName - Nome do Arquivo: %s', filename);
+    return filename;
   }
 
-  private createHeaderLabel(contaBancaria: ContaBancariaInstance): Remessa {
+  private createHeaderLabel(contaBancaria: ContaBancariaInstance): string {
+    debug('::createHeaderLabel');
     let line = '';
 
     // 001 a 0026
@@ -173,24 +201,28 @@ export class Remessa {
     throwError(this.stringData.length !== 0, 'Erro no processamento da remessa! O registro header label não foi o primeiro a ser processado');
     throwError(line.length !== 400, `Erro no processamento da remessa! O registro header label tem ${line.length} posições (deve ter 400)`);
 
-    this.stringData.push(line);
-    return this;
+    debug(line);
+    return line;
   }
 
-  private async enviaRegistroBoleto(boleto: BoletoInstance): Promise<Remessa> {
-    return await this.addRegistro01(boleto, '01');
+  private async gerarPedidoRegistro(boleto: BoletoInstance): Promise<string> {
+    debug('::enviaRegistroBoleto', boleto.get('_id'));
+    return await this.registro01(boleto, '01');
   }
 
-  private async enviaPedidoBaixa(boleto: BoletoInstance): Promise<Remessa> {
-    return await this.addRegistro01(boleto, '02');
+  private async gerarPedidoBaixa(boleto: BoletoInstance): Promise<string> {
+    debug('::enviaPedidoBaixa', boleto.get('_id'));
+    return await this.registro01(boleto, '02');
   }
 
-  private async enviaAtualizacaoVencimento(boleto: BoletoInstance): Promise<Remessa> {
-    return await this.addRegistro01(boleto, '06');
+  private async gerarAtualizacaoVencimento(boleto: BoletoInstance): Promise<string> {
+    debug('::enviaAtualizacaoVencimento', boleto.get('_id'));
+    return await this.registro01(boleto, '06');
   }
 
-  private async enviaAtualizacaoValor(boleto: BoletoInstance): Promise<Remessa> {
-    return await this.addRegistro01(boleto, '20');
+  private async gerarAtualizacaoValor(boleto: BoletoInstance): Promise<string> {
+    debug('::enviaAtualizacaoValor', boleto.get('_id'));
+    return await this.registro01(boleto, '20');
   }
 
   /**
@@ -198,7 +230,8 @@ export class Remessa {
    * @param boleto boleto a ser adicionado
    * @param ocorrencia ocorrência para o boleto com dois dígitos
    */
-  private async addRegistro01(boleto: BoletoInstance, ocorrencia: string): Promise<Remessa> {
+  private async registro01(boleto: BoletoInstance, ocorrencia: string): Promise<string> {
+    debug('::addRegistro01 ocorrencia %d boleto %d', ocorrencia, boleto.get('_id'));
     const contaBancaria = await db.ContaBancaria.findById(boleto.get('contaBancaria'));
     const cliente = await db.Cliente.findById(boleto.get('cliente'));
     let line = "";
@@ -297,12 +330,14 @@ export class Remessa {
     // 395 a 400 - numero sequencial do registro
     line += this.contadorRegistros.next().value.toString().padStart(6, "0");
 
+    debug(line);
     throwError(line.length !== 400, `Erro ao gerar remessa: boleto ${boleto.get('_id')} gerou uma linha inválida com ${line.length} posições`);
-    this.stringData.push(line);
-    return this;
+    return line;
   }
 
-  private finalize(): string {
+  private generateTrail(): string {
+    debug('::generateTrail');
+
     let line = "";
 
     // 1 - identificacao de registro
@@ -313,7 +348,13 @@ export class Remessa {
     line += this.contadorRegistros.next().value.toString().padStart(6, "0");
 
     throwError(line.length !== 400, `Erro ao gerar remessa: Registro Trailler gerou uma linha inválida com ${line.length} posições`);
-    this.stringData.push(line);
+    debug(line);
+    return line;
+  }
+
+  private getFileContent(): string {
+    debug('::getFileContent');
+    debug('Arquivo com %d linhas', this.stringData.length);
 
     return this.stringData.join("\n");
   }
