@@ -1,6 +1,8 @@
 import * as Sequelize from 'sequelize';
 
 import { BaseModelInterface } from '../interfaces/BaseModelInterface';
+import { gerarDigitoAutoConferencia } from '../util/gerarDigitoConferenciaNN';
+import db from './index';
 
 export interface BoletoAttributes {
   _id?: number;
@@ -71,7 +73,7 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.INTEGER,
     },
     nossoNumero: {
-      type: dataTypes.INTEGER,
+      type: dataTypes.BIGINT.UNSIGNED,
     },
 
     /* informações de status do boleto */
@@ -101,9 +103,22 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.BOOLEAN,
     },
   },
-  {
-    paranoid: true,
-    tableName: 'boletos',
+    {
+      paranoid: true,
+      tableName: 'boletos',
+    });
+
+  boleto.afterCreate((boleto, opt: any) => {
+    return db.ContaBancaria.findById(boleto.get('contaBancaria'))
+      .then(conta => {
+        const nossoNumero = parseInt(boleto.get('_id')) + parseInt(conta.get('nossoNumero'));
+        const digito = gerarDigitoAutoConferencia(conta.get('carteira'), nossoNumero);
+
+        boleto.set('nossoNumero', nossoNumero);
+        boleto.set('digitoNossoNumero', digito);
+
+        return boleto.save({ transaction: opt.transaction });
+      });
   });
 
   return boleto;
