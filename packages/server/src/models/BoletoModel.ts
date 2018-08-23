@@ -70,7 +70,7 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     },
 
     digitoNossoNumero: {
-      type: dataTypes.INTEGER,
+      type: dataTypes.STRING(2),
     },
     nossoNumero: {
       type: dataTypes.BIGINT.UNSIGNED,
