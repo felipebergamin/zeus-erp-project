@@ -43,6 +43,19 @@ export const tokenResolvers = {
         };
 
       });
-    }
+    },
+
+    createQuickToken: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
+      const authUser = context.authUser;
+
+      const payload = {
+        sub: authUser._id
+      };
+
+      return {
+        _id: authUser._id,
+        token: jwt.sign(payload, JWT_SECRET, { expiresIn: '100ms' }),
+      };
+    }),
   }
 };
