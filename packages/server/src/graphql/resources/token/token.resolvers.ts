@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo } from "graphql";
 import * as jwt from 'jsonwebtoken';
+import * as Hawk from 'hawk';
 
 import { DbConnection } from "../../../interfaces/DbConnectionInterface";
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
@@ -45,17 +46,23 @@ export const tokenResolvers = {
       });
     },
 
-    createQuickToken: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
-      const authUser = context.authUser;
+    signUri: compose(...authResolvers)(async (parent, { uri }, context: ResolverContext, info) => {
+      const user = await context.db.Usuario.findById(context.authUser._id);
 
-      const payload = {
-        sub: authUser._id
+      const credentials = {
+        id: user.get('_id'),
+        key: user.get('key'),
+        algorithm: 'sha256',
       };
 
-      return {
-        _id: authUser._id,
-        token: jwt.sign(payload, JWT_SECRET, { expiresIn: '100ms' }),
-      };
+      const duration = 60 * 5;
+
+      try {
+        const bewit = Hawk.uri.getBewit(uri, { credentials: credentials, ttlSec: duration });
+        return `${uri}&bewit=${bewit}`;
+      } catch (err) {
+        throw new Error(`Unauthorized`);
+      }
     }),
   }
 };

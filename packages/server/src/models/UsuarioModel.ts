@@ -1,5 +1,6 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import * as Sequelize from 'sequelize';
+import { randomBytes } from 'crypto';
 
 import { BaseModelInterface } from '../interfaces/BaseModelInterface';
 import { ModelsInterface } from '../interfaces/ModelsInterface';
@@ -13,6 +14,7 @@ export interface UsuarioAttributes {
   perfil?: number;
   telegramID?: string;
   tipo?: string;
+  key?: string;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -51,7 +53,11 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     tipo: {
       allowNull: false,
       type: dataTypes.ENUM([ 'tecnico', 'gerente', 'atendente', 'desenvolvedor', 'outro' ]),
-    }
+    },
+    key: {
+      allowNull: false,
+      type: dataTypes.STRING,
+    },
   }, {
     paranoid: true,
 
@@ -59,6 +65,9 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       beforeCreate: (user: UsuarioInstance, options: Sequelize.CreateOptions): void => {
         const salt = genSaltSync();
         user.set('passwd', hashSync(user.get('passwd'), salt));
+
+        const key = randomBytes(64).toString('hex');
+        user.set('key', key);
       },
       beforeUpdate: (user: UsuarioInstance, options: Sequelize.CreateOptions): void => {
         if (user.changed('passwd')) {

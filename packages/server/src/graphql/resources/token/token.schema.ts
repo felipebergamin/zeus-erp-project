@@ -12,5 +12,5 @@ export const tokenQueries = `
 
 export const tokenMutations = `
   createToken(login: String!, passwd: String!): Token
-  createQuickToken: Token
+  signUri(uri: String!): String
 `;

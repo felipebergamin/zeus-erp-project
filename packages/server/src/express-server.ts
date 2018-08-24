@@ -4,6 +4,9 @@ import * as express from 'express';
 import { makeGraphQLServer } from './graphql/schema';
 import { exportJwtMiddleware } from './middlewares/extract-jwt.middleware';
 import db from './models';
+import { authenticateBewit } from './middlewares/authenticateBewit';
+
+import downloadRemessa from './routes/remessa/download';
 
 class App {
   public express: express.Application;
@@ -12,6 +15,11 @@ class App {
   constructor() {
     this.express = express();
     this.middleware();
+    this.routes();
+  }
+
+  private routes(): void {
+    this.express.get('/download/remessa/:id', authenticateBewit(), downloadRemessa);
   }
 
   private middleware(): void {

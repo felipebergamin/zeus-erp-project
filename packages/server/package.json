@@ -32,6 +32,7 @@
     "extend": "^3.0.1",
     "formidable": "^1.2.1",
     "graphql": "^0.13.2",
+    "hawk": "^7.0.7",
     "ip": "^1.1.5",
     "jsonwebtoken": "^8.3.0",
     "jwt-simple": "^0.5.1",
