@@ -6,7 +6,7 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { Base64 } from 'js-base64';
 import { MatSnackBar } from '@angular/material';
 
-import { AUTH_USER_MUTATION, IS_AUTH_QUERY } from './auth.graphql';
+import { AUTH_USER_MUTATION, IS_AUTH_QUERY, SIGN_URI_MUTATION } from './auth.graphql';
 import { Usuario } from '../models/Usuario';
 import { StorageKeys } from '../../storage-keys';
 
@@ -106,5 +106,14 @@ export class AuthService {
     localStorage.setItem(StorageKeys.KEEP_SIGNED, this.keepSigned.toString());
 
     return this.keepSigned;
+  }
+
+  signUri(uri: string): Observable<string> {
+    return this.apollo.mutate({
+      mutation: SIGN_URI_MUTATION,
+      variables: { uri },
+    }).pipe(
+      map(res => res.data.signUri)
+    );
   }
 }

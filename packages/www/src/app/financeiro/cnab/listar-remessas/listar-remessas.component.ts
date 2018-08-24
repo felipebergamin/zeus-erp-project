@@ -43,4 +43,9 @@ export class ListarRemessasComponent implements OnInit {
       ).subscribe(data => this.dataSource.next(data));
   }
 
+  downloadRemessa(remessa: ArquivoRemessa) {
+    this.remessaService.getDownloadLink(remessa)
+      .subscribe(uri => window.open(uri, 'download_remessa', 'location=no'));
+  }
+
 }

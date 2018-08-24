@@ -3,10 +3,10 @@
   <table mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="menu">
-      <th mat-header-cell *matHeaderCellDef>Menu</th>
+      <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
       <td mat-cell *matCellDef="let remessa">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
+        <button mat-icon-button (click)="downloadRemessa(remessa)">
+          <mat-icon aria-label="Download Remessa">cloud_download</mat-icon>
         </button>
       </td>
     </ng-container>
