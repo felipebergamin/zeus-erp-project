@@ -7,6 +7,7 @@ import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.
 import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.component';
 import { ListaContasBancariasResolver } from '../core/services/conta-bancaria/lista-contas-bancarias-resolver.service';
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
+import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,14 @@ const routes: Routes = [
     path: 'cnab/remessa',
     component: ListarRemessasComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'cnab/retorno/upload',
+    component: UploadRetornoComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      contasBancarias: ListaContasBancariasResolver,
+    },
   },
 ];
 

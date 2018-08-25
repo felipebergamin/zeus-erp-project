@@ -23,6 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.component';
 import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.component';
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
+import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.
     ListarBoletosComponent,
     GerarRemessaComponent,
     ListarRemessasComponent,
+    UploadRetornoComponent,
   ],
   providers: [
     {

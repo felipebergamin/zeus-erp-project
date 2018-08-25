@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, split, from } from 'apollo-link';
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
+import { createUploadLink } from 'apollo-upload-client';
+import fetch from 'cross-fetch';
 
 import { environment } from '../environments/environment';
 import { StorageKeys } from './storage-keys';
@@ -26,12 +28,13 @@ export class ApolloConfigModule {
 
     const uri = environment.graphQlURI;
     const http = httpLink.create({ uri });
+    const uploadLink = createUploadLink({ uri, fetch });
 
     const authMiddleware: ApolloLink = new ApolloLink((operation, forward) => {
       operation.setContext({
-        headers: new HttpHeaders({
+        headers: {
           'Authorization': `Bearer ${this.getAuthToken()}`
-        })
+        }
       });
       return forward(operation);
     });
@@ -51,10 +54,20 @@ export class ApolloConfigModule {
       }
     });
 
+    const networkLink = split(
+      (op) => {
+        console.log(op.operationName, op.operationName.startsWith('upload'));
+        return op.operationName.startsWith('upload');
+      },
+      uploadLink,
+      http,
+    );
+
     apollo.create({
-      link: ApolloLink.from([
+      link: from([
         linkError,
-        authMiddleware.concat(http)
+        authMiddleware,
+        networkLink,
       ]),
       cache: new InMemoryCache(),
       connectToDevTools: !environment.production,
