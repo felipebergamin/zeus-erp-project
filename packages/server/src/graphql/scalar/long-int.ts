@@ -1,6 +1,9 @@
 import { GraphQLScalarType } from 'graphql';
+import { GraphQLUpload  } from 'apollo-upload-server';
 
 export const longIntResolverMap = {
+  Upload: GraphQLUpload,
+
   LongInt: new GraphQLScalarType({
     description: 'Integer values',
     name: 'LongInt',

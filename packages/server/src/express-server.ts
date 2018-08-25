@@ -1,10 +1,11 @@
 import { ApolloServer } from 'apollo-server-express';
+import * as cors from 'cors';
 import * as express from 'express';
 
 import { makeGraphQLServer } from './graphql/schema';
+import { authenticateBewit } from './middlewares/authenticateBewit';
 import { exportJwtMiddleware } from './middlewares/extract-jwt.middleware';
 import db from './models';
-import { authenticateBewit } from './middlewares/authenticateBewit';
 
 import downloadRemessa from './routes/remessa/download';
 
@@ -25,6 +26,7 @@ class App {
   private middleware(): void {
 
     this.express.use(
+      cors(),
       exportJwtMiddleware(),
     );
 

@@ -1,10 +1,10 @@
+import * as Debug from 'debug';
 import { EventEmitter } from 'events';
 import * as fs from 'fs';
 import moment = require("moment");
 import * as readline from 'readline';
 import { Transaction } from 'sequelize';
 
-import { IArquivoRetorno } from "../../interfaces/IArquivoRetorno";
 import { IHeaderLabelRetorno } from "../../interfaces/IHeaderLabelRetorno";
 import { ITraillerRetorno } from "../../interfaces/ITraillerRetorno";
 import { ITransactionRetorno } from "../../interfaces/ITransactionRetorno";
@@ -13,7 +13,10 @@ import { DicionarioMotivosOcorrencias } from './DicionarioMotivosOcorrencias';
 import { DicionarioOcorrencias } from './DicionarioOcorrencias';
 
 import db from '../../models';
+import { ArquivoRetornoAttributes } from '../../models/ArquivoRetornoModel';
 import { throwError } from '../../util/utils';
+
+const debug = Debug('zeus:cnab:retorno');
 
 export class Retorno extends EventEmitter {
   public header: IHeaderLabelRetorno;
@@ -21,16 +24,17 @@ export class Retorno extends EventEmitter {
   public trailler: ITraillerRetorno;
 
   public async parseFileContent(filePath: string, applyChanges: boolean) {
+    debug('Retorno::parseFileContent %s', JSON.stringify({filePath, applyChanges}));
     throwError(!fs.existsSync(filePath), `O caminho para o arquivo de retorno é inválido: ${filePath}`);
 
     const retorno = {
-      registros: [],
       contaBancaria: 0,
       conteudoArquivo: '',
       dataGravacao: null,
       nomeArquivo: '',
-      quantidadeOperacoes: 0
-    } as IArquivoRetorno;
+      quantidadeOperacoes: 0,
+      registros: [],
+    } as ArquivoRetornoAttributes;
 
     this.header = null;
     this.transactions = [];
@@ -83,7 +87,7 @@ export class Retorno extends EventEmitter {
             retorno.registros.push(registro);
             break;
           case '9': // registro trailler
-            retorno.trailler = this.parseTrailler(line);
+            this.trailler = this.parseTrailler(line);
             transaction.commit();
             this.emit('done', retorno);
             break;

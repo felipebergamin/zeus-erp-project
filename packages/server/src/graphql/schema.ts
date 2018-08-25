@@ -52,6 +52,7 @@ import { longIntResolverMap } from './scalar/long-int';
 
 const SchemaDefinition = `
   scalar LongInt
+  scalar Upload
 
   type Schema {
     query: Query

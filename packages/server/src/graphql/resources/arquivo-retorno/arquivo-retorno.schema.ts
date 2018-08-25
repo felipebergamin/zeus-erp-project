@@ -19,4 +19,5 @@ export const arquivoRetornoQueries = `
 `;
 
 export const arquivoRetornoMutations = `
+  uploadRetorno(file: Upload!): Boolean
 `;
