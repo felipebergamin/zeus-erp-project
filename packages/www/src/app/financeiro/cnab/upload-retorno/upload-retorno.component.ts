@@ -20,7 +20,6 @@ export class UploadRetornoComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       contaBancaria: new FormControl(null),
-      file: new FormControl(null),
     });
 
     this.route.data.subscribe(
@@ -30,8 +29,8 @@ export class UploadRetornoComponent implements OnInit {
     );
   }
 
-  onFormSubmit(file: FileList) {
-    this.retornoSvc.uploadRetorno(file[0])
+  onFormSubmit(files: FileList) {
+    this.retornoSvc.uploadRetorno(this.form.value, files[0])
       .subscribe(res => console.log(res));
   }
 
