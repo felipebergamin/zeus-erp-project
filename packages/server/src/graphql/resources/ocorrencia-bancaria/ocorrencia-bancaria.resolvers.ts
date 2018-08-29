@@ -1,6 +1,5 @@
 import { GraphQLResolveInfo } from "graphql";
 
-import { DbConnection } from "../../../interfaces/DbConnectionInterface";
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { OcorrenciaBancariaInstance } from "../../../models/OcorrenciaBancariaModel";
 import { throwError } from "../../../util/utils";
@@ -11,7 +10,11 @@ export const ocorrenciaBancariaResolvers = {
 
   OcorrenciaBancaria: {
     boleto: (parent: OcorrenciaBancariaInstance, args, context: ResolverContext, info: GraphQLResolveInfo) => {
-      return context.db.Boleto.findById(parent.get('boleto'));
+      return parent.get('boleto') ? context.db.Boleto.findById(parent.get('boleto')) : null;
+    },
+
+    arquivoRetorno: (parent: OcorrenciaBancariaInstance, args, context: ResolverContext, info: GraphQLResolveInfo) => {
+      return context.db.ArquivoRetorno.findById(parent.get('arquivoRetorno'));
     },
   },
 
@@ -24,6 +27,10 @@ export const ocorrenciaBancariaResolvers = {
       return context.db.OcorrenciaBancaria.findAll({
         where: { boleto: idBoleto }
       });
+    }),
+
+    listarOcorrenciasBancarias: compose(...authResolvers)((parent, { boleto }, context: ResolverContext, info: GraphQLResolveInfo) => {
+      return context.db.OcorrenciaBancaria.findAll();
     }),
   },
 

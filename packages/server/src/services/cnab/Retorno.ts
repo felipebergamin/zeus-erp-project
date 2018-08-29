@@ -1,157 +1,179 @@
+import { Promise } from 'bluebird';
 import * as Debug from 'debug';
 import { EventEmitter } from 'events';
 import * as fs from 'fs';
 import moment = require("moment");
+import { posix } from 'path';
 import * as readline from 'readline';
-import { Transaction } from 'sequelize';
-
-import { IHeaderLabelRetorno } from "../../interfaces/IHeaderLabelRetorno";
-import { ITraillerRetorno } from "../../interfaces/ITraillerRetorno";
-import { ITransactionRetorno } from "../../interfaces/ITransactionRetorno";
-import { BoletoInstance } from "../../models/BoletoModel";
-import { DicionarioMotivosOcorrencias } from './DicionarioMotivosOcorrencias';
-import { DicionarioOcorrencias } from './DicionarioOcorrencias';
 
 import db from '../../models';
 import { ArquivoRetornoAttributes } from '../../models/ArquivoRetornoModel';
+import { BoletoInstance } from "../../models/BoletoModel";
+import { OcorrenciaBancariaAttributes, OcorrenciaBancariaInstance } from '../../models/OcorrenciaBancariaModel';
 import { throwError } from '../../util/utils';
 
 const debug = Debug('zeus:cnab:retorno');
 
-export class Retorno extends EventEmitter {
-  public header: IHeaderLabelRetorno;
-  public transactions: ITransactionRetorno[];
-  public trailler: ITraillerRetorno;
+interface TraillerRetorno {
+  qtdeRegistrosConfirmados: number;
+  valorRegistrosConfirmados: number;
+  valorRegistrosLiquidados: number;
+  qtdeRegistrosLiquidados: number;
+  valorRegistros06: number;
+  qtdeRegistrosBaixados: number;
+  valorRegistrosBaixados: number;
+  qtdeRegistrosVencimentoAlterado: number;
+  valorRegistrosVencimentoAlterado: number;
+}
 
-  public async parseFileContent(filePath: string, applyChanges: boolean) {
-    debug('Retorno::parseFileContent %s', JSON.stringify({filePath, applyChanges}));
+interface HeaderRetorno {
+  dataArquivo: Date;
+}
+
+export class Retorno extends EventEmitter {
+
+  public async parseFile(filePath: string, contaBancaria: number) {
+    debug('Retorno::parseFile %s', JSON.stringify({ filePath, contaBancaria }));
     throwError(!fs.existsSync(filePath), `O caminho para o arquivo de retorno é inválido: ${filePath}`);
 
-    const retorno = {
-      contaBancaria: 0,
-      conteudoArquivo: '',
-      dataGravacao: null,
-      nomeArquivo: '',
+    const nomeArquivo = posix.basename(filePath);
+
+    const conta = await db.ContaBancaria.findById(contaBancaria);
+    throwError(!conta, `Conta bancária ${contaBancaria} não encontrada!`);
+
+    const fileAlreadySubmitted = await db.ArquivoRetorno.findOne({ where: { nomeArquivo, contaBancaria } });
+    const arquivoProcessado: ArquivoRetornoAttributes = {
+      contaBancaria,
+      nomeArquivo,
+      processado: false,
       quantidadeOperacoes: 0,
-      registros: [],
-    } as ArquivoRetornoAttributes;
+    };
+    const ocorrencias: OcorrenciaBancariaInstance[] = [];
+    const boletos: BoletoInstance[] = [];
+    const applyChanges = (!fileAlreadySubmitted || (fileAlreadySubmitted && !fileAlreadySubmitted.get('processado')));
 
-    this.header = null;
-    this.transactions = [];
-    this.trailler = null;
+    readline.createInterface({
+      input: fs.createReadStream(filePath),
+    })
+      .on('line', async (line: string) => {
+        debug(line);
 
-    const transaction: Transaction = await db.sequelize.transaction();
-
-    try {
-      const reader = readline.createInterface({
-        input: fs.createReadStream(filePath),
-      });
-
-      reader.on('line', async (line: string) => {
         // toma ações diferentes de acordo com o tipo de registro da linha atual
         switch (line.charAt(0)) {
           case '0': // registro header
-            this.header = this.parseHeader(line);
-            retorno.dataGravacao = moment(this.header.dataArquivo, 'DDMMYY').toDate();
+            debug('Lendo registro header');
+            const header = this.parseHeader(line);
+            arquivoProcessado.dataGravacao = header.dataArquivo;
             break;
           case '1': // registro de transação
-            const registro = this.parseTransaction(line);
+            debug('Lendo registro de transação');
+            const ocorrencia = db.OcorrenciaBancaria.build(this.parseTransaction(line));
+            ocorrencia.set('dataHora', new Date());
+            arquivoProcessado.quantidadeOperacoes++;
 
-            registro.descricaoOcorrencia =
-              this.getDescritivoOcorrencia(registro.idOcorrencia);
-            registro.descricaoMotivoOcorrencia =
-              this.getDescritivoMotivoOcorrencia(registro.idOcorrencia, registro.motivoOcorrencia);
+            const boleto = !isNaN(ocorrencia.get('boleto')) ? await db.Boleto.findById(ocorrencia.get('boleto')) : null;
+            if (fileAlreadySubmitted) { ocorrencia.set('arquivoRetorno', fileAlreadySubmitted.get('_id')); }
 
-            // se o título foi gerado pelo Zeus
-            if (registro.numeroControle.startsWith('Z')) {
-              const id = registro.numeroControle.replace('Z', '');
-              const boleto = await db.Boleto.findById(id);
-              // const cliente = await db.Cliente.findById(boleto.get('cliente'));
+            if (boleto) {
+              ocorrencia.set('boleto', boleto.get('_id'));
 
-              if (boleto) {
-                registro.boleto = boleto.toJSON();
+              debug('Boleto correspondente a ocorrencia encontrado!');
 
-                if (applyChanges === true) {
-                  const boletoProcessado = await this.aplicarOcorrenciaAoBoleto(registro, boleto, transaction);
-                  db.Boleto.update(boletoProcessado.toJSON(), { where: { _id: boletoProcessado.get('_id') }, transaction });
-                }
-              } else { // o boleto não foi encontrado
-                registro.erro = true;
-                registro.descricaoErro = 'Título não encontrado';
+              if (applyChanges === true) {
+                boletos.push(boleto);
+                debug('Aplicando alterações ao boleto');
+                const boletoProcessado = await this.aplicarOcorrenciaAoBoleto(ocorrencia, boleto);
+                db.Boleto.update(boletoProcessado.toJSON(), { where: { _id: boletoProcessado.get('_id') } });
               }
-            } else { // o título não foi gerado pelo Zeus
-              registro.erro = true;
-              registro.descricaoErro = 'Título não pertence ao sistema Zeus';
             }
 
-            retorno.registros.push(registro);
+            ocorrencias.push(ocorrencia);
             break;
           case '9': // registro trailler
-            this.trailler = this.parseTrailler(line);
-            transaction.commit();
-            this.emit('done', retorno);
+            debug('Lendo registro trailler');
+            Object.assign(arquivoProcessado, this.parseTrailler(line));
             break;
         }
+      })
+      .on('close', () => {
+        /*
+        * se a opção de aplicar mudanças é true
+        * E o arquivo já foi enviado mas não processado OU não foi enviado
+        * então abre uma transação para salvar o retorno no banco de dados
+        */
+        if (applyChanges) {
+          debug('Aplicando mudanças no banco de dados');
+
+          db.sequelize.transaction((transaction) => {
+
+            arquivoProcessado.processado = true;
+            return db.ArquivoRetorno.create(arquivoProcessado, { transaction })
+              .then((arquivo) => {
+                debug('Arquivo Retorno Salvo no BD');
+                const boletoPromises = [];
+
+                boletos.forEach((boleto) => {
+                  debug(JSON.stringify(boleto.toJSON(), null, 2));
+                  boletoPromises.push(boleto.save({ transaction }));
+                });
+
+                if (boletoPromises.length === 0) {
+                  boletoPromises.push(Promise.resolve());
+                }
+
+                return Promise.all(boletoPromises)
+                  .then(() => {
+                    debug('boletos criados');
+                    const ocorrenciasPromises = [];
+
+                    for (const ocorrencia of ocorrencias) {
+                      debug('Salvando ocorrencia');
+                      debug(JSON.stringify(ocorrencia));
+                      ocorrencia.set('arquivoRetorno', arquivo.get('_id'));
+                      ocorrenciasPromises.push(ocorrencia.save({ transaction }));
+                    }
+
+                    return Promise.all(ocorrenciasPromises);
+                  });
+              });
+          })
+          .then((result) => {
+            this.emit('done', result);
+            return result;
+          })
+          .catch((err) => {
+            this.emit('error', err);
+            throw err;
+          });
+
+        } else {
+          debug('Mudanças não serão aplicadas no banco de dados');
+          this.emit('done', ocorrencias);
+        }
       });
-    } catch (err) {
-      this.emit('error', err);
-      transaction.rollback();
-    }
   }
 
-  /**
-   * Retorna um novo objeto BoletoBancario modificado de acordo com
-   * a transação do arquivo retorno. Não modifica o objeto Boleto passado por parâmetro
-   *
-   * @param registroTransacao registro do arquivo de retorno a ser processado
-   * @param b boleto tratado pela transacao
-   * @returns Um novo objeto BoletoBancario com as devidas alterações do arquivo retorno
-   */
-  private async aplicarOcorrenciaAoBoleto(registroTransacao: ITransactionRetorno, boleto: BoletoInstance, transaction: Transaction): Promise<BoletoInstance> {
-    const dataHora = new Date();
-    const ocorrencia = registroTransacao.idOcorrencia;
-    const descricaoOcorrencia =
-      this.getDescritivoOcorrencia(ocorrencia);
-    const motivoOcorrencia =
-      this.getDescritivoMotivoOcorrencia(ocorrencia, registroTransacao.motivoOcorrencia);
+  private aplicarOcorrenciaAoBoleto(registroTransacao: OcorrenciaBancariaInstance, boleto: BoletoInstance): BoletoInstance {
 
-    const ocorrencias = await db.OcorrenciaBancaria.findAll({
-      where: { boleto: boleto.get('_id') }
-    });
-
-    ocorrencias.push(await db.OcorrenciaBancaria.create(
-      {
-        dataHora,
-        descricaoOcorrencia,
-        motivoOcorrencia,
-        ocorrencia,
-      }, {
-        transaction,
-      }
-    ));
-
-    switch (registroTransacao.idOcorrencia) {
+    switch (registroTransacao.get('idOcorrencia')) {
       case '02': // Entrada confirmada
         boleto.set('registrado', true);
         break;
       case '06': // Liquidação normal (título pago)
         boleto.set('pago', true);
-        boleto.set('dataCredito', moment(registroTransacao.dataCredito, "DDMMYY").toDate());
-        boleto.set('dataPagamento', moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate());
+        boleto.set('dataCredito', registroTransacao.get('dataCredito'));
+        boleto.set('dataPagamento', registroTransacao.get('dataOcorrenciaNoBanco'));
         break;
       case '09': // Baixado automático via arquivo
       case '10': // Baixado conforme instruções da agência
         boleto.set('baixado', true);
-        boleto.set('dataBaixa', moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate());
+        boleto.set('dataBaixa', registroTransacao.get('dataOcorrenciaNoBanco'));
         break;
       case '17': // Liquidação após baixa ou Título não registrado
-        if (boleto.get('pago')) {
-          registroTransacao.erro = true;
-          registroTransacao.descricaoErro = 'Título pago em duplicidade';
-        } else {
+        if (!boleto.get('pago')) {
           boleto.set('pago', true);
-          boleto.set('dataPagamento', moment(registroTransacao.dataOcorrencia, "DDMMYY").toDate());
-          boleto.set('dataCredito', moment(registroTransacao.dataCredito, "DDMMYY").toDate());
+          boleto.set('dataPagamento', registroTransacao.get('dataOcorrenciaNoBanco'));
+          boleto.set('dataCredito', registroTransacao.get('dataCredito'));
         }
         break;
       case '14': // Vencimento Alterado
@@ -166,110 +188,50 @@ export class Retorno extends EventEmitter {
     return boleto;
   }
 
-  private getDescritivoOcorrencia(ocorrencia: string): string {
-    return DicionarioOcorrencias[ocorrencia] || '';
+  // tslint:disable:object-literal-sort-keys
+  private parseHeader(headerStr: string): HeaderRetorno {
+    return {
+      dataArquivo: moment(headerStr.substr(94, 6), 'DDMMYY').toDate(),
+    };
   }
 
-  private getDescritivoMotivoOcorrencia(ocorrencia: string, motivo: string) {
-    return DicionarioMotivosOcorrencias[ocorrencia][motivo] || '';
-  }
+  private parseTransaction(line: string): OcorrenciaBancariaAttributes {
+    debug(`parseTransaction: Tamanho da Linha: ${line.length}`);
 
-  private validateFileContent(fileContent: string): boolean {
-    const lines = fileContent.split('\n');
-
-    if (lines.length < 2) {
-      return false;
+    if (line.length !== 400) {
+      throw new Error(`Linha com tamanho inválido: ${line.length} caracteres`);
     }
 
-    return lines.every((line: string) => line.trim().length === 400 || line.trim().length === 0);
-  }
+    const dataCredito = moment(line.substr(295, 6), 'DDMMYY');
 
-  // tslint:disable:object-literal-sort-keys
-  private parseHeader(headerStr: string): IHeaderLabelRetorno {
     return {
-      idRegistro: headerStr.substr(0, 1),
-      idRetorno: headerStr.substr(1, 2),
-      literalRetorno: headerStr.substr(2, 7),
-      codigoServico: headerStr.substr(9, 2),
-      literalServico: headerStr.substr(11, 15),
-      codigoEmpresa: headerStr.substr(26, 20),
-      nomeEmpresa: headerStr.substr(46, 30),
-      numeroBradesco: headerStr.substr(76, 3),
-      nomeBanco: headerStr.substr(79, 15),
-      dataArquivo: headerStr.substr(94, 6),
-      densidadeGravacao: headerStr.substr(100, 8),
-      numeroAvisoBancario: headerStr.substr(108, 5),
-      dataCredito: headerStr.substr(379, 6),
-      sequenciaRegistro: +headerStr.substr(394, 6),
-    };
-  }
-
-  private parseTransaction(line: string): ITransactionRetorno {
-    return {
-      idRegistro: line.substr(0, 1),
-      tipoInscricaoEmpresa: line.substr(1, 2),
-      numeroInscricao: line.substr(3, 14),
-      idEmpresaBeneficiaria: line.substr(20, 17),
-      numeroControle: line.substr(37, 25),
-      idTitulo: line.substr(70, 12),
-      idRateio: line.substr(104, 1),
-      pagamentoParcial: line.substr(105, 2),
-      carteira: line.substr(107, 1),
       idOcorrencia: line.substr(108, 2),
-      dataOcorrencia: moment(line.substr(110, 6), 'DDMMYY').toDate(),
-      numeroDocumento: line.substr(116, 10),
-      idTituloBanco: line.substr(126, 20),
-      vencimentoTitulo: moment(line.substr(146, 6), 'DDMMYY').toDate(),
-      valorTitulo: Number(line.substr(152, 13)) / 100,
+      dataOcorrenciaNoBanco: moment(line.substr(110, 6), 'DDMMYY').toDate(),
       bancoCobrador: line.substr(165, 3),
       agenciaCobradora: line.substr(168, 5),
-      despesaCobranca: Number(line.substr(175, 13)) / 100,
-      outrasDespesas: Number(line.substr(188, 13)) / 100,
-      jurosAtraso: Number(line.substr(201, 13)) / 100,
-      iof: Number(line.substr(214, 13)),
-      abatimento: Number(line.substr(227, 13)) / 100,
-      descontoConcedido: Number(line.substr(240, 13)) / 100,
       valorPago: Number(line.substr(253, 13)) / 100,
       jurosMora: Number(line.substr(266, 13)) / 100,
-      outrosCreditos: Number(line.substr(279, 13)) / 100,
-      motivoOcorrencia: line.substr(294, 1),
-      dataCredito: moment(line.substr(295, 6), 'DDMMYY').toDate(),
-      origemPagamento: line.substr(301, 3),
-      chequeBradesco: line.substr(314, 4),
-      motivoRejeicao: line.substr(318, 10),
-      numeroCartorio: line.substr(368, 2),
-      numeroProtocolo: line.substr(370, 10),
-      sequenciaRegistro: +line.substr(394, 6),
+      dataCredito: dataCredito.isValid() ? dataCredito.toDate() : null,
+      motivosOcorrencia: line.substr(294, 1),
+
+      boleto: (parseInt(line.substr(37, 25).trim(), 10) || null),
     };
   }
 
-  private parseTrailler(line: string): ITraillerRetorno {
+  private parseTrailler(line: string): TraillerRetorno {
     return {
-      idRegistro: line.substr(0, 1),
-      idRetorno: line.substr(1, 1),
-      tipoRegistro: line.substr(2, 2),
-      codigoBanco: line.substr(4, 3),
-      quantidadeTitulos: line.substr(17, 8),
-      valorTotal: line.substr(25, 14),
-      numeroAvisoBancario: line.substr(39, 8),
-      quantidadeRegistros02: line.substr(57, 5),
-      valorRegistros02: line.substr(62, 12),
-      valorRegistros06: line.substr(74, 12),
-      quantidadeRegistros06: line.substr(86, 5),
-      valorRegistros: line.substr(91, 12),
-      quantidadeRegistrosBaixados: line.substr(103, 5),
-      valorRegistrosBaixados: line.substr(108, 12),
-      quantidadeRegistrosAbatimentoCancelado: line.substr(120, 5),
-      valorRegistrosAbatimentoCancelado: line.substr(125, 12),
-      quantidadeRegistrosVencimentoAlterado: line.substr(137, 5),
-      valorRegistrosVencimentoAlterado: line.substr(142, 12),
-      quantidadeRegistrosAbatimento: line.substr(154, 5),
-      valorRegistrosAbatimento: line.substr(159, 12),
-      quantidadeRegistrosConfirmacaoProtesto: line.substr(171, 5),
-      valorRegistrosConfirmacaoProtesto: line.substr(176, 12),
-      valorTotalRateios: line.substr(362, 15),
-      quantidadeRateios: line.substr(377, 8),
-      sequenciaRegistro: line.substr(394, 6),
+      valorRegistrosConfirmados: parseInt(line.substr(62, 12), 10) / 100,
+      qtdeRegistrosConfirmados: parseInt(line.substr(57, 5), 10),
+
+      valorRegistrosLiquidados: parseInt(line.substr(74, 12), 10) / 100,
+      qtdeRegistrosLiquidados: parseInt(line.substr(86, 5), 10),
+      valorRegistros06: parseInt(line.substr(91, 12), 10) / 100,
+
+      qtdeRegistrosBaixados: parseInt(line.substr(103, 5), 10),
+      valorRegistrosBaixados: parseInt(line.substr(108, 12), 10) / 100,
+
+      qtdeRegistrosVencimentoAlterado: parseInt(line.substr(137, 5), 10),
+      valorRegistrosVencimentoAlterado: parseInt(line.substr(142, 12), 10) / 100,
     };
   }
 }

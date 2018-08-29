@@ -4,11 +4,19 @@ import { ModelsInterface } from '../interfaces/ModelsInterface';
 
 export interface OcorrenciaBancariaAttributes {
   _id?: number;
+
+  idOcorrencia?: string;
+  dataOcorrenciaNoBanco?: Date;
+  bancoCobrador?: string;
+  agenciaCobradora?: string;
+  valorPago?: number;
+  jurosMora?: number;
+  dataCredito?: Date;
+  motivosOcorrencia?: string;
   dataHora?: Date;
-  ocorrencia?: string;
-  descricaoOcorrencia?: string;
-  motivoOcorrencia?: string;
+
   boleto?: number;
+  arquivoRetorno?: number;
 }
 
 export interface OcorrenciaBancariaInstance extends Sequelize.Instance<OcorrenciaBancariaAttributes> {}
@@ -23,28 +31,56 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       primaryKey: true,
       type: dataTypes.INTEGER.UNSIGNED,
     },
+    agenciaCobradora: {
+      type: dataTypes.STRING(5),
+    },
+    bancoCobrador: {
+      type: dataTypes.STRING(3),
+    },
+    dataCredito: {
+      type: dataTypes.DATEONLY,
+    },
     dataHora: {
-      defaultValue: Sequelize.NOW,
+      allowNull: false,
       type: dataTypes.DATE,
     },
-    descricaoOcorrencia: {
+    dataOcorrenciaNoBanco: {
+      allowNull: false,
+      type: dataTypes.DATEONLY,
+    },
+    idOcorrencia: {
+      allowNull: false,
+      type: dataTypes.STRING(2),
+    },
+    jurosMora: {
+      type: dataTypes.FLOAT(10, 2),
+    },
+    motivosOcorrencia: {
       type: dataTypes.STRING,
     },
-    motivoOcorrencia: {
-      type: dataTypes.STRING,
+    valorPago: {
+      type: dataTypes.FLOAT(10, 2),
     },
-    ocorrencia: {
-      type: dataTypes.STRING,
-    },
+  }, {
+    tableName: 'ocorrenciasbancarias',
+    timestamps: false,
   });
 
   ocorrencia.associate = (models: ModelsInterface) => {
     ocorrencia.belongsTo(models.Boleto, {
       foreignKey: {
-        allowNull: false,
+        allowNull: true,
         field: 'boleto',
         name: 'boleto',
       }
+    });
+
+    ocorrencia.belongsTo(models.ArquivoRetorno, {
+      foreignKey: {
+        allowNull: false,
+        field: 'arquivoRetorno',
+        name: 'arquivoRetorno',
+      },
     });
   };
 

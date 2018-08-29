@@ -11,6 +11,11 @@ export const arquivoRetornoTypes = `
     createdAt: String
     updatedAt: String
   }
+
+  input UploadRetornoInput {
+    contaBancaria: Int!
+    file: Upload!
+  }
 `;
 
 export const arquivoRetornoQueries = `
@@ -19,5 +24,5 @@ export const arquivoRetornoQueries = `
 `;
 
 export const arquivoRetornoMutations = `
-  uploadRetorno(file: Upload!): Boolean
+  uploadRetorno(input: UploadRetornoInput!): [ OcorrenciaBancaria! ]!
 `;

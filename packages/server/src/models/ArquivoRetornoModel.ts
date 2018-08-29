@@ -3,12 +3,23 @@ import { BaseModelInterface } from '../interfaces/BaseModelInterface';
 
 export interface ArquivoRetornoAttributes {
   _id?: number;
+
   contaBancaria?: number;
-  conteudoArquivo?: string;
-  dataGravacao?: Date;
+  dataGravacao?: Date; // informação no header do arquivo
   nomeArquivo?: string;
   processado?: boolean;
   quantidadeOperacoes?: number;
+
+  /* informações no registro trailler do arquivo */
+  qtdeRegistrosConfirmados?: number;
+  valorRegistrosConfirmados?: number;
+  valorRegistrosLiquidados?: number;
+  qtdeRegistrosLiquidados?: number;
+  valorRegistros06?: number;
+  qtdeRegistrosBaixados?: number;
+  valorRegistrosBaixados?: number;
+  qtdeRegistrosVencimentoAlterado?: number;
+  valorRegistrosVencimentoAlterado?: number;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -26,10 +37,6 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       primaryKey: true,
       type: dataTypes.INTEGER.UNSIGNED,
     },
-    conteudoArquivo: {
-      allowNull: false,
-      type: dataTypes.TEXT,
-    },
     dataGravacao: {
       type: dataTypes.DATEONLY,
     },
@@ -44,7 +51,48 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     quantidadeOperacoes: {
       allowNull: false,
       type: dataTypes.INTEGER,
-    }
+    },
+
+    qtdeRegistrosBaixados: {
+      allowNull: false,
+      type: dataTypes.INTEGER.UNSIGNED,
+    },
+    qtdeRegistrosConfirmados: {
+      allowNull: false,
+      type: dataTypes.INTEGER.UNSIGNED,
+    },
+    qtdeRegistrosLiquidados: {
+      allowNull: false,
+      type: dataTypes.INTEGER.UNSIGNED,
+    },
+    qtdeRegistrosVencimentoAlterado: {
+      allowNull: false,
+      type: dataTypes.INTEGER.UNSIGNED,
+    },
+
+    valorRegistros06: {
+      allowNull: false,
+      type: dataTypes.FLOAT(10, 2),
+    },
+    valorRegistrosBaixados: {
+      allowNull: false,
+      type: dataTypes.FLOAT(10, 2),
+    },
+    valorRegistrosConfirmados: {
+      allowNull: false,
+      type: dataTypes.FLOAT(10, 2),
+    },
+    valorRegistrosLiquidados: {
+      allowNull: false,
+      type: dataTypes.FLOAT(10, 2),
+    },
+    valorRegistrosVencimentoAlterado: {
+      allowNull: false,
+      type: dataTypes.FLOAT(10, 2),
+    },
+  }, {
+    paranoid: true,
+    tableName: 'arquivosretorno',
   });
 
   return retorno;
