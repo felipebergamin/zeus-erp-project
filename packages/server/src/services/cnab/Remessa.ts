@@ -1,5 +1,5 @@
-import moment = require("moment");
 import * as Debug from 'debug';
+import moment = require("moment");
 import { Op } from 'sequelize';
 
 import db from '../../models';
@@ -54,6 +54,7 @@ export class Remessa {
 
     const normalizeBoolean = (val: any): boolean => val === true;
 
+    where.lock = false;
     where.contaBancaria = contaBancaria.get('_id');
 
     // se boletos já enviados não devem ser reenviados
@@ -106,14 +107,12 @@ export class Remessa {
         // add o boleto para registro
         debug('%d enviado para registro', boleto.get('_id'));
         promises.push(this.gerarPedidoRegistro(boleto));
-        remessa.quantidadeOperacoes++;
       } else {
         // se o boleto precisa atualizar valor e o usuario permitiu atualizacao de valor
         if (boleto.get('enviarAtualizacaoValor')) {
           // add o boleto para atualizacao de valor
           debug('%d enviado para atualização de valor', boleto.get('_id'));
           promises.push(this.gerarAtualizacaoValor(boleto));
-          remessa.quantidadeOperacoes++;
         }
 
         // se o boleto precisa de uma atualizacao de vencimento e o usuario permitiu essa operacao
@@ -121,7 +120,6 @@ export class Remessa {
           // add o boleto para atualizacao de vencimento
           debug('%d enviado para atualização de vencimento', boleto.get('_id'));
           promises.push(this.gerarAtualizacaoVencimento(boleto));
-          remessa.quantidadeOperacoes++;
         }
 
         // se precisa enviar um pedido de baixa do boleto e essa operacao foi permitida
@@ -129,9 +127,11 @@ export class Remessa {
           // add o boleto para pedido de baixa
           debug('%d enviado para baixa', boleto.get('_id'));
           promises.push(this.gerarPedidoBaixa(boleto));
-          remessa.quantidadeOperacoes++;
         }
       }
+
+      remessa.quantidadeOperacoes++;
+      boleto.set('lock', true).save();
     });
 
     this.stringData.push(this.createHeaderLabel(contaBancaria));
