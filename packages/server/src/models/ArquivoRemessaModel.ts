@@ -9,6 +9,9 @@ export interface ArquivoRemessaAttributes {
   mesGeracao?: number;
   nomeArquivo?: string;
   quantidadeOperacoes?: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ArquivoRemessaInstance extends Sequelize.Instance<ArquivoRemessaAttributes> {}

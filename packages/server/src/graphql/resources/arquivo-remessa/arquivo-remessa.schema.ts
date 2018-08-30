@@ -7,6 +7,9 @@ export const arquivoRemessaTypes = `
     mesGeracao: Int!
     nomeArquivo: String!
     quantidadeOperacoes: Int!
+
+    createdAt: String
+    updatedAt: String
   }
 
   input GerarArquivoRemessaInput {
