@@ -63,11 +63,11 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.STRING,
     },
 
-    leitura: {
+    escrita: {
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },
-    escrita: {
+    leitura: {
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },

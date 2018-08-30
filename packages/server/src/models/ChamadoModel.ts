@@ -126,11 +126,11 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
 
     prioridade: {
       allowNull: false,
-      type: dataTypes.TINYINT({ length: 3 }),
       defaultValue: 3,
+      type: dataTypes.TINYINT({ length: 3 }),
       validate: {
-        min: { args: 1, msg: 'A prioridade deve estar entre 1 e 4' },
         max: { args: 4, msg: 'A prioridade deve estar entre 1 e 4' },
+        min: { args: 1, msg: 'A prioridade deve estar entre 1 e 4' },
       },
     },
     protocolo: {
@@ -138,6 +138,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.STRING,
       unique: true
     }
+  }, {
+    tableName: 'chamados',
   });
 
   chamado.associate = (models: ModelsInterface) => {

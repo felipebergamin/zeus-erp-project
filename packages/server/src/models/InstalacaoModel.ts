@@ -96,6 +96,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       defaultValue: 0,
       type: dataTypes.NUMERIC( { precision: 2 } ),
     },
+  }, {
+    tableName: 'instalacoes',
   });
 
   instalacao.associate = (models: ModelsInterface): void => {

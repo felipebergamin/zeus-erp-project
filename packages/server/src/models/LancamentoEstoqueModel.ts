@@ -28,6 +28,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     quantidade: {
       type: dataTypes.INTEGER,
     }
+  }, {
+    tableName: 'lancamentosestoque',
   });
 
   lancamentoEstoque.associate = (models: ModelsInterface) => {

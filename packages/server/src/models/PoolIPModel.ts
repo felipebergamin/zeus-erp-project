@@ -33,6 +33,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       allowNull: false,
       type: dataTypes.STRING,
     },
+  }, {
+    tableName: 'poolip',
   });
 
   pool.associate = (models: ModelsInterface): void => {

@@ -34,6 +34,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       allowNull: false,
       type: dataTypes.INTEGER,
     },
+  }, {
+    tableName: 'baixasestoque',
   });
 
   baixaEstoque.associate = (models: ModelsInterface) => {

@@ -46,6 +46,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       allowNull: false,
       type: dataTypes.INTEGER,
     }
+  }, {
+    tableName: 'arquivosremessa',
   });
 
   return remessa;

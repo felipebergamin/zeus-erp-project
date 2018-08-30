@@ -142,7 +142,7 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
 
   }, {
     paranoid: true,
-    tableName: 'cliente',
+    tableName: 'clientes',
   });
 
   cliente.associate = (models: ModelsInterface) => {
