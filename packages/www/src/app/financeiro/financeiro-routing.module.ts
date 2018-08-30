@@ -8,6 +8,7 @@ import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.compon
 import { ListaContasBancariasResolver } from '../core/services/conta-bancaria/lista-contas-bancarias-resolver.service';
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
 import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
+import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
     resolve: {
       contasBancarias: ListaContasBancariasResolver,
     },
+  },
+  {
+    path: 'cnab/retorno',
+    component: ListarRetornoComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

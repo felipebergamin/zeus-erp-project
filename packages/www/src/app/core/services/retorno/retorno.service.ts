@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { UPLOAD_RETORNO_MUTATION } from './retorno.graphql';
+import { UPLOAD_RETORNO_MUTATION, ListarRetornosQuery, LISTAR_RETORNOS_QUERY } from './retorno.graphql';
 import { ArquivoRetorno } from '../../models/ArquivoRetorno';
 
 @Injectable({
@@ -21,5 +21,12 @@ export class RetornoService {
         file,
       } },
     }).pipe(map(res => res.data.uploadRetorno));
+  }
+
+  listarRetornos(variables?: {first: number, offset: number}): Observable<ListarRetornosQuery> {
+    return this.apollo.query<ListarRetornosQuery>({
+      query: LISTAR_RETORNOS_QUERY,
+      variables
+    }).pipe(map(res => res.data));
   }
 }

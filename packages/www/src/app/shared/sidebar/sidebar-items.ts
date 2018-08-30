@@ -74,6 +74,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Remessa Bancária',
         path: '/financeiro/cnab/remessa',
       },
+      {
+        name: 'Retorno Bancário',
+        path: '/financeiro/cnab/retorno',
+      },
     ]
   },
   {

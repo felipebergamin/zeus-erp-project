@@ -1,4 +1,10 @@
 import gql from 'graphql-tag';
+import { ArquivoRetorno } from '../../models/ArquivoRetorno';
+
+export interface ListarRetornosQuery {
+  listarArquivosRetorno: ArquivoRetorno[];
+  totalArquivosRetorno: number;
+}
 
 export const UPLOAD_RETORNO_MUTATION = gql`
   mutation uploadRetorno($input: UploadRetornoInput!) {
@@ -50,5 +56,22 @@ export const UPLOAD_RETORNO_MUTATION = gql`
 
       createdAt
     }
+  }
+`;
+
+export const LISTAR_RETORNOS_QUERY = gql`
+  query listarArquivosRetorno($first: Int, $offset: Int) {
+    listarArquivosRetorno(first: $first, offset: $offset) {
+      _id
+      contaBancaria {
+        _id
+        nome
+      }
+      dataGravacao
+      nomeArquivo
+      processado
+      quantidadeOperacoes
+    }
+    totalArquivosRetorno
   }
 `;

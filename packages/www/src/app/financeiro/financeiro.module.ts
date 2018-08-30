@@ -26,6 +26,7 @@ import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.compon
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
 import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
 import { ExibirDetalhesRetornoComponent } from './cnab/exibir-detalhes-retorno/exibir-detalhes-retorno.component';
+import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { ExibirDetalhesRetornoComponent } from './cnab/exibir-detalhes-retorno/e
     ListarRemessasComponent,
     UploadRetornoComponent,
     ExibirDetalhesRetornoComponent,
+    ListarRetornoComponent,
   ],
   providers: [
     {
