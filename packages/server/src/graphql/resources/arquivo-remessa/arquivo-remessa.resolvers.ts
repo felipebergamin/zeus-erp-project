@@ -17,6 +17,7 @@ export const arquivoRemessaResolvers = {
       return context.db.ArquivoRemessa.findAll({
         limit: first,
         offset,
+        order: [ ['createdAt', 'DESC'] ],
       });
     }),
 
