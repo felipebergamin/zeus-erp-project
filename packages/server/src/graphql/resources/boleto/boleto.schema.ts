@@ -15,6 +15,7 @@ export const boletoTypes = `
     enviarAtualizacaoValor: Boolean!
     enviarAtualizacaoVencimento: Boolean!
     enviarPedidoBaixa: Boolean!
+    lock: Boolean!
 
     carne: Carne
     cliente: Cliente!

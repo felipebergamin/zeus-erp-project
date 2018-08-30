@@ -76,6 +76,7 @@ export const boletoResolvers = {
         return context.db.Boleto.findById(idBoleto)
           .then((boleto) => {
             throwError(!boleto, `Boleto com ID ${idBoleto} não encontrado`);
+            throwError(boleto.get('lock'), `Um retorno está pendente para o boleto. Ele não pode ser editado!`);
             boleto.set(input);
 
             if (boleto.get('registrado')) {
@@ -86,7 +87,7 @@ export const boletoResolvers = {
                 boleto.set('enviarAtualizacaoVencimento', true);
             }
 
-            return boleto.save();
+            return boleto.save({ transaction });
           });
       });
     }),

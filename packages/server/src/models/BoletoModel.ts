@@ -25,6 +25,7 @@ export interface BoletoAttributes {
   pago?: boolean;
   valorCobranca?: number;
   valorPago?: number;
+  lock?: boolean;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -99,6 +100,10 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.BOOLEAN,
     },
     enviarPedidoBaixa: {
+      defaultValue: false,
+      type: dataTypes.BOOLEAN,
+    },
+    lock: {
       defaultValue: false,
       type: dataTypes.BOOLEAN,
     },
