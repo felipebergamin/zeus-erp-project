@@ -4,7 +4,7 @@ export const clienteTypes = `
     _id: ID!
 
     cpfCnpj: String!
-    dataNascimento: String!
+    dataNascimento: String
     nome: String!
     rgIe: String!
     tags: String
@@ -38,7 +38,7 @@ export const clienteTypes = `
 
   input ClienteInput {
     cpfCnpj: String!
-    dataNascimento: String!
+    dataNascimento: String
     nome: String!
     rgIe: String!
     tags: String

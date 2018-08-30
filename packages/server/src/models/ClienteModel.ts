@@ -54,7 +54,6 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.STRING,
     },
     dataNascimento: {
-      allowNull: false,
       type: dataTypes.DATE,
     },
     nome: {
