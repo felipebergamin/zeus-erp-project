@@ -131,7 +131,7 @@ export class Remessa {
       }
 
       remessa.quantidadeOperacoes++;
-      boleto.set('lock', true).save();
+      boleto.set('lock', true);
     });
 
     this.stringData.push(this.createHeaderLabel(contaBancaria));
@@ -147,9 +147,15 @@ export class Remessa {
     debug('Quantidade de Operações %s', remessa.quantidadeOperacoes);
 
     return await db.sequelize.transaction((transaction) => {
-      debug('Incrementando Próxima Remessa');
-      contaBancaria.increment('proximaRemessa', { transaction });
-      return db.ArquivoRemessa.create(remessa, { transaction });
+      debug('Salvando alterações nos boletos');
+      return Promise.all(todosBoletos.map((boleto) => boleto.save({ transaction })))
+        .then((boletosSalvos) => {
+          debug('Boletos salvos, incrementando a contagem da remessa');
+          return contaBancaria.increment('proximaRemessa', { transaction });
+        }).then((cb) => {
+          debug('Contagem de remessas incrementada, salvando arquivo e finalizando');
+          return db.ArquivoRemessa.create(remessa, { transaction });
+        });
     });
   }
 
