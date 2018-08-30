@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { filter, debounceTime } from 'rxjs/operators';
 
@@ -27,6 +28,7 @@ export class GerarRemessaComponent implements OnInit, OnDestroy {
     private clienteService: ClienteService,
     private remessaService: RemessaService,
     private snackbar: MatSnackBar,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -75,8 +77,14 @@ export class GerarRemessaComponent implements OnInit, OnDestroy {
       this.remessaService.gerarRemessa(this.form.value)
         .subscribe(
           created => {
-            this.snackbar.open(`Criado arquivo ${created.nomeArquivo} com ${created.quantidadeOperacoes} operações`,
-              'Ok', { duration: 4500 });
+            const snackbar = this.snackbar.open(`Criado arquivo ${created.nomeArquivo} com ${created.quantidadeOperacoes} operações`,
+              'Download', { duration: 10000 });
+
+            snackbar.onAction().subscribe(() => {
+              this.remessaService.getDownloadLink(created)
+                .subscribe(uri => window.open(uri, 'download_remessa', 'location=no'));
+            });
+            this.location.back();
           }
         );
     }
@@ -84,7 +92,6 @@ export class GerarRemessaComponent implements OnInit, OnDestroy {
 
   clearSelectedClient(component) {
     this.form.patchValue({ cliente: null });
-    console.log(component);
     component.value = '';
     this.clientes$.next([]);
   }
