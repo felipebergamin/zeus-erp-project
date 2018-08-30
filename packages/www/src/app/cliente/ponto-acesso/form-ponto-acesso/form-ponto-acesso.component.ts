@@ -92,11 +92,11 @@ export class FormPontoAcessoComponent implements OnInit {
   }
 
   onFormSubmit() {
+    this.form.patchValue({ cliente: this.cliente._id });
+
     if (!this.form.valid) {
       return this.snackbar.open('Formulário inválido! Verifique os dados digitados', 'Ok');
     }
-
-    this.form.patchValue({ cliente: this.cliente._id });
 
     this.pontoAcessoService.create(this.form.value)
       .subscribe(
