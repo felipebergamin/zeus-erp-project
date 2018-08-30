@@ -119,6 +119,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       allowNull: false,
       type: dataTypes.STRING,
     },
+  }, {
+    tableName: 'pontosacesso',
   });
 
   pontoAcesso.associate = (models: ModelsInterface) => {

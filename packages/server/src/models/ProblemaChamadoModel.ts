@@ -36,6 +36,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       defaultValue: 0,
       type: dataTypes.FLOAT,
     },
+  }, {
+    tableName: 'problemaschamado',
   });
 
   problemaChamado.associate = (models: ModelsInterface) => {

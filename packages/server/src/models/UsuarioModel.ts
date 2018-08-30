@@ -1,6 +1,6 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
-import * as Sequelize from 'sequelize';
 import { randomBytes } from 'crypto';
+import * as Sequelize from 'sequelize';
 
 import { BaseModelInterface } from '../interfaces/BaseModelInterface';
 import { ModelsInterface } from '../interfaces/ModelsInterface';
@@ -38,6 +38,10 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     email: {
       type: dataTypes.STRING
     },
+    key: {
+      allowNull: false,
+      type: dataTypes.STRING,
+    },
     login: {
       type: dataTypes.STRING
     },
@@ -54,12 +58,9 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       allowNull: false,
       type: dataTypes.ENUM([ 'tecnico', 'gerente', 'atendente', 'desenvolvedor', 'outro' ]),
     },
-    key: {
-      allowNull: false,
-      type: dataTypes.STRING,
-    },
   }, {
     paranoid: true,
+    tableName: 'usuarios',
 
     hooks: {
       beforeCreate: (user: UsuarioInstance, options: Sequelize.CreateOptions): void => {
