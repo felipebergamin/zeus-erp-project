@@ -108,16 +108,17 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       tableName: 'boletos',
     });
 
-  boleto.afterCreate((boleto, opt: any) => {
-    return db.ContaBancaria.findById(boleto.get('contaBancaria'))
-      .then(conta => {
-        const nossoNumero = parseInt(boleto.get('_id')) + parseInt(conta.get('nossoNumero'));
+  boleto.afterCreate((boletoCriado, opt: any) => {
+    // calcula o nosso número e o dígito de verificação do nosso número
+    return db.ContaBancaria.findById(boletoCriado.get('contaBancaria'))
+      .then((conta) => {
+        const nossoNumero = parseInt(boletoCriado.get('_id'), 10) + parseInt(conta.get('nossoNumero'), 10);
         const digito = gerarDigitoAutoConferencia(conta.get('carteira'), nossoNumero);
 
-        boleto.set('nossoNumero', nossoNumero);
-        boleto.set('digitoNossoNumero', digito);
+        boletoCriado.set('nossoNumero', nossoNumero);
+        boletoCriado.set('digitoNossoNumero', digito);
 
-        return boleto.save({ transaction: opt.transaction });
+        return boletoCriado.save({ transaction: opt.transaction });
       });
   });
 
