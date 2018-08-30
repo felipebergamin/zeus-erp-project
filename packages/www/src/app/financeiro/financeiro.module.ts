@@ -16,6 +16,7 @@ import {
   MAT_DATE_FORMATS,
   MatSlideToggleModule,
   MatAutocompleteModule,
+  MatListModule,
 } from '@angular/material';
 import { FormContaBancariaComponent } from './conta-bancaria/form-conta-bancaria/form-conta-bancaria.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { ListarBoletosComponent } from './boletos/listar-boletos/listar-boletos.
 import { GerarRemessaComponent } from './cnab/gerar-remessa/gerar-remessa.component';
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
 import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
+import { ExibirDetalhesRetornoComponent } from './cnab/exibir-detalhes-retorno/exibir-detalhes-retorno.component';
 
 @NgModule({
   imports: [
@@ -42,6 +44,7 @@ import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.com
     MatDatepickerModule,
     MatSlideToggleModule,
     MatAutocompleteModule,
+    MatListModule,
   ],
   declarations: [
     ListarContasBancariasComponent,
@@ -50,6 +53,7 @@ import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.com
     GerarRemessaComponent,
     ListarRemessasComponent,
     UploadRetornoComponent,
+    ExibirDetalhesRetornoComponent,
   ],
   providers: [
     {

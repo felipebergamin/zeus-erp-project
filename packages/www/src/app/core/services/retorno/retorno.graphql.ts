@@ -1,30 +1,54 @@
 import gql from 'graphql-tag';
 
-import { OcorrenciaBancaria } from '../../models/OcorrenciaBancaria';
-
-export interface UploadRetornoMutation {
-  uploadRetorno: OcorrenciaBancaria[];
-}
-
 export const UPLOAD_RETORNO_MUTATION = gql`
   mutation uploadRetorno($input: UploadRetornoInput!) {
     uploadRetorno(input: $input) {
-      agenciaCobradora
-      bancoCobrador
-      dataCredito
-      dataHora
-      dataOcorrenciaNoBanco
-      idOcorrencia
-      jurosMora
-      motivosOcorrencia
-      valorPago
-      boleto {
+      _id
+
+      contaBancaria {
         _id
+        nome
       }
-      arquivoRetorno {
+      dataGravacao
+      nomeArquivo
+      processado
+      quantidadeOperacoes
+
+      qtdeRegistrosConfirmados
+      valorRegistrosConfirmados
+      valorRegistrosLiquidados
+      qtdeRegistrosLiquidados
+      valorRegistros06
+      qtdeRegistrosBaixados
+      valorRegistrosBaixados
+      qtdeRegistrosVencimentoAlterado
+      valorRegistrosVencimentoAlterado
+
+      ocorrencias {
         _id
-        nomeArquivo
+
+        idOcorrencia
+        dataOcorrenciaNoBanco
+        bancoCobrador
+        agenciaCobradora
+        valorPago
+        jurosMora
+        dataCredito
+        motivosOcorrencia
+        dataHora
+
+        boleto {
+          _id
+          valorCobranca
+
+          cliente {
+            _id
+            nome
+          }
+        }
       }
+
+      createdAt
     }
   }
 `;

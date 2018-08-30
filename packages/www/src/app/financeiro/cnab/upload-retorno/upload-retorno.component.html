@@ -25,8 +25,6 @@
     </div>
 
   </form>
-</div>
 
-<pre>
-  {{ form.value | json }}
-</pre>
+  <app-exibir-detalhes-retorno *ngIf="arquivoRetorno" [arquivoProcessado]="arquivoRetorno"></app-exibir-detalhes-retorno>
+</div>

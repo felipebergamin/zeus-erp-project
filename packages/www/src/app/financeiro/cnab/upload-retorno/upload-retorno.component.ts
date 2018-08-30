@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { RetornoService } from '../../../core/services/retorno/retorno.service';
+import { ArquivoRetorno } from '../../../core/models/ArquivoRetorno';
 
 @Component({
   selector: 'app-upload-retorno',
@@ -11,6 +12,7 @@ import { RetornoService } from '../../../core/services/retorno/retorno.service';
 export class UploadRetornoComponent implements OnInit {
   contasBancarias;
   form: FormGroup;
+  arquivoRetorno: ArquivoRetorno;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +33,7 @@ export class UploadRetornoComponent implements OnInit {
 
   onFormSubmit(files: FileList) {
     this.retornoSvc.uploadRetorno(this.form.value, files[0])
-      .subscribe(res => console.log(res));
+      .subscribe(res => this.arquivoRetorno = res);
   }
 
 }
