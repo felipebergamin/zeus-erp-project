@@ -31,6 +31,11 @@
       <td mat-cell *matCellDef="let remessa">{{ remessa.quantidadeOperacoes }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="geradoEm">
+      <th mat-header-cell *matHeaderCellDef>Gerado Em</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 

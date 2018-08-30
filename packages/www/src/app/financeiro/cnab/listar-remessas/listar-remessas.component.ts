@@ -12,7 +12,7 @@ import { RemessaService } from '../../../core/services/remessa/remessa.service';
   styleUrls: ['./listar-remessas.component.scss']
 })
 export class ListarRemessasComponent implements OnInit {
-  displayedColumns = ['menu', 'id', 'contaBancaria', 'nomeArquivo', 'qtdeOperacoes'];
+  displayedColumns = ['menu', 'id', 'contaBancaria', 'nomeArquivo', 'qtdeOperacoes', 'geradoEm'];
   totalItensPaginator = 0;
   pageSizeOptions = [5, 25, 100];
   dataSource = new Subject<ArquivoRemessa[]>();

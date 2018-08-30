@@ -37,6 +37,7 @@ export const LISTAR_REMESSAS_QUERY = gql`
       contaBancaria {
         nome
       }
+      createdAt
     }
     totalArquivosRemessa
   }
