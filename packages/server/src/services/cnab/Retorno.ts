@@ -41,7 +41,7 @@ export class Retorno extends EventEmitter {
     const conta = await db.ContaBancaria.findById(contaBancaria);
     throwError(!conta, `Conta bancária ${contaBancaria} não encontrada!`);
 
-    const fileAlreadySubmitted = await db.ArquivoRetorno.findOne({ where: { nomeArquivo, contaBancaria } });
+    let fileAlreadySubmitted = await db.ArquivoRetorno.findOne({ where: { nomeArquivo, contaBancaria } });
     const arquivoProcessado: ArquivoRetornoAttributes = {
       contaBancaria,
       nomeArquivo,
@@ -109,6 +109,7 @@ export class Retorno extends EventEmitter {
             arquivoProcessado.processado = true;
             return db.ArquivoRetorno.create(arquivoProcessado, { transaction })
               .then((arquivo) => {
+                fileAlreadySubmitted = arquivo;
                 debug('Arquivo Retorno Salvo no BD');
                 const boletoPromises = [];
 
@@ -138,7 +139,7 @@ export class Retorno extends EventEmitter {
               });
           })
           .then((result) => {
-            this.emit('done', result);
+            this.emit('done', { arquivoRetorno: fileAlreadySubmitted, ocorrencias: result });
             return result;
           })
           .catch((err) => {
@@ -148,7 +149,7 @@ export class Retorno extends EventEmitter {
 
         } else {
           debug('Mudanças não serão aplicadas no banco de dados');
-          this.emit('done', ocorrencias);
+          this.emit('done', { arquivoRetorno: fileAlreadySubmitted, ocorrencias });
         }
       });
   }

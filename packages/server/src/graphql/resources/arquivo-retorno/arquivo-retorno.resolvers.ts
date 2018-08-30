@@ -37,6 +37,10 @@ export const arquivoRetornoResolvers = {
     contaBancaria: (parent: ArquivoRetornoInstance, args, context: ResolverContext, info) => {
       return context.db.ContaBancaria.findById(parent.get('contaBancaria'));
     },
+
+    ocorrencias: (parent: ArquivoRetornoInstance, args, context: ResolverContext, info) => {
+      return context.db.OcorrenciaBancaria.findAll({ where: { arquivoRetorno: parent.get('_id') } });
+    },
   },
 
   Query: {
@@ -44,6 +48,7 @@ export const arquivoRetornoResolvers = {
       return context.db.ArquivoRetorno.findAll({
         limit: first,
         offset,
+        order: [['dataGravacao', 'DESC']],
       });
     }),
 
@@ -66,9 +71,9 @@ export const arquivoRetornoResolvers = {
               const parser = new Retorno();
 
               parser
-                .once('done', (result) => {
+                .once('done', ({arquivoRetorno}) => {
                   debug('Processamento do Arquivo OK');
-                  resolve(result);
+                  resolve(arquivoRetorno);
                 })
                 .once('error', (err) => {
                   debug('Erro no processamento do arquivo');

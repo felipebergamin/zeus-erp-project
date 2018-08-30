@@ -1,14 +1,26 @@
 export const arquivoRetornoTypes = `
   type ArquivoRetorno {
     _id: ID!
-    contaBancaria: ContaBancaria
-    conteudoArquivo: String
-    dataGravacao: String
-    nomeArquivo: String
-    processado: Boolean
-    quantidadeOperacoes: Int
 
-    createdAt: String
+    contaBancaria: ContaBancaria!
+    dataGravacao: String
+    nomeArquivo: String!
+    processado: Boolean!
+    quantidadeOperacoes: Int!
+
+    qtdeRegistrosConfirmados: Int!
+    valorRegistrosConfirmados: Float!
+    valorRegistrosLiquidados: Float!
+    qtdeRegistrosLiquidados: Int!
+    valorRegistros06: Float!
+    qtdeRegistrosBaixados: Int!
+    valorRegistrosBaixados: Float!
+    qtdeRegistrosVencimentoAlterado: Int!
+    valorRegistrosVencimentoAlterado: Float!
+
+    ocorrencias: [ OcorrenciaBancaria ]!
+
+    createdAt: String!
     updatedAt: String
   }
 
@@ -24,5 +36,5 @@ export const arquivoRetornoQueries = `
 `;
 
 export const arquivoRetornoMutations = `
-  uploadRetorno(input: UploadRetornoInput!): [ OcorrenciaBancaria! ]!
+  uploadRetorno(input: UploadRetornoInput!): ArquivoRetorno
 `;
