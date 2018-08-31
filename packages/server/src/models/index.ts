@@ -13,13 +13,20 @@ if (!db) {
     $and: Sequelize.Op.and
   };
 
+  const {
+    MYSQL_HOST,
+    MYSQL_DATABASE,
+    MYSQL_USER,
+    MYSQL_PASSWD,
+  } = process.env;
+
   const sequelize: Sequelize.Sequelize = new Sequelize(
-    'zeusacetech',
-    'acetech',
-    '*Ace2018',
+    MYSQL_DATABASE,
+    MYSQL_USER,
+    MYSQL_PASSWD,
     {
       dialect: 'mysql',
-      host: 'zeusacetech.mysql.uhserver.com',
+      host: MYSQL_HOST,
       operatorsAliases,
       timezone: 'America/Sao_Paulo',
     }
