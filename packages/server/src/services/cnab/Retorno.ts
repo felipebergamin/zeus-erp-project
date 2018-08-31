@@ -76,6 +76,7 @@ export class Retorno extends EventEmitter {
 
             if (boleto) {
               ocorrencia.set('boleto', boleto.get('_id'));
+              boleto.set('lock', false);
 
               debug('Boleto correspondente a ocorrencia encontrado!');
 
@@ -114,7 +115,6 @@ export class Retorno extends EventEmitter {
                 const boletoPromises = [];
 
                 boletos.forEach((boleto) => {
-                  debug(JSON.stringify(boleto.toJSON(), null, 2));
                   boletoPromises.push(boleto.save({ transaction }));
                 });
 
@@ -213,7 +213,7 @@ export class Retorno extends EventEmitter {
       valorPago: Number(line.substr(253, 13)) / 100,
       jurosMora: Number(line.substr(266, 13)) / 100,
       dataCredito: dataCredito.isValid() ? dataCredito.toDate() : null,
-      motivosOcorrencia: line.substr(294, 1),
+      motivosOcorrencia: line.substr(318, 10),
 
       boleto: (parseInt(line.substr(37, 25).trim(), 10) || null),
     };
