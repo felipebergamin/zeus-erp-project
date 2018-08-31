@@ -258,7 +258,7 @@ export class Remessa {
     // 37 - digito da conta
     line += contaBancaria.get('digitoConta');
     // 38 a 62 - numero de controle do participante
-    line += `Z${boleto.get('_id')}`.padEnd(25, " ");
+    line += `${boleto.get('_id')}`.padEnd(25, " ");
     // 63 a 65 - código do banco débito automático
     line += "000";
     // 66 - campo de multa
