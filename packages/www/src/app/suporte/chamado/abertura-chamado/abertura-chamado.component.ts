@@ -49,6 +49,7 @@ export class AberturaChamadoComponent implements OnInit, OnDestroy {
       pontoAcesso: new FormControl(null, Validators.required),
       prioridade: new FormControl(3, [Validators.required, valueIn([1, 2, 3, 4])]),
       tecnico: new FormControl(null),
+      sinalOnuAbertura: new FormControl(null, Validators.required),
     });
 
     this.autoCompleteControl.valueChanges
@@ -86,6 +87,7 @@ export class AberturaChamadoComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
+    this.form.patchValue({ sinalOnuAbertura: this.sinal.RxPower });
     if (!this.form.valid) {
       return this.snackbar.open('Ops! Verifique os dados digitados e tente novamente!', 'Ok');
     }
