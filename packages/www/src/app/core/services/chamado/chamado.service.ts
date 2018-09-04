@@ -3,7 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { AuthService } from '../auth.service';
 import { Chamado } from '../../models/Chamado';
+import { environment } from '../../../../environments/environment';
 import {
   BUSCAR_CHAMADOS_QUERY,
   BuscarChamadosQuery,
@@ -18,7 +20,7 @@ import {
 })
 export class ChamadoService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private auth: AuthService) { }
 
   buscar(searchValues): Observable<Chamado[]> {
     console.log(searchValues);
@@ -44,5 +46,10 @@ export class ChamadoService {
       query: LISTAR_CHAMADOS_ABERTOS,
       variables,
     }).pipe(map(res => res.data));
+  }
+
+  getPrintURL(chamado: Chamado): Observable<string> {
+    const uri = `${environment.serverURI}/chamado/${chamado._id}`;
+    return this.auth.signUri(uri);
   }
 }

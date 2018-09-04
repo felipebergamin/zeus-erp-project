@@ -2,8 +2,8 @@
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
-      <td mat-cell *matCellDef="let problema">
-        <button mat-icon-button>
+      <td mat-cell *matCellDef="let chamado">
+        <button mat-icon-button (click)="showActionSheet(chamado)">
           <mat-icon aria-label="Options">menu</mat-icon>
         </button>
       </td>

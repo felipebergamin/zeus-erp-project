@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatBottomSheet } from '@angular/material';
 import { Subject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 import { Chamado } from '../../../core/models/Chamado';
 import { ChamadoService } from '../../../core/services/chamado/chamado.service';
+import { ChamadoActionSheetComponent } from '../chamado-action-sheet/chamado-action-sheet.component';
 
 @Component({
   selector: 'app-chamados-abertos',
@@ -19,6 +20,7 @@ export class ChamadosAbertosComponent implements OnInit {
 
   constructor(
     private chamadoService: ChamadoService,
+    private bottomSheet: MatBottomSheet,
   ) { }
 
   ngOnInit() {
@@ -39,6 +41,10 @@ export class ChamadosAbertosComponent implements OnInit {
         tap(res => this.totalItensPaginator = res.totalChamadosAbertos),
         map(res => res.listarChamadosAbertos),
       ).subscribe(this.dataSource);
+  }
+
+  showActionSheet(chamado: Chamado) {
+    this.bottomSheet.open(ChamadoActionSheetComponent, { data: chamado });
   }
 
 }
