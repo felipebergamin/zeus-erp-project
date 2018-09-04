@@ -43,6 +43,7 @@ export const chamadoTypes = `
     pontoAcesso: Int!
     prioridade: Int!
     tecnico: Int
+    sinalOnuAbertura: Float
   }
 
   input CancelarChamadoInput {
@@ -53,6 +54,7 @@ export const chamadoTypes = `
     imagemAssinatura: String!
     observacoesTecnico: String!
     problema: Int!
+    sinalOnuFechamento: Float
   }
 
   input ReceberChamadoInput {
