@@ -1,0 +1,110 @@
+<!doctype html>
+html
+  head
+    title Chamado
+    style.
+      div.chamado {
+        width: 210mm;
+        height: 148mm;
+        max-height: 148mm;
+        border-bottom: dashed 4px black;
+      }
+
+      div.header {
+        display: flex;
+        flex-direction: row;
+      }
+      div.header .header-img {
+        width: 100px;
+        padding: 1em;
+      }
+      div.header .header-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .body-content {
+        padding: 2em;
+      }
+
+      table {
+        width: 100%;
+        text-align: left;
+      }
+      table th, table tr {
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
+
+      .footer {
+        display: flex;
+        flex-direction: row;
+      }
+      .footer .footer-content {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer .qrcode-img {
+        width: 150px;
+      }
+
+      .flex-spacer {
+        flex-grow: 1;
+      }
+  body
+div(class="chamado")
+  div(class="header")
+    img(class="header-img", src="http://www.acetech.net.br/img/logos/acetech.png")
+    div(class="header-content")
+      span Protocolo !{chamado.protocolo}
+      span Ace Tech Soluções em T.I.
+      span Rua 7 de Setembro - nº 155 - Nova Europa, SP
+      span (16) 3387-1737 ou (16)3387-1142
+
+  div(class="body-content")
+    table
+      tr
+        th Atendente
+        td !{chamado.abertoPor}
+        th Cliente
+        td !{chamado.PontoAcesso.Cliente.nome}
+      tr
+        th Abertura do Chamado
+        td !{chamado.createdAt}
+        th Endereço
+        td !{chamado.PontoAcesso.logradouro}, !{chamado.PontoAcesso.numero}
+      tr
+        th Plano
+        td !{chamado.PontoAcesso.Plano.velocidadeDownload}k / !{chamado.PontoAcesso.Plano.velocidadeUpload}k
+        th Bairro
+        td !{chamado.PontoAcesso.bairro}
+      tr
+        th Cidade
+        td !{chamado.PontoAcesso.cidade}
+        th Complemento
+        td !{chamado.PontoAcesso.complemento}
+      tr
+        th Telefone
+        td !{chamado.PontoAcesso.Cliente.telefone}
+        th ONU
+        td !{chamado.PontoAcesso.macOnu}
+      tr
+        th Sinal ONU
+        td !{chamado.sinalOnuAbertura}
+        th Última Conexão
+        td 31/08/2018 14:59:30
+      tr
+        th Login
+        td !{chamado.PontoAcesso.login}
+        th Password
+        td !{chamado.PontoAcesso.passwd}
+  div(class="footer")
+    img(class="qrcode-img", src=qrcodeurl)
+    div(class="footer-content")
+      strong Mensagem do Cliente:
+      span !{chamado.mensagem}

@@ -7,6 +7,7 @@ import { authenticateBewit } from './middlewares/authenticateBewit';
 import { exportJwtMiddleware } from './middlewares/extract-jwt.middleware';
 import db from './models';
 
+import printChamado from './routes/chamado/print-chamado';
 import downloadRemessa from './routes/remessa/download';
 
 class App {
@@ -15,12 +16,14 @@ class App {
 
   constructor() {
     this.express = express();
+    this.express.set('view engine', 'pug');
     this.middleware();
     this.routes();
   }
 
   private routes(): void {
     this.express.get('/download/remessa/:id', authenticateBewit(), downloadRemessa);
+    this.express.get('/chamado/:chamadoid', authenticateBewit(), printChamado);
   }
 
   private middleware(): void {
