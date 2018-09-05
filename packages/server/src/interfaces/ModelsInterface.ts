@@ -9,6 +9,7 @@ import { ContaBancariaModel } from "../models/ContaBancariaModel";
 import { InstalacaoModel } from "../models/InstalacaoModel";
 import { ItemEstoqueModel } from "../models/ItemEstoqueModel";
 import { LancamentoEstoqueModel } from "../models/LancamentoEstoqueModel";
+import { MikrotikRouterModel } from "../models/MikrotikServer";
 import { OcorrenciaBancariaModel } from "../models/OcorrenciaBancariaModel";
 import { OLTModel } from "../models/OLTModel";
 import { PerfilUsuarioModel } from "../models/PerfilUsuarioModel";
@@ -38,4 +39,5 @@ export interface ModelsInterface {
   PoolIP?: PoolIPModel;
   ProblemaChamado?: ProblemaChamadoModel;
   Usuario?: UsuarioModel;
+  MikrotikRouter?: MikrotikRouterModel;
 }
