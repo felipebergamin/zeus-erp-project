@@ -14,6 +14,7 @@ import { instalacaoTypes } from './resources/instalacao/instalacao.schema';
 import { ipPoolTypes } from './resources/ip-pool/ip-pool.schema';
 import { itemEstoqueTypes } from './resources/item-estoque/item-estoque.schema';
 import { lancamentoEstoqueTypes } from './resources/lancamento-estoque/lancamento-estoque.schema';
+import { mikrotikRouterTypes } from './resources/mikrotik-router/mikrotik-router.schema';
 import { ocorrenciaBancariaTypes } from './resources/ocorrencia-bancaria/ocorrencia-bancaria.schema';
 import { oltTypes } from './resources/olt/olt.schema';
 import { perfilTypes } from './resources/perfil-usuario/perfil-usuario.schema';
@@ -36,6 +37,7 @@ import { instalacaoResolvers } from './resources/instalacao/instalacao.resolvers
 import { ipPoolResolvers } from './resources/ip-pool/ip-pool.resolvers';
 import { itemEstoqueResolvers } from './resources/item-estoque/item-estoque.resolvers';
 import { lancamentoEstoqueResolvers } from './resources/lancamento-estoque/lancamento-estoque.resolvers';
+import { mikrotikRouterResolvers } from './resources/mikrotik-router/mikrotik-router.resolvers';
 import { ocorrenciaBancariaResolvers } from './resources/ocorrencia-bancaria/ocorrencia-bancaria.resolvers';
 import { oltResolvers } from './resources/olt/olt.resolvers';
 import { perfilUsuarioResolvers } from './resources/perfil-usuario/perfil-usuario.resolvers';
@@ -83,6 +85,7 @@ const resolvers = merge(
   arquivoRetornoResolvers,
   longIntResolverMap,
   fiberhomeResolvers,
+  mikrotikRouterResolvers,
 );
 
 const schema = makeExecutableSchema({
@@ -112,6 +115,7 @@ const schema = makeExecutableSchema({
     arquivoRemessaTypes,
     arquivoRetornoTypes,
     fiberhomeTypes,
+    mikrotikRouterTypes,
   ],
 });
 
