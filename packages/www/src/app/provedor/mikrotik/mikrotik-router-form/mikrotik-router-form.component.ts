@@ -33,7 +33,6 @@ export class MikrotikRouterFormComponent implements OnInit {
     if (this.form.valid) {
       this.mkrouterService.createRouter(this.form.value)
         .subscribe(created => {
-          console.log(created);
           this.snackbar.open(`Roteador com ID ${created.id} criado!`, 'Ok', { duration: 4000 });
           this.location.back();
         });
