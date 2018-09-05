@@ -1,0 +1,47 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+
+    <div fxLayout="column">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Nome do Dispositivo" formControlName="systemName">
+        <mat-hint>Nome do roteador. Considere usar o valor "identity" do dispositivo</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="Endereço IP" formControlName="ipAddress">
+        <mat-hint>Endereço IP do roteador</mat-hint>
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1em">
+
+        <mat-form-field fxFlex="50%">
+          <input type="text" matInput placeholder="Nome de Usuário" formControlName="username">
+          <mat-hint>Nome de usuário para login na API</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field fxFlex="50%">
+          <input type="password" matInput placeholder="Password" formControlName="password">
+          <mat-hint>Senha para login na API</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="Secret Radius" formControlName="radiusSecret">
+        <mat-hint>Secret para comunicação do RADIUS</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="Porta API" formControlName="apiPort">
+        <mat-hint>Porta em que o serviço de API está rodando. Padrão: 8728</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <button type="submit" mat-fab class="floating-fab">
+      <mat-icon>check</mat-icon>
+    </button>
+  </form>
+</div>
+
+<pre>
+  {{ form.value | json }}
+</pre>

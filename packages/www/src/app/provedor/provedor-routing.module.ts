@@ -9,6 +9,7 @@ import { ListarPoolsIpComponent } from './pool-ip/listar-pools-ip/listar-pools-i
 import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.component';
 import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
 import { MikrotikRoutersListResolver } from '../core/services/mikrotik-router/mikrotik-routers-list-resolver.service';
+import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
 
 const routes: Routes = [
   {
@@ -45,9 +46,11 @@ const routes: Routes = [
     path: 'mikrotiks',
     component: MikrotikRoutersListComponent,
     canActivate: [ AuthGuard ],
-    resolve: {
-      mikrotikRoutersList: MikrotikRoutersListResolver,
-    }
+  },
+  {
+    path: 'mikrotiks/add',
+    component: MikrotikRouterFormComponent,
+    canActivate: [ AuthGuard ],
   },
 ];
 
