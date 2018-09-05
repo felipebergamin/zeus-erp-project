@@ -7,6 +7,8 @@ import { ListarPlanosComponent } from './plano/listar-planos/listar-planos.compo
 import { FormPlanoComponent } from './plano/form-plano/form-plano.component';
 import { ListarPoolsIpComponent } from './pool-ip/listar-pools-ip/listar-pools-ip.component';
 import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.component';
+import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
+import { MikrotikRoutersListResolver } from '../core/services/mikrotik-router/mikrotik-routers-list-resolver.service';
 
 const routes: Routes = [
   {
@@ -38,6 +40,14 @@ const routes: Routes = [
     path: 'pools',
     component: ListarPoolsIpComponent,
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'mikrotiks',
+    component: MikrotikRoutersListComponent,
+    canActivate: [ AuthGuard ],
+    resolve: {
+      mikrotikRoutersList: MikrotikRoutersListResolver,
+    }
   },
 ];
 

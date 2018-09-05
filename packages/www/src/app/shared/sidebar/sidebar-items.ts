@@ -53,6 +53,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Novo Pool',
         path: '/provedor/pools/add',
       },
+      {
+        name: 'Roteadores Mikrotik',
+        path: '/provedor/mikrotiks',
+      },
     ]
   },
   {

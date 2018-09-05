@@ -19,6 +19,7 @@ import { ListarPlanosComponent } from './plano/listar-planos/listar-planos.compo
 import { FormPlanoComponent } from './plano/form-plano/form-plano.component';
 import { ListarPoolsIpComponent } from './pool-ip/listar-pools-ip/listar-pools-ip.component';
 import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.component';
+import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.compone
     FormPlanoComponent,
     ListarPoolsIpComponent,
     FormPoolIpComponent,
+    MikrotikRoutersListComponent,
   ]
 })
 export class ProvedorModule { }
