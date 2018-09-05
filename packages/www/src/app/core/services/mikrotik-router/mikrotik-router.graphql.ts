@@ -6,6 +6,15 @@ export interface MikrotikRouterList {
   mikrotikRoutersCount: number;
 }
 
+export interface MikrotikRouterInput {
+  ipAddress: string;
+  username: string;
+  password: string;
+  apiPort?: number;
+  systemName: string;
+  radiusSecret: string;
+}
+
 export const LIST_MK_ROUTERS_QUERY = gql`
   query listMkRouters($first: Int, $offset: Int) {
     mikrotikRoutersList(first: $first, offset: $offset) {
@@ -15,5 +24,14 @@ export const LIST_MK_ROUTERS_QUERY = gql`
       createdAt
     }
     mikrotikRoutersCount
+  }
+`;
+
+export const CREATE_MK_ROUTER_MUTATION = gql`
+  mutation createMkRouter($input: MikrotikRouterInput) {
+    createMikrotikRouter(input: $input) {
+      id
+      createdAt
+    }
   }
 `;
