@@ -1,0 +1,46 @@
+<div class="mat-elevation-z6">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="menu">
+      <th mat-header-cell *matHeaderCellDef>Opções</th>
+      <td mat-cell *matCellDef="let instalacao">
+        <button mat-icon-button>
+          <mat-icon aria-label="Options">menu</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataAgenda">
+      <th mat-header-cell *matHeaderCellDef>Agenda</th>
+      <td mat-cell *matCellDef="let instalacao"> {{ instalacao.dataAgenda | date:'dd/MM/yyyy' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pontoAcesso">
+      <th mat-header-cell *matHeaderCellDef>Ponto de Acesso</th>
+      <td mat-cell *matCellDef="let instalacao"> {{ instalacao.pontoAcesso.login}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endereco">
+      <th mat-header-cell *matHeaderCellDef>Endereço</th>
+      <td mat-cell *matCellDef="let instalacao">
+        {{instalacao.pontoAcesso.logradouro}}, {{instalacao.pontoAcesso.numero}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cidade">
+      <th mat-header-cell *matHeaderCellDef>Cidade</th>
+      <td mat-cell *matCellDef="let instalacao">
+        {{instalacao.pontoAcesso.cidade}}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)"
+    showFirstLastButtons="true"></mat-paginator>
+</div>
+
+<button mat-fab class="floating-fab hover-rotate" routerLink="abrir">
+  <mat-icon>add</mat-icon>
+</button>

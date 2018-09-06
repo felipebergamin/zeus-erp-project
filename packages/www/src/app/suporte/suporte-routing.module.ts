@@ -8,6 +8,7 @@ import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-ab
 import { AbrirInstalacaoComponent } from './abrir-instalacao/abrir-instalacao.component';
 import { ListaTecnicosResolver } from '../core/services/usuario/lista-tecnicos-resolver.service';
 import { PontoAcessoByIdResolver } from '../core/services/ponto-acesso/ponto-acesso-by-id-resolver.service';
+import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalacoes.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
       pontoAcesso: PontoAcessoByIdResolver,
     }
   },
+  {
+    path: 'instalacao',
+    component: ListarInstalacoesComponent,
+    canActivate: [AuthGuard],
+  }
 ];
 
 @NgModule({
