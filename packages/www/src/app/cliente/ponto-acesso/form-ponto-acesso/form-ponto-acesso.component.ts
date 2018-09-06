@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
 import { debounceTime } from 'rxjs/operators';
@@ -30,6 +30,7 @@ export class FormPontoAcessoComponent implements OnInit {
     private snackbar: MatSnackBar,
     private route: ActivatedRoute,
     private location: Location,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -103,7 +104,8 @@ export class FormPontoAcessoComponent implements OnInit {
         (created) => {
           if (created._id) {
             this.snackbar.open('PA cadastrado com sucesso!', 'Ok', { duration: 4000 });
-            return this.location.back();
+            this.router.navigate(['/suporte/instalacao/abrir'], { queryParams: { idpontoacesso: created._id }});
+            return;
           }
 
           this.snackbar.open('Ops! Algo não parece bem, o servidor retornou um registro inválido', 'Ok');
