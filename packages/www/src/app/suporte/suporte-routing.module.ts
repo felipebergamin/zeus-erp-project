@@ -7,6 +7,7 @@ import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-ch
 import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-abertos.component';
 import { AbrirInstalacaoComponent } from './abrir-instalacao/abrir-instalacao.component';
 import { ListaTecnicosResolver } from '../core/services/usuario/lista-tecnicos-resolver.service';
+import { PontoAcessoByIdResolver } from '../core/services/ponto-acesso/ponto-acesso-by-id-resolver.service';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     resolve: {
       listaTecnicos: ListaTecnicosResolver,
+      pontoAcesso: PontoAcessoByIdResolver,
     }
   },
 ];
