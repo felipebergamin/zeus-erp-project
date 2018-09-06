@@ -14,6 +14,7 @@ import {
   PontoAcessoPorClienteQuery,
   BUSCAR_PONTOS_ACESSO_QUERY,
   BuscarPontosAcessoQuery,
+  PA_BY_ID_QUERY,
 } from './ponto-acesso.graphql';
 import { PontoAcesso } from '../../models/PontoAcesso';
 
@@ -73,5 +74,12 @@ export class PontoAcessoService {
     }).pipe(
       map(res => res.data.buscarPontosAcesso)
     );
+  }
+
+  getByID(id: number): Observable<PontoAcesso> {
+    return this.apollo.query<any>({
+      query: PA_BY_ID_QUERY,
+      variables: { id },
+    }).pipe(map(res => res.data.pontoDeAcessoPorID));
   }
 }

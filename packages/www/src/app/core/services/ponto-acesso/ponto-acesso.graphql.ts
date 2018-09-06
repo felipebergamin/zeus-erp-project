@@ -115,3 +115,20 @@ export const BUSCAR_PONTOS_ACESSO_QUERY = gql`
     }
   }
 `;
+
+export const PA_BY_ID_QUERY = gql`
+  query pontoAcessoById($id: Int!) {
+    pontoDeAcessoPorID(id: $id) {
+      _id
+      login
+      logradouro
+      numero
+      cidade
+      createdAt
+      cliente {
+        _id
+        nome
+      }
+    }
+  }
+`;
