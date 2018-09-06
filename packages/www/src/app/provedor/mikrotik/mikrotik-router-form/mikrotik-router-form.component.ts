@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MikrotikRouterService } from '../../../core/services/mikrotik-router/mikrotik-router.service';
 import { MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
+import { isValidIPAddress } from '../../../form-validators/isIP';
 
 @Component({
   selector: 'app-mikrotik-router-form',
@@ -20,12 +21,12 @@ export class MikrotikRouterFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      ipAddress: new FormControl(),
-      username: new FormControl(),
-      password: new FormControl(),
-      apiPort: new FormControl(),
-      systemName: new FormControl(),
-      radiusSecret: new FormControl(),
+      ipAddress: new FormControl(null, [Validators.required, isValidIPAddress]),
+      username: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
+      apiPort: new FormControl(null, [Validators.min(1), Validators.max(65535)]),
+      systemName: new FormControl(null, Validators.required),
+      radiusSecret: new FormControl(null, Validators.required),
     });
   }
 
