@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -10,14 +10,14 @@ import { PontoAcesso } from '../../core/models/PontoAcesso';
 import { PontoAcessoService } from '../../core/services/ponto-acesso/ponto-acesso.service';
 import { InstalacaoService } from '../../core/services/instalacao/instalacao.service';
 import { Usuario } from '../../core/models/Usuario';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-abrir-instalacao',
   templateUrl: './abrir-instalacao.component.html',
   styleUrls: ['./abrir-instalacao.component.scss']
 })
-export class AbrirInstalacaoComponent implements OnInit {
+export class AbrirInstalacaoComponent implements OnInit, OnDestroy {
   dataAgendamento = {
     min: moment(),
   };
@@ -43,6 +43,8 @@ export class AbrirInstalacaoComponent implements OnInit {
   pontosAcesso$ = new Subject<PontoAcesso[]>();
   form: FormGroup;
   listaTecnicos: Usuario[];
+  showAutocompleteControl = true;
+  paSelecionado: PontoAcesso;
 
   constructor(
     private paService: PontoAcessoService,
@@ -50,6 +52,7 @@ export class AbrirInstalacaoComponent implements OnInit {
     private snackbar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -65,7 +68,15 @@ export class AbrirInstalacaoComponent implements OnInit {
     });
 
     this.route.data.subscribe(
-      ({listaTecnicos}) => this.listaTecnicos = listaTecnicos
+      ({listaTecnicos, pontoAcesso}) => {
+        this.listaTecnicos = listaTecnicos;
+
+        if (pontoAcesso) {
+          this.showAutocompleteControl = false;
+          this.form.patchValue({pontoAcesso: pontoAcesso._id});
+          this.paSelecionado = pontoAcesso;
+        }
+      }
     );
 
     this.autoCompleteControl.valueChanges
@@ -79,6 +90,10 @@ export class AbrirInstalacaoComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.pontosAcesso$.complete();
+  }
+
   displayFn(pa: PontoAcesso): string {
     return pa ? pa.login : '';
   }
@@ -86,11 +101,13 @@ export class AbrirInstalacaoComponent implements OnInit {
   onSelectPA(event: MatAutocompleteSelectedEvent) {
     if (typeof event.option.value === typeof {} && event.option.value._id) {
       const idPa = event.option.value._id;
+      this.paSelecionado = event.option.value;
       this.form.get('pontoAcesso').setValue(idPa);
     }
   }
 
   onFormSubmit() {
+    this.form.patchValue({pontoAcesso: this.paSelecionado._id});
     if (this.form.valid) {
       this.instalacaoService.abrirInstalacao(this.form.value)
         .subscribe(created => {
@@ -100,5 +117,9 @@ export class AbrirInstalacaoComponent implements OnInit {
     } else {
       this.snackbar.open(`Erro no formulário, por favor, verifique os dados digitados!`, 'Ok');
     }
+  }
+
+  cancel() {
+    this.router.navigate(['/cliente/pa']);
   }
 }

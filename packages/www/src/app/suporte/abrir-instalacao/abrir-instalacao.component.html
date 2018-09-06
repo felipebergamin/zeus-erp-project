@@ -2,8 +2,18 @@
   <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
 
     <div fxLayout="column">
+      <div *ngIf="paSelecionado">
+        <p>
+          Instalação para o ponto de acesso: {{ paSelecionado?.login }}
+        </p>
+        <p>
+          {{ paSelecionado?.logradouro }}, {{paSelecionado?.numero}} - {{paSelecionado?.cidade}}
+        </p>
 
-      <mat-form-field>
+        <mat-divider></mat-divider>
+      </div>
+
+      <mat-form-field *ngIf="showAutocompleteControl">
         <input type="text" placeholder="Ponto de Acesso" matInput [formControl]="autoCompleteControl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectPA($event)">
           <mat-option *ngFor="let pa of pontosAcesso$ | async" [value]="pa">
@@ -54,6 +64,7 @@
 
     <div fxLayout="row" fxLayoutAlign="end">
       <button type="reset" mat-button>Limpar</button>
+      <button type="button" mat-stroked-button color="warn" (click)="cancel()" *ngIf="!showAutocompleteControl">Cancelar</button>
       <button mat-fab class="floating-fab">
         <mat-icon>check</mat-icon>
       </button>
@@ -61,3 +72,7 @@
 
   </form>
 </div>
+
+<pre>
+  {{ form.value | json }}
+</pre>
