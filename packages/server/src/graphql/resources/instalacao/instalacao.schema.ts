@@ -34,6 +34,7 @@ export const instalacaoTypes = `
     valor: Float
     modoPagamento: String
     observacoesPagamento: String
+    tecnicoResponsavel: Int
   }
 
   input UpdateInstalacaoInput {
