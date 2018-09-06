@@ -1,6 +1,5 @@
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { ChamadoInstance } from "../../../models/ChamadoModel";
-import { generateProtocol } from "../../../util/generateProtocol";
 import { throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
@@ -70,7 +69,6 @@ export const chamadoResolvers = {
   Mutation: {
     abrirChamado: compose(...authResolvers)((parent, { input }, context: ResolverContext, info) => {
       input['abertoPor'] = context.authUser._id;
-      input['protocolo'] = generateProtocol('C');
 
       return context.db.sequelize.transaction((transaction) => {
         return context.db.Chamado.create(input, { transaction });

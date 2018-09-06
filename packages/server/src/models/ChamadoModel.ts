@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import * as Sequelize from 'sequelize';
 
 import { ModelsInterface } from '../interfaces/ModelsInterface';
+import { generateProtocol } from '../util/generateProtocol';
 
 export type FormaPagamento = 'cheque' | 'dinheiro' | 'cartao' | 'boleto';
 export type Prioridade = 1 | 2 | 3 | 4;
@@ -134,12 +135,17 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       },
     },
     protocolo: {
-      allowNull: false,
       type: dataTypes.STRING,
       unique: true
     }
   }, {
     tableName: 'chamados',
+
+    hooks: {
+      beforeCreate: (chamadoInstance) => {
+        chamadoInstance.set('protocolo', generateProtocol('C'));
+      }
+    }
   });
 
   chamado.associate = (models: ModelsInterface) => {
