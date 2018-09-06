@@ -39,7 +39,6 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
       type: dataTypes.STRING
     },
     key: {
-      allowNull: false,
       type: dataTypes.STRING,
     },
     login: {
