@@ -120,6 +120,10 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         name: 'Problemas De Chamado',
         path: '/suporte/problemas',
       },
+      {
+        name: 'Nova Instalação',
+        path: '/suporte/instalacao/abrir',
+      }
     ]
   },
 ];

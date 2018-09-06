@@ -1,0 +1,63 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+
+    <div fxLayout="column">
+
+      <mat-form-field>
+        <input type="text" placeholder="Ponto de Acesso" matInput [formControl]="autoCompleteControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectPA($event)">
+          <mat-option *ngFor="let pa of pontosAcesso$ | async" [value]="pa">
+            {{pa.login}} - {{pa.logradouro}}, {{pa.numero}} / {{pa.cidade}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Data de Agendamento" formControlName="dataAgenda" [min]="dataAgendamento.min">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Técnico Responsável" formControlName="tecnicoResponsavel">
+          <mat-option *ngFor="let tecnico of listaTecnicos" [value]="tecnico._id">
+            {{tecnico.nome}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutAlign="default center" fxLayoutGap="1em">
+        <mat-slide-toggle formControlName="cobrado" fxFlex="30%">Instalação será cobrada</mat-slide-toggle>
+
+        <mat-form-field fxFlex="30%">
+          <span matPrefix>R$ &nbsp;</span>
+          <input matInput placeholder="Valor Cobrado" formControlName="valor">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="40%">
+          <mat-select placeholder="Forma de Pagamento" formControlName="modoPagamento">
+            <mat-option *ngFor="let fp of formasPagamento" [value]="fp.value">
+              {{fp.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> <!-- ./row -->
+
+      <mat-form-field>
+        <textarea matInput placeholder="Observações sobre o Pagamento" formControlName="observacoesPagamento"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <textarea matInput placeholder="Observações do Atendente" formControlName="observacoesAtendente"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button type="reset" mat-button>Limpar</button>
+      <button mat-fab class="floating-fab">
+        <mat-icon>check</mat-icon>
+      </button>
+    </div>
+
+  </form>
+</div>
