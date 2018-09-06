@@ -3,6 +3,7 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/ma
 
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { ExibirSinalOnuComponent } from '../exibir-sinal-onu/exibir-sinal-onu.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ponto-acesso-action-sheet',
@@ -15,6 +16,7 @@ export class PontoAcessoActionSheetComponent implements OnInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) public pa: PontoAcesso,
     private sheetRef: MatBottomSheetRef<PontoAcessoActionSheetComponent>,
     private matDialog: MatDialog,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -29,6 +31,11 @@ export class PontoAcessoActionSheetComponent implements OnInit {
     this.matDialog.open(ExibirSinalOnuComponent, {
       data: this.pa
     });
+  }
+
+  abrirInstalacao() {
+    this.sheetRef.dismiss();
+    this.router.navigate(['/suporte/instalacao/abrir'], {queryParams: {idpontoacesso: this.pa._id}});
   }
 
 }
