@@ -2,6 +2,7 @@ import * as Sequelize from 'sequelize';
 
 import { BaseModelInterface } from '../interfaces/BaseModelInterface';
 import { ModelsInterface } from '../interfaces/ModelsInterface';
+import { generateProtocol } from '../util/generateProtocol';
 import { FormaPagamento } from './ChamadoModel';
 
 export interface InstalacaoAttributes {
@@ -69,7 +70,6 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     },
 
     protocolo: {
-      allowNull: false,
       type: dataTypes.STRING,
       unique: true,
     },
@@ -98,6 +98,12 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     },
   }, {
     tableName: 'instalacoes',
+
+    hooks: {
+      beforeCreate: (instalacaoInstance) => {
+        instalacaoInstance.set('protocolo', generateProtocol('D'));
+      }
+    }
   });
 
   instalacao.associate = (models: ModelsInterface): void => {
