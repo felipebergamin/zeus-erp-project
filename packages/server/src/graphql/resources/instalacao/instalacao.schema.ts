@@ -60,6 +60,7 @@ export const instalacaoTypes = `
 export const instalacaoQueries = `
   listarInstalacoes(first: Int, offset: Int): [ Instalacao! ]!
   instalacoesDoDia(day: String): [ Instalacao! ]!
+  totalInstalacoes: Int!
 `;
 
 export const instalacaoMutations = `

@@ -38,6 +38,10 @@ export const instalacaoResolvers = {
         offset
       });
     }),
+
+    totalInstalacoes: compose(...authResolvers)((parent, args, context: ResolverContext, info) => {
+      return context.db.Instalacao.count();
+    }),
   },
 
   Mutation: {
