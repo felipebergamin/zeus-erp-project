@@ -15,15 +15,16 @@ export const usuarioResolvers = {
   },
 
   Query: {
-    listUsers: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info: GraphQLResolveInfo) => {
-      return context.db.Usuario.findAll({
-        limit: first,
-        offset,
-      });
+    listUsers: compose(...authResolvers)((parent, { first = 10, offset = 0, nopaginate = false }, context: ResolverContext, info: GraphQLResolveInfo) => {
+      return context.db.Usuario.findAll(nopaginate ? {} : {limit: first, offset});
     }),
 
     totalUsers: compose(...authResolvers)((parent, args, context: ResolverContext, info: GraphQLResolveInfo) => {
       return context.db.Usuario.count();
+    }),
+
+    searchUsers: compose(...authResolvers)((parent, {searchValues}, context: ResolverContext, info: GraphQLResolveInfo) => {
+      return context.db.Usuario.findAll({where: searchValues});
     }),
   },
 

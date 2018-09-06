@@ -22,10 +22,21 @@ export const usuarioTypes = `
     telegramID: String
     tipo: String!
   }
+
+  input SearchUsuarioInput {
+    email: String
+    login: String
+    nome: String
+    passwd: String
+    perfil: Int
+    telegramID: String
+    tipo: String
+  }
 `;
 
 export const usuarioQueries = `
-  listUsers(first: Int, offset: Int): [ Usuario! ]!
+  listUsers(first: Int, offset: Int, nopaginate: Boolean): [ Usuario! ]!
+  searchUsers(searchValues: SearchUsuarioInput!): [ Usuario! ]
   totalUsers: Int
 `;
 
