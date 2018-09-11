@@ -46,6 +46,6 @@
   <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
 </div>
 
-<button mat-fab class="floating-fab hover-rotate" routerLink="add">
+<button mat-fab class="floating-fab hover-rotate" [routerLink]="['/suporte/chamado/abrir']">
   <mat-icon>add</mat-icon>
 </button>
