@@ -121,8 +121,8 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/suporte/problemas',
       },
       {
-        name: 'Nova Instalação',
-        path: '/suporte/instalacao/abrir',
+        name: 'Instalações Abertas',
+        path: '/suporte/instalacao',
       }
     ]
   },
