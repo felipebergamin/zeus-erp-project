@@ -367,6 +367,7 @@ export class Remessa {
   }
 
   private calcularMultaPorDia(percentualMulta: number, valorTitulo: number): number {
-    return valorTitulo + valorTitulo * (percentualMulta / 100);
+    debug(`Percentual Multa: ${percentualMulta} Valor do título: ${valorTitulo}`);
+    return valorTitulo * (percentualMulta / 100);
   }
 }
