@@ -363,7 +363,7 @@ export class Remessa {
     debug('::getFileContent');
     debug('Arquivo com %d linhas', this.stringData.length);
 
-    return this.stringData.join("\n");
+    return this.stringData.join("\r\n");
   }
 
   private calcularMultaPorDia(percentualMulta: number, valorTitulo: number): number {
