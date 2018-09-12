@@ -1,0 +1,62 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <div fxLayout="column">
+
+    <mat-form-field>
+      <input matInput placeholder="Nome do Cliente" formControlName="nome">
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="1em">
+      <mat-form-field fxFlex="75%">
+        <input matInput placeholder="Endereço" formControlName="logradouro">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="25%">
+        <input matInput placeholder="Número" formControlName="numero">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <input matInput placeholder="RG/IE" formControlName="rgIe">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="CPF/CNPJ" formControlName="cpfCnpj">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Cidade" formControlName="cidade">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Bairro" formControlName="bairro">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Data de Nascimento" formControlName="dataNascimento">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="dpDataCadastro" placeholder="Data de Cadastro" formControlName="createdAt">
+      <mat-datepicker-toggle matSuffix [for]="dpDataCadastro"></mat-datepicker-toggle>
+      <mat-datepicker #dpDataCadastro></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Tipo de Pessoa" formControlName="tipoPessoa">
+        <mat-option value="fisica">
+          Pessoa Física
+        </mat-option>
+        <mat-option value="juridica">
+          Pessoa Jurídica
+        </mat-option>
+      </mat-select>
+    </mat-form-field>      
+
+    <div>
+      <button type="button" mat-button (click)="cancel()">Cancelar</button>
+      <button type="submit" mat-button>Pesquisar</button>
+    </div>
+  </div>
+</form>

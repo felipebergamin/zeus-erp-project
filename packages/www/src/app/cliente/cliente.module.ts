@@ -21,6 +21,8 @@ import {
   MatDialogModule,
   MatExpansionModule,
   MatDividerModule,
+  MatTooltipModule,
+  MatSidenavModule,
 } from '@angular/material';
 
 import { ClienteRoutingModule } from './cliente-routing.module';
@@ -35,6 +37,8 @@ import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.com
 import { LancarCarneComponent } from './cliente/lancar-carne/lancar-carne.component';
 import { PontoAcessoActionSheetComponent } from './ponto-acesso/ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
 import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-sinal-onu.component';
+import { SharedModule } from '../shared/shared.module';
+import { FormPesquisaClienteComponent } from './cliente/form-pesquisa-cliente/form-pesquisa-cliente.component';
 
 @NgModule({
   imports: [
@@ -60,6 +64,8 @@ import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-
     MatDialogModule,
     MatExpansionModule,
     MatDividerModule,
+    MatTooltipModule,
+    SharedModule,
   ],
   declarations: [
     ListarClientesComponent,
@@ -72,6 +78,7 @@ import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-
     LancarCarneComponent,
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,
+    FormPesquisaClienteComponent,
   ],
   entryComponents: [
     ClienteActionSheetComponent,
@@ -79,6 +86,7 @@ import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-
     LancarCarneComponent,
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,
+    FormPesquisaClienteComponent,
   ],
   providers: [
     {
