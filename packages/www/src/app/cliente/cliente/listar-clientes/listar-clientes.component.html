@@ -1,4 +1,18 @@
-<div class="mat-elevation-z6">
+<div class="component mat-elevation-z6">
+  <app-table-toolbar fxLayout="row" fxLayoutAlign="end" fxLayoutGap="1em">
+    <button mat-icon-button matTooltip="Limpar Pesquisa" (click)="clearSearch()" *ngIf="searching">
+      <mat-icon>clear</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="Pesquisar" (click)="openSearchDialog()">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="Atualizar">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </app-table-toolbar>
+
   <table mat-table [dataSource]="dataSource | async">
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
@@ -23,5 +37,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
+  <mat-paginator [ngClass]="searching ? {hide: true} : {}" [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
 </div>
