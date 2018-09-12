@@ -1,4 +1,4 @@
-import { Op, Transaction } from "sequelize";
+import { col, fn, Op, Transaction, where } from "sequelize";
 
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { ClienteInstance } from "../../../models/ClienteModel";
@@ -45,13 +45,31 @@ export const clienteResolvers = {
     }),
 
     searchCustomer: compose(...authResolvers)((parent, { values }, context: ResolverContext, info) => {
+      let whereCreatedAt = {};
+
       if (values.nome) {
         values.nome = {
           [Op.like]: `%${values.nome}%`
         };
       }
+      if ('createdAt' in values) {
+        whereCreatedAt = where(fn('DATE', col('createdAt')), fn('DATE', values.createdAt));
+        delete values.createdAt;
+      }
+      if ('logradouro' in values) {
+        values.logradouro = {
+          [Op.like]: `%${values.logradouro}%`
+        };
+      }
 
-      return context.db.Cliente.findAll({ where: values });
+      return context.db.Cliente.findAll({
+        where: {
+          [Op.and]: [
+            whereCreatedAt,
+            values
+          ]
+        }
+      });
     }),
 
     valorTotalMensalidadeCliente: compose(...authResolvers)(async (parent, { clienteID }, context: ResolverContext, info) => {

@@ -90,6 +90,8 @@ export const clienteTypes = `
     contaBancaria: Int
     diaVencimento: Int
     observacoes: String
+
+    createdAt: String
   }
 `;
 
