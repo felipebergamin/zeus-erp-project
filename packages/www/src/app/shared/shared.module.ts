@@ -8,6 +8,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PageHeaderComponent } from './component-page-header/page-header.component';
 import { ComponentPageTitle } from './page-title/page-title';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TableToolbarComponent } from './table-toolbar/table-toolbar.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
     NavbarComponent,
     PageHeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    TableToolbarComponent
   ],
   providers: [
     ComponentPageTitle
@@ -29,7 +31,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   exports: [
     NavbarComponent,
     PageHeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    TableToolbarComponent,
   ]
 })
 export class SharedModule { }
