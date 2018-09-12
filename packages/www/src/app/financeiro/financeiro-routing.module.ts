@@ -9,6 +9,8 @@ import { ListaContasBancariasResolver } from '../core/services/conta-bancaria/li
 import { ListarRemessasComponent } from './cnab/listar-remessas/listar-remessas.component';
 import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.component';
 import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
+import { DetalharBoletoComponent } from './boletos/detalhar-boleto/detalhar-boleto.component';
+import { BoletoByIdResolver } from '../core/services/boleto/boleto-by-id-resolver.service';
 
 const routes: Routes = [
   {
@@ -25,6 +27,14 @@ const routes: Routes = [
     path: 'boletos',
     component: ListarBoletosComponent,
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'boletos/:idboleto',
+    component: DetalharBoletoComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      boleto: BoletoByIdResolver,
+    }
   },
   {
     path: 'cnab/remessa/gerar',

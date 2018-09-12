@@ -9,6 +9,8 @@ import {
   BoletoInput,
   ListarBoletosQuery,
   PesquisaBoletosQuery,
+  GET_BOLETO_BY_ID_QUERY,
+  GetBoletoByIDQuery,
 } from './boleto.graphql';
 import { map } from 'rxjs/operators';
 
@@ -49,5 +51,12 @@ export class BoletoService {
     }).pipe(
       map(res => res.data)
     );
+  }
+
+  getByID(id: number): Observable<Boleto> {
+    return this.apollo.query<GetBoletoByIDQuery>({
+      query: GET_BOLETO_BY_ID_QUERY,
+      variables: { id },
+    }).pipe(map(res => res.data.getBoletoComID));
   }
 }

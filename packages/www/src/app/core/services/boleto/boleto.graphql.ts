@@ -18,6 +18,10 @@ export interface ListarBoletosQuery {
   totalBoletos: number;
 }
 
+export interface GetBoletoByIDQuery {
+  getBoletoComID: Boleto;
+}
+
 export const PESQUISA_BOLETOS_QUERY = gql`
   query pesquisaBoletos($search: PesquisaBoletoInput!) {
     pesquisarBoletos(searchVals: $search) {
@@ -55,5 +59,62 @@ export const LISTAR_BOLETOS_QUERY = gql`
       createdAt
     }
     totalBoletos
+  }
+`;
+
+export const GET_BOLETO_BY_ID_QUERY = gql`
+  query getBoletoByID($id: Int!) {
+    getBoletoComID(id: $id) {
+      _id
+      createdAt
+
+      dataBaixa
+      dataPagamento
+      dataVencimento
+
+      valorCobranca
+      valorPago
+
+      digitoNossoNumero
+      nossoNumero
+
+      baixado
+      pago
+      registrado
+
+      enviarAtualizacaoValor
+      enviarAtualizacaoVencimento
+      enviarPedidoBaixa
+      lock
+
+      carne {
+        _id
+        descricao
+      }
+      cliente {
+        _id
+        nome
+      }
+      contaBancaria {
+        _id
+        nome
+      }
+      ocorrencias {
+        _id
+        agenciaCobradora
+        bancoCobrador
+        dataCredito
+        dataHora
+        dataOcorrenciaNoBanco
+        idOcorrencia
+        jurosMora
+        motivosOcorrencia
+        valorPago
+        arquivoRetorno {
+          _id
+          nomeArquivo
+        }
+      }
+    }
   }
 `;
