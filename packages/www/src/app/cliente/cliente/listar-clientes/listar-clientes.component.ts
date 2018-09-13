@@ -35,22 +35,29 @@ export class ListarClientesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.clienteService.simpleList({ first: 25, offset: 0, excluded: false })
+    this.loadTableData();
+  }
+
+  loadTableData({ first, offset }: { first?: number, offset?: number } = {}) {
+    first = first || this.pageSizeOptions[0];
+    offset = offset || 0;
+
+    this.clienteService.simpleList({ first, offset, excluded: false })
       .subscribe(
-        (res => {
-          this._dataSource.next(res.listCustomers);
+        res => {
           this.totalItensPaginator = res.totalCustomers;
-        })
+          this._dataSource.next(res.listCustomers);
+        }
       );
   }
 
   onPaginationChange(event: PageEvent) {
     this.pageEvent = event;
-    this.clienteService.simpleList({ first: event.pageSize, offset: event.pageIndex * event.pageSize, excluded: false })
-      .subscribe(res => {
-        this._dataSource.next(res.listCustomers);
-        this.totalItensPaginator = res.totalCustomers;
-      });
+
+    const first = event.pageSize;
+    const offset = event.pageIndex * event.pageSize;
+
+    this.loadTableData({ first, offset });
   }
 
   openBottomSheet(cli: Cliente) {
@@ -82,22 +89,10 @@ export class ListarClientesComponent implements OnInit {
 
   clearSearch() {
     this.searching = this.searchTerms = false;
-    let first;
-    let offset;
+    const first = this.pageEvent ? this.pageEvent.pageSize : null;
+    const offset = this.pageEvent ? this.pageEvent.pageIndex * this.pageEvent.pageSize : null;
 
-    if (this.pageEvent) {
-      first = this.pageEvent.pageSize;
-      offset = this.pageEvent.pageIndex * this.pageEvent.pageSize;
-    } else {
-      first = this.pageSizeOptions[0];
-      offset = 0;
-    }
-
-    this.clienteService.simpleList({ first, offset, excluded: false })
-      .subscribe(res => {
-        this._dataSource.next(res.listCustomers);
-        this.totalItensPaginator = res.totalCustomers;
-      });
+    this.loadTableData({ first, offset });
   }
 
 }
