@@ -28,6 +28,7 @@ export interface PontoAcessoAttributes {
   incluirNaCobranca: boolean;
   plano: number;
   cliente: number;
+  pool: number;
 }
 
 export interface PontoAcessoInstance extends Sequelize.Instance<PontoAcessoAttributes> {}
