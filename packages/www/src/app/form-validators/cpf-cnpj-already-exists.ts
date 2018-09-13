@@ -1,11 +1,11 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { AbstractControl, ValidationErrors, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ClienteService } from '../core/services/cliente/cliente.service';
 let timeout;
 
-export function CpfCnpjAlreadyExists(clienteService: ClienteService): ValidatorFn {
+export function CpfCnpjAlreadyExists(clienteService: ClienteService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     if (timeout) {
       console.log('limpando timeout');
