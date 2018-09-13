@@ -95,4 +95,21 @@ export class ListarClientesComponent implements OnInit {
     this.loadTableData({ first, offset });
   }
 
+  /** function called on refresh button `click` event */
+  refreshTable() {
+    if (this.searching) {
+      this.clienteService.search(this.searchTerms)
+        .subscribe(result => {
+          this.searching = true;
+          this.totalItensPaginator = result.length;
+          this._dataSource.next(result);
+        });
+    } else {
+      this.loadTableData({
+        first: (this.pageEvent ? this.pageEvent.pageSize : null),
+        offset: (this.pageEvent ? this.pageEvent.pageSize * this.pageEvent.pageIndex : null),
+      });
+    }
+  }
+
 }
