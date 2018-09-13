@@ -19,7 +19,7 @@ export const pontoAcessoResolvers = {
       return context.db.Plano.findById(parent.get('plano'));
     },
     pool: (parent: PontoAcessoInstance, args, context: ResolverContext, info) => {
-      return context.db.PoolIP.findById(parent.get('_id'));
+      return context.db.PoolIP.findById(parent.get('pool'));
     },
   },
 
@@ -92,7 +92,7 @@ export const pontoAcessoResolvers = {
         .then((plano) => {
           throwError(!plano, `Ponto de acesso com ID ${idPonto} não encontrado`);
 
-          return plano.update(input);
+          return plano.set(input).save();
         });
     }),
 
