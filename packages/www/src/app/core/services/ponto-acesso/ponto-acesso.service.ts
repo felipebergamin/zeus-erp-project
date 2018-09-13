@@ -15,6 +15,7 @@ import {
   BUSCAR_PONTOS_ACESSO_QUERY,
   BuscarPontosAcessoQuery,
   PA_BY_ID_QUERY,
+  UPDATE_PA_MUTATION,
 } from './ponto-acesso.graphql';
 import { PontoAcesso } from '../../models/PontoAcesso';
 
@@ -76,10 +77,17 @@ export class PontoAcessoService {
     );
   }
 
-  getByID(id: number): Observable<PontoAcesso> {
+  getByID(id: number, fulldata = false): Observable<PontoAcesso> {
     return this.apollo.query<any>({
-      query: PA_BY_ID_QUERY,
+      query: fulldata ? PA_BY_ID_QUERY.FULL_DATA : PA_BY_ID_QUERY.BASIC_DATA,
       variables: { id },
     }).pipe(map(res => res.data.pontoDeAcessoPorID));
+  }
+
+  update(id: number, input: PontoAcesso): Observable<PontoAcesso> {
+    return this.apollo.mutate({
+      mutation: UPDATE_PA_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.updatePontoDeAcesso));
   }
 }

@@ -116,19 +116,77 @@ export const BUSCAR_PONTOS_ACESSO_QUERY = gql`
   }
 `;
 
-export const PA_BY_ID_QUERY = gql`
-  query pontoAcessoById($id: Int!) {
-    pontoDeAcessoPorID(id: $id) {
-      _id
-      login
-      logradouro
-      numero
-      cidade
-      createdAt
-      cliente {
+export const PA_BY_ID_QUERY = {
+  BASIC_DATA: gql`
+    query pontoAcessoById($id: Int!) {
+      pontoDeAcessoPorID(id: $id) {
         _id
-        nome
+        login
+        logradouro
+        numero
+        cidade
+        createdAt
+        cliente {
+          _id
+          nome
+        }
       }
+    }
+  `,
+  FULL_DATA: gql`
+    query pontoAcessoById($id: Int!) {
+      pontoDeAcessoPorID(id: $id) {
+        _id
+
+        autoAtrelarMac
+        ipAddress
+        login
+        macAddress
+        macOnu
+        passwd
+        ponNo
+        slotNo
+        incluirNaCobranca
+
+        bairro
+        cep
+        cidade
+        complemento
+        estado
+        latitude
+        logradouro
+        longitude
+        numero
+
+        olt {
+          _id
+          nome
+        }
+        plano {
+          _id
+          nome
+        }
+        pool {
+          _id
+          nome
+        }
+        cliente {
+          _id
+          nome
+        }
+
+        createdAt
+        updatedAt
+      }
+    }
+  `,
+};
+
+export const UPDATE_PA_MUTATION = gql`
+  mutation updatePA($id: Int!, $input: UpdatePontoAcessoInput!) {
+    updatePontoDeAcesso(id: $id, input: $input) {
+      _id
+      updatedAt
     }
   }
 `;
