@@ -1,7 +1,8 @@
 <div class="mat-elevation-z6">
   <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
     <div fxLayout="column">
-      <span>Novo Ponto de acesso para o cliente {{ cliente?.nome }}</span>
+      <span *ngIf="formFunction === 'creating'">Novo Ponto de acesso para o cliente {{ cliente?.nome }}</span>
+      <span *ngIf="formFunction === 'updating'">Alterando dados do ponto de acesso. Ref. cliente: {{ cliente?.nome }}</span>
 
       <br>
 
@@ -112,6 +113,7 @@
       </div>
 
       <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
+        <button type="reset" mat-button (click)="location.back()">Cancelar</button>
         <button type="reset" mat-button>Limpar</button>
         <!-- <button mat-raised-button color="accent">Cadastrar</button> -->
         <button mat-fab class="floating-fab">
@@ -122,3 +124,7 @@
     <!-- column -->
   </form>
 </div>
+
+<pre>
+  {{ form.value | json }}
+</pre>

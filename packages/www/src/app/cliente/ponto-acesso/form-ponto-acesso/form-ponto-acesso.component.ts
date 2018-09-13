@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
@@ -18,6 +18,7 @@ import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-ac
 })
 export class FormPontoAcessoComponent implements OnInit {
   form: FormGroup;
+  formFunction: 'creating' | 'updating';
   cliente: Cliente;
 
   listaPlanos: Plano[];
@@ -62,15 +63,32 @@ export class FormPontoAcessoComponent implements OnInit {
     });
 
     this.route.data.subscribe(
-      ({ cliente, listaPlanos, listaPools, listaOlts }) => {
+      ({ cliente, listaPlanos, listaPools, listaOlts, pontoAcesso }) => {
         this.listaPlanos = listaPlanos;
         this.listaPools = listaPools;
         this.listaOlts = listaOlts;
         this.cliente = cliente;
 
-        if (!cliente) {
-          this.snackbar.open(`Erro, cliente não encontrado`, 'Ok');
-          this.location.back();
+        if (!pontoAcesso) {
+          this.formFunction = 'creating';
+          if (!cliente) {
+            this.snackbar.open(`Erro, cliente não encontrado`, 'Ok');
+            this.location.back();
+          }
+        } else {
+          this.formFunction = 'updating';
+
+          this.form.addControl('id', new FormControl(pontoAcesso._id, Validators.required));
+          this.form.removeControl('cliente');
+
+          this.cliente = pontoAcesso.cliente;
+          this.form.patchValue({
+            ...pontoAcesso,
+            cliente: pontoAcesso.cliente._id,
+            olt: pontoAcesso.olt._id,
+            plano: pontoAcesso.plano._id,
+            pool: pontoAcesso.pool ? pontoAcesso.pool._id : null,
+          });
         }
       }
     );
@@ -99,18 +117,30 @@ export class FormPontoAcessoComponent implements OnInit {
       return this.snackbar.open('Formulário inválido! Verifique os dados digitados', 'Ok');
     }
 
-    this.pontoAcessoService.create(this.form.value)
-      .subscribe(
-        (created) => {
-          if (created._id) {
-            this.snackbar.open('PA cadastrado com sucesso!', 'Ok', { duration: 4000 });
-            this.router.navigate(['/suporte/instalacao/abrir'], { queryParams: { idpontoacesso: created._id }});
-            return;
-          }
+    if (this.formFunction === 'creating') {
 
-          this.snackbar.open('Ops! Algo não parece bem, o servidor retornou um registro inválido', 'Ok');
-        }
-      );
+      this.pontoAcessoService.create(this.form.value)
+        .subscribe(
+          (created) => {
+            if (created._id) {
+              this.snackbar.open('PA cadastrado com sucesso!', 'Ok', { duration: 4000 });
+              this.router.navigate(['/suporte/instalacao/abrir'], { queryParams: { idpontoacesso: created._id } });
+              return;
+            }
+            this.snackbar.open('Ops! Algo não parece bem, o servidor retornou um registro inválido', 'Ok');
+          }
+        );
+    } else {
+      const { id, ...input } = this.form.value;
+
+      this.pontoAcessoService.update(id, input)
+        .subscribe(
+          updated => {
+            this.snackbar.open(`PA ${updated._id} alterado com sucesso!`, 'Ok', { duration: 4000 });
+            this.location.back();
+          }
+        );
+    }
   }
 
 }

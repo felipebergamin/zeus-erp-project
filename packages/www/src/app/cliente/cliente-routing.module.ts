@@ -18,6 +18,7 @@ import { BoletosPorClienteResolver } from '../core/services/boleto/boletos-por-c
 import { PontosAcessoPorClienteResolver } from '../core/services/ponto-acesso/pontos-acesso-por-cliente-resolver.service';
 import { CarnesPorClienteResolver } from '../core/services/carne/carnes-por-cliente-resolver.service';
 import { ClienteByIdFullDataResolver } from '../core/services/cliente/cliente-by-id-full-data-resolver.service';
+import { PontoAcessoByIdFulldataResolver } from '../core/services/ponto-acesso/ponto-acesso-by-id-fulldata-resolver.service';
 
 const routes: Routes = [
   {
@@ -62,6 +63,17 @@ const routes: Routes = [
       listaPools: ListaIpPoolResolver,
       listaOlts: ListaOltResolver,
       cliente: ClienteByIdResolver,
+    },
+  },
+  {
+    path: 'pa/edit/:idpontoacesso',
+    component: FormPontoAcessoComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      pontoAcesso: PontoAcessoByIdFulldataResolver,
+      listaPlanos: ListaPlanosResolver,
+      listaPools: ListaIpPoolResolver,
+      listaOlts: ListaOltResolver,
     },
   },
   {

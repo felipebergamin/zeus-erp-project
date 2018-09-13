@@ -38,4 +38,9 @@ export class PontoAcessoActionSheetComponent implements OnInit {
     this.router.navigate(['/suporte/instalacao/abrir'], {queryParams: {idpontoacesso: this.pa._id}});
   }
 
+  edit() {
+    this.sheetRef.dismiss();
+    this.router.navigate(['/cliente/pa/edit', this.pa._id]);
+  }
+
 }
