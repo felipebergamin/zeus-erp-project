@@ -13,10 +13,11 @@ import {
   ListarClientes,
   BUSCAR_CLIENTES,
   BuscaClienteQuery,
-  GET_CLIENTE_COM_ID,
   GetClienteByIdQuery,
   VALOR_TOTAL_MENSALIDADE_QUERY,
   ValorMensalidadeQuery,
+  GET_CLIENTE_BY_ID,
+  UPDATE_CLIENTE_MUTATION,
 } from './cliente.graphql';
 import { Cliente } from '../../models/Cliente';
 
@@ -77,9 +78,9 @@ export class ClienteService {
     );
   }
 
-  getById(id: number): Observable<GetClienteByIdQuery> {
+  getById(id: number, fulldata = false): Observable<GetClienteByIdQuery> {
     return this.apollo.query<GetClienteByIdQuery>({
-      query: GET_CLIENTE_COM_ID,
+      query: fulldata ? GET_CLIENTE_BY_ID.FULLDATA : GET_CLIENTE_BY_ID.BASIC_DATA,
       variables: {
         id,
       },
@@ -97,5 +98,15 @@ export class ClienteService {
     }).pipe(
       map(res => +res.data.valorTotalMensalidadeCliente)
     );
+  }
+
+  update(id: number, input: Cliente) {
+    return this.apollo.mutate({
+      mutation: UPDATE_CLIENTE_MUTATION,
+      variables: {
+        id,
+        input,
+      }
+    }).pipe(map(res => res.data.updateCustomer));
   }
 }

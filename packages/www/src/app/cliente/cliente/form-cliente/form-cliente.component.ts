@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +18,7 @@ import { CpfCnpjAlreadyExists } from '../../../form-validators/cpf-cnpj-already-
 export class FormClienteComponent implements OnInit {
   form: FormGroup;
   contasBancarias: ContaBancaria[];
+  formFunction: 'creating' | 'updating';
 
   constructor(
     private clienteService: ClienteService,
@@ -29,12 +30,12 @@ export class FormClienteComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      cpfCnpj: [null, [Validators.required, Validators.minLength(11)], CpfCnpjAlreadyExists(this.clienteService)],
+      cpfCnpj: [null, [Validators.required, Validators.minLength(11)]],
       dataNascimento: [null, Validators.required],
       nome: [null, Validators.required],
       rgIe: [null, Validators.required],
       tags: [null],
-      tipoPessoa: [null, [Validators.required, valueIn(['fisica', 'juridica']) ]],
+      tipoPessoa: [null, [Validators.required, valueIn(['fisica', 'juridica'])]],
 
       email: [null, [Validators.required, Validators.email]],
       numeroCelular: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
@@ -57,7 +58,28 @@ export class FormClienteComponent implements OnInit {
     }, { validator: CPFCNPJValidator });
 
     this.route.data.subscribe(
-      data => this.contasBancarias = data.contasBancarias
+      ({ contasBancarias, cliente }) => {
+        this.contasBancarias = contasBancarias;
+
+        // se existe um cliente nos dados da rota
+        // então o formulário está sendo usado para atualizar informações
+        if (cliente) {
+          console.log(cliente);
+          this.formFunction = 'updating';
+
+          this.form.addControl('_id', new FormControl(cliente._id, Validators.required));
+
+          this.form.patchValue({
+            ...cliente,
+            contaBancaria: cliente.contaBancaria._id,
+            dataNascimento: new Date(cliente.dataNascimento),
+          });
+        } else { // se não existe um cliente nos dados da rota
+          // então o formulário está senod usado para cadastrar um novo cliente
+          this.formFunction = 'creating';
+          this.form.get('cpfCnpj').setAsyncValidators(CpfCnpjAlreadyExists(this.clienteService));
+        }
+      }
     );
   }
 
@@ -66,13 +88,30 @@ export class FormClienteComponent implements OnInit {
       return this.snackbar.open('Os dados são inválidos', 'Ok', { duration: 5000 });
     }
 
-    this.clienteService.create(this.form.value)
-      .subscribe(
-        (res) => {
-          this.snackbar.open(`ID do cliente: ${res._id}`, 'Ok', { duration: 4000 });
-          this.location.back();
-        },
-        (err) => console.error(err),
-    );
+    if (this.formFunction === 'creating') {
+      this.clienteService.create(this.form.value)
+        .subscribe(
+          (res) => {
+            this.snackbar.open(`ID do cliente: ${res._id}`, 'Ok', { duration: 4000 });
+            this.location.back();
+          },
+          (err) => console.error(err),
+        );
+    } else {
+      const {
+        _id,
+        ...input
+      } = this.form.value;
+
+      this.clienteService.update(_id, input)
+        .subscribe(
+          res => {
+            this.snackbar.open(`Cliente ${res._id} alterado com sucesso!`, 'Ok', { duration: 4000 });
+            this.location.back();
+          },
+          err => console.error(err),
+        );
+    }
+
   }
 }

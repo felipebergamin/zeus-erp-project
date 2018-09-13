@@ -17,6 +17,7 @@ import { ClienteByIdResolver } from '../core/services/cliente/cliente-by-id-reso
 import { BoletosPorClienteResolver } from '../core/services/boleto/boletos-por-cliente-resolver.service';
 import { PontosAcessoPorClienteResolver } from '../core/services/ponto-acesso/pontos-acesso-por-cliente-resolver.service';
 import { CarnesPorClienteResolver } from '../core/services/carne/carnes-por-cliente-resolver.service';
+import { ClienteByIdFullDataResolver } from '../core/services/cliente/cliente-by-id-full-data-resolver.service';
 
 const routes: Routes = [
   {
@@ -29,6 +30,15 @@ const routes: Routes = [
     component: FormClienteComponent,
     canActivate: [ AuthGuard ],
     resolve: {
+      contasBancarias: ListaContasBancariasResolver,
+    },
+  },
+  {
+    path: 'edit/:cliente',
+    component: FormClienteComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      cliente: ClienteByIdFullDataResolver,
       contasBancarias: ListaContasBancariasResolver,
     },
   },

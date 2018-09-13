@@ -94,24 +94,80 @@ export const BUSCAR_CLIENTES = gql`
   }
 `;
 
-export const GET_CLIENTE_COM_ID = gql`
-  query getById($id: Int!) {
-    getCustomerByID(id: $id) {
-      _id
-      nome
-      cpfCnpj
-      diaVencimento
-      contaBancaria {
+export const GET_CLIENTE_BY_ID = {
+  BASIC_DATA: gql`
+    query getById($id: Int!) {
+      getCustomerByID(id: $id) {
         _id
         nome
+        cpfCnpj
+        diaVencimento
+        contaBancaria {
+          _id
+          nome
+        }
       }
+      valorTotalMensalidadeCliente(clienteID: $id)
     }
-    valorTotalMensalidadeCliente(clienteID: $id)
-  }
-`;
+  `,
+  FULLDATA: gql`
+    query getById($id: Int!) {
+      getCustomerByID(id: $id) {
+        _id
+
+        cpfCnpj
+        dataNascimento
+        nome
+        rgIe
+        tags
+        tipoPessoa
+
+        email
+        numeroCelular
+        telefoneFixo
+
+        bairro
+        cep
+        cidade
+        complemento
+        estado
+        latitude
+        logradouro
+        longitude
+        numero
+
+        autoBloquear
+        contaBancaria {
+          _id
+          nome
+        }
+        diaVencimento
+        observacoes
+
+        pontosDeAcesso {
+          _id
+        }
+
+        createdAt
+        updatedAt
+        deletedAt
+      }
+      valorTotalMensalidadeCliente(clienteID: $id)
+    }
+  `,
+};
 
 export const VALOR_TOTAL_MENSALIDADE_QUERY = gql`
   query valorMensalidade($clienteID: Int!) {
     valorTotalMensalidadeCliente(clienteID: $clienteID)
+  }
+`;
+
+export const UPDATE_CLIENTE_MUTATION = gql`
+  mutation updateCliente($id: Int!, $input: ClienteInput!) {
+    updateCustomer(id: $id, input: $input) {
+      _id
+      updatedAt
+    }
   }
 `;
