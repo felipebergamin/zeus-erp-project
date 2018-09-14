@@ -9,6 +9,7 @@ import { ContaBancaria } from '../../../core/models/ContaBancaria';
 import { CPFCNPJValidator } from '../../../form-validators/cpf-cnpj-validator';
 import { valueIn } from '../../../form-validators/value-in';
 import { CpfCnpjAlreadyExists } from '../../../form-validators/cpf-cnpj-already-exists';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-form-cliente',
@@ -64,7 +65,6 @@ export class FormClienteComponent implements OnInit {
         // se existe um cliente nos dados da rota
         // então o formulário está sendo usado para atualizar informações
         if (cliente) {
-          console.log(cliente);
           this.formFunction = 'updating';
 
           this.form.addControl('_id', new FormControl(cliente._id, Validators.required));
