@@ -12,11 +12,12 @@ import { Boleto } from '../../../core/models/Boleto';
 export class DetalharBoletoComponent implements OnInit {
   displayedColumns = [
     'id' ,
+    'dataOcorrencia',
     'bancoCobrador',
     'agenciaCobradora',
     'valorPago',
     'jurosMora',
-    'boleto',
+    'arquivoRetorno',
   ];
   boleto: Boleto;
 
