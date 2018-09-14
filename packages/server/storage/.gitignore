@@ -1,2 +1,4 @@
 *.RET
 *.REM
+*.RST
+*.TST
