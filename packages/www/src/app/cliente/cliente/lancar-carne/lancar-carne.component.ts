@@ -67,12 +67,11 @@ export class LancarCarneComponent implements OnInit {
         .subscribe(
           carneCriado => {
             if (carneCriado) {
-              this.snackbar.open(`Carnê criado! ${carneCriado._id}`);
+              this.snackbar.open(`Carnê criado! ${carneCriado._id}`, 'Ok', {duration: 4000});
               return this.dialogRef.close(carneCriado);
             }
 
             this.snackbar.open(`Não foi possível criar o carnê. O servidor retornou dados inválidos!`);
-            console.log(carneCriado);
           }
         );
     }
