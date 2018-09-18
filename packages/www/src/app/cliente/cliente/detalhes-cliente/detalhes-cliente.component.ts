@@ -10,6 +10,7 @@ import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { Carne } from '../../../core/models/Carne';
 import { LancarCarneComponent } from '../lancar-carne/lancar-carne.component';
 import { PontoAcessoActionSheetComponent } from '../../ponto-acesso/ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
+import { BoletoService } from '../../../core/services/boleto/boleto.service';
 
 @Component({
   selector: 'app-detalhes-cliente',
@@ -30,7 +31,16 @@ export class DetalhesClienteComponent implements OnInit {
     public pageTitle: ComponentPageTitle,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private boletoService: BoletoService,
   ) { }
+
+  getBoletosOfCarne(carne: Carne) {
+    return this.boletos.filter(b => b.carne && (b.carne._id === carne._id));
+  }
+
+  getBoletosWithoutCarne() {
+    return this.boletos.filter(b => !b.carne);
+  }
 
   ngOnInit() {
     this.activatedRoute.data.subscribe(
@@ -63,6 +73,13 @@ export class DetalhesClienteComponent implements OnInit {
     }).afterClosed().subscribe(
       result => {
         if (result) {
+          this.boletos = [
+            ...result.boletos.map(b => {
+              b.carne = { _id: result._id };
+              return b;
+            }),
+            ...this.boletos];
+          result.boletos = null;
           this.carnes = [result, ...this.carnes];
         }
       }
@@ -73,6 +90,13 @@ export class DetalhesClienteComponent implements OnInit {
     this.bottomSheet.open(PontoAcessoActionSheetComponent, {
       data: pa
     });
+  }
+
+  onUpdateBoleto(event: Boleto) {
+    this.boletoService.getByID(event._id)
+      .subscribe(updated => {
+        this.boletos = this.boletos.map(b => b._id === event._id ? updated : b);
+      });
   }
 
 }

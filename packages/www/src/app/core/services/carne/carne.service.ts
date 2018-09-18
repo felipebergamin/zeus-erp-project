@@ -9,6 +9,8 @@ import {
   CARNES_POR_CLIENTE_QUERY,
   AddCarneInput,
   CarnesPorClienteQuery,
+  ADD_BOLETO_AO_CARNE_MUTATION,
+  REMOVE_BOLETO_CARNE,
 } from './carne.graphql';
 
 @Injectable({
@@ -27,12 +29,26 @@ export class CarneService {
     );
   }
 
-  listarCarnesPorCliente(cliente: number): Observable<Carne[]> {
+  listarCarnesPorCliente(cliente: number, queryBoletos = false): Observable<Carne[]> {
     return this.apollo.query<CarnesPorClienteQuery>({
-      query: CARNES_POR_CLIENTE_QUERY,
+      query: CARNES_POR_CLIENTE_QUERY[queryBoletos ? 'COM_BOLETOS' : 'SEM_BOLETOS'],
       variables: { cliente },
     }).pipe(
       map(res => res.data.carnesPorCliente)
     );
+  }
+
+  atrelarBoletoCarne(boleto: number, carne: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: ADD_BOLETO_AO_CARNE_MUTATION,
+      variables: { boleto, carne },
+    }).pipe(map(res => res.data.addBoletoAoCarne));
+  }
+
+  removeBoletoDoCarne(boleto: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: REMOVE_BOLETO_CARNE,
+      variables: { boleto },
+    }).pipe(map(res => res.data.removeBoletoDoCarne));
   }
 }

@@ -11,6 +11,8 @@ import {
   PesquisaBoletosQuery,
   GET_BOLETO_BY_ID_QUERY,
   GetBoletoByIDQuery,
+  PEDIDO_BAIXA_MUTATION,
+  CANCELAR_PEDIDO_BAIXA_MUTATION,
 } from './boleto.graphql';
 import { map } from 'rxjs/operators';
 
@@ -58,5 +60,19 @@ export class BoletoService {
       query: GET_BOLETO_BY_ID_QUERY,
       variables: { id },
     }).pipe(map(res => res.data.getBoletoComID));
+  }
+
+  pedidoBaixa(boleto: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: PEDIDO_BAIXA_MUTATION,
+      variables: { boleto },
+    }).pipe(map(res => res.data.pedidoBaixa));
+  }
+
+  cancelarPedidoBaixa(boleto: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: CANCELAR_PEDIDO_BAIXA_MUTATION,
+      variables: { boleto },
+    }).pipe(map(res => res.data.cancelarPedidoBaixa));
   }
 }

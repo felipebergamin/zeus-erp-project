@@ -28,6 +28,7 @@ import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.com
 import { ExibirDetalhesRetornoComponent } from './cnab/exibir-detalhes-retorno/exibir-detalhes-retorno.component';
 import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
 import { DetalharBoletoComponent } from './boletos/detalhar-boleto/detalhar-boleto.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { DetalharBoletoComponent } from './boletos/detalhar-boleto/detalhar-bole
     MatSlideToggleModule,
     MatAutocompleteModule,
     MatListModule,
+    SharedModule,
   ],
   declarations: [
     ListarContasBancariasComponent,

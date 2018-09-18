@@ -31,6 +31,13 @@ export const PESQUISA_BOLETOS_QUERY = gql`
       pago
       dataVencimento
       dataPagamento
+      carne {
+        _id
+      }
+      cliente {
+        _id
+        nome
+      }
     }
   }
 `;
@@ -54,6 +61,7 @@ export const LISTAR_BOLETOS_QUERY = gql`
       dataVencimento
       dataPagamento
       cliente{
+        _id
         nome
       }
       createdAt
@@ -116,5 +124,17 @@ export const GET_BOLETO_BY_ID_QUERY = gql`
         }
       }
     }
+  }
+`;
+
+export const PEDIDO_BAIXA_MUTATION = gql`
+  mutation enviarPedidoBaixa($boleto: Int!) {
+    pedidoBaixa(boleto: $boleto)
+  }
+`;
+
+export const CANCELAR_PEDIDO_BAIXA_MUTATION = gql`
+  mutation cancelarPedidoBaixa($boleto: Int!) {
+    cancelarPedidoBaixa(boleto: $boleto)
   }
 `;

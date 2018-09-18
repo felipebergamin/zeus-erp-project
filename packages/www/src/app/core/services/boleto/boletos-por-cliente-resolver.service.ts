@@ -18,6 +18,6 @@ export class BoletosPorClienteResolver implements Resolve<Boleto[]> {
       return of(null);
     }
 
-    return this._service.pesquisar({ cliente: route.paramMap.get('cliente'), carne: null });
+    return this._service.pesquisar({ cliente: route.paramMap.get('cliente') });
   }
 }

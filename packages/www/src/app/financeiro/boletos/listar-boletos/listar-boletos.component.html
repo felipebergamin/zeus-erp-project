@@ -5,9 +5,7 @@
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Menu</th>
       <td mat-cell *matCellDef="let boleto">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
-        </button>
+        <app-boleto-action-sheet [boleto]="boleto" [disabled]="boleto.lock"></app-boleto-action-sheet>
       </td>
     </ng-container>
 
