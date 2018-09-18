@@ -56,7 +56,6 @@ export class ApolloConfigModule {
 
     const networkLink = split(
       (op) => {
-        console.log(op.operationName, op.operationName.startsWith('upload'));
         return op.operationName.startsWith('upload');
       },
       uploadLink,
