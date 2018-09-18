@@ -91,5 +91,29 @@ export const boletoResolvers = {
           });
       });
     }),
+
+    pedidoBaixa: compose(...authResolvers)((parent, { boleto }, context: ResolverContext, info) => {
+      return context.db.sequelize.transaction((transaction) => {
+        return context.db.Boleto.findById(boleto)
+          .then((boletoInstance) => {
+            throwError(!boletoInstance, `Boleto ${boleto} não encontrado`);
+
+            boletoInstance.set('enviarPedidoBaixa', true);
+            return boletoInstance.save({ transaction });
+          });
+      });
+    }),
+
+    cancelarPedidoBaixa: compose(...authResolvers)((parent, { boleto }, context: ResolverContext, info) => {
+      return context.db.sequelize.transaction((transaction) => {
+        return context.db.Boleto.findById(boleto)
+          .then((boletoInstance) => {
+            throwError(!boletoInstance, `Boleto ${boleto} não encontrado`);
+
+            boletoInstance.set('enviarPedidoBaixa', false);
+            return boletoInstance.save({ transaction });
+          });
+      });
+    }),
   },
 };

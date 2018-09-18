@@ -72,4 +72,6 @@ export const boletoQueries = `
 export const boletoMutations = `
   addBoleto(input: BoletoInput!): Boleto
   updateBoleto(id: Int!, input: BoletoInput!): Boleto
+  pedidoBaixa(boleto: Int!): Boolean
+  cancelarPedidoBaixa(boleto: Int!): Boolean
 `;
