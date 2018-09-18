@@ -1,9 +1,14 @@
+import { Cliente } from './Cliente';
+import { ContaBancaria } from './ContaBancaria';
+import { OcorrenciaBancaria } from './OcorrenciaBancaria';
+import { Carne } from './Carne';
+
 export class Boleto {
   _id?: number;
   baixado?: boolean;
-  carne?: number;
-  cliente?: number;
-  contaBancaria?: number;
+  carne?: Carne;
+  cliente?: Cliente;
+  contaBancaria?: ContaBancaria;
   dataBaixa?: Date;
   dataCredito?: Date;
   dataPagamento?: Date;
@@ -15,7 +20,7 @@ export class Boleto {
   enviarPedidoBaixa?: boolean;
   nossoNumero?: number;
   numeroBoleto?: number;
-  ocorrencias?: number;
+  ocorrencias?: OcorrenciaBancaria[];
   pago?: boolean;
   valorCobranca?: number;
   valorPago?: number;
