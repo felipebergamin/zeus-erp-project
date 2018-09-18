@@ -1,0 +1,26 @@
+<button [disabled]="disabled" mat-icon-button [matMenuTriggerFor]="menuBoleto" (menuOpened)="onMenuOpened()" (menuClosed)="onMenuClosed()">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menuBoleto="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="detalhesBoleto()">Detalhes</button>
+    <button [disabled]="boleto.lock" mat-menu-item>Alterar</button>
+
+    <button [disabled]="boleto.lock" mat-menu-item [matMenuTriggerFor]="cnabSubmenu">CNAB</button>
+    <button mat-menu-item [matMenuTriggerFor]="carneSubmenu">Carnê</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #cnabSubmenu="matMenu">
+  <button mat-menu-item (click)="pedidoBaixa()">Pedido de Baixa</button>
+  <button mat-menu-item (click)="cancelarPedidoBaixa()">Cancelar Pedido de Baixa</button>
+</mat-menu>
+
+<mat-menu #carneSubmenu>
+  <button [disabled]="carnes && carnes.length === 0" mat-menu-item [matMenuTriggerFor]="atrelarCarneSubmenu">Atrelar ao Carnê</button>
+  <button mat-menu-item (click)="removerDeCarne()">Remover de Carnê</button>
+</mat-menu>
+
+<mat-menu #atrelarCarneSubmenu="matMenu">
+  <button mat-menu-item *ngFor="let carne of carnes" (click)="atrelarAoCarne(carne)">{{ carne.descricao }}</button>
+</mat-menu>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatToolbarModule, MatIconModule, MatMenuModule } from '@angular/material';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { RouterModule } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { PageHeaderComponent } from './component-page-header/page-header.compone
 import { ComponentPageTitle } from './page-title/page-title';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TableToolbarComponent } from './table-toolbar/table-toolbar.component';
+import { BoletoActionSheetComponent } from './action-sheets/boleto-action-sheet/boleto-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -17,13 +18,15 @@ import { TableToolbarComponent } from './table-toolbar/table-toolbar.component';
     MatToolbarModule,
     MatIconModule,
     CdkAccordionModule,
-    RouterModule
+    RouterModule,
+    MatMenuModule,
   ],
   declarations: [
     NavbarComponent,
     PageHeaderComponent,
     SidebarComponent,
-    TableToolbarComponent
+    TableToolbarComponent,
+    BoletoActionSheetComponent,
   ],
   providers: [
     ComponentPageTitle
@@ -33,6 +36,10 @@ import { TableToolbarComponent } from './table-toolbar/table-toolbar.component';
     PageHeaderComponent,
     SidebarComponent,
     TableToolbarComponent,
-  ]
+    BoletoActionSheetComponent,
+  ],
+  entryComponents: [
+    BoletoActionSheetComponent,
+  ],
 })
 export class SharedModule { }
