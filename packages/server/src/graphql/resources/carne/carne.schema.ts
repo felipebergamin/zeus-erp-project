@@ -24,5 +24,5 @@ export const carneQueries = `
 export const carneMutations = `
   addCarne(input: CreateCarneInput!): Carne
   addBoletoAoCarne(boleto: Int!, carne: Int!): Boolean
-  removeBoletoDoCarne(boleto: Int!, carne: Int!): Boolean
+  removeBoletoDoCarne(boleto: Int!): Boolean
 `;

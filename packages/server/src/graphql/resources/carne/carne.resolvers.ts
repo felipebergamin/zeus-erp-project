@@ -111,25 +111,20 @@ export const carneResolvers = {
         });
     }),
 
-    removeBoletoDoCarne: compose(...authResolvers)((parent, { boleto, carne }, context, info) => {
+    removeBoletoDoCarne: compose(...authResolvers)((parent, { boleto }, context: ResolverContext, info) => {
       const idBoleto = parseInt(boleto, 10);
-      const idCarne = parseInt(carne, 10);
 
       throwError(isNaN(idBoleto), `ID ${idBoleto} inválido para carnê`);
-      throwError(isNaN(idCarne), `ID ${idCarne} inválido para carnê`);
 
-      return context.db.Carne.findById(idCarne)
-        .then((carneInstance) => {
-          throwError(!carneInstance, `Carne com ID ${idCarne} não encontrado`);
+      return context.db.sequelize.transaction((transaction) => {
+        return context.db.Boleto.findById(idBoleto)
+          .then((boletoInstance) => {
+            throwError(!boletoInstance, `Boleto com ID ${idBoleto} não encontrado`);
 
-          return context.db.Boleto.findById(idBoleto)
-            .then((boletoInstance) => {
-              throwError(!boletoInstance, `Boleto com ID ${idBoleto} não encontrado`);
-
-              boletoInstance.set('carne', null);
-              return boletoInstance.save().then((saved) => !!saved);
-            });
-        });
+            boletoInstance.set('carne', null);
+            return boletoInstance.save({ transaction }).then((saved) => !!saved);
+          });
+      });
     }),
 
   },
