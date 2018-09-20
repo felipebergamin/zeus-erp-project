@@ -110,6 +110,10 @@ export const BUSCAR_PONTOS_ACESSO_QUERY = gql`
         _id
         nome
       }
+      plano {
+        _id
+        nome
+      }
       cidade
       createdAt
     }

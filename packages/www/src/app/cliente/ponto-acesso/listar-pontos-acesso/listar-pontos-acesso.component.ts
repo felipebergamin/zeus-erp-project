@@ -5,16 +5,42 @@ import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-ac
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { PageEvent, MatBottomSheet } from '@angular/material';
 import { PontoAcessoActionSheetComponent } from '../ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'app-listar-pontos-acesso',
   templateUrl: './listar-pontos-acesso.component.html',
-  styleUrls: ['./listar-pontos-acesso.component.scss']
+  styleUrls: ['./listar-pontos-acesso.component.scss'],
+
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ opacity: 1 })),
+      state('out', style({ opacity: 0, display: 'none' })),
+      transition('in => out', [
+        animate('100ms ease-out', style({ opacity: 0 })),
+      ]),
+      transition('out => in', [
+        animate('100ms 100ms ease-in', style({ opacity: 1 })),
+      ]),
+    ])
+  ]
 })
 export class ListarPontosAcessoComponent implements OnInit {
   displayedColumns: string[] = ['menu', 'login', 'nomeCliente', 'nomePlano'];
   pageSizeOptions = [25, 50, 75, 100];
   totalItensPaginator: number;
+  lastPageEvent: PageEvent;
+
+  listState: 'in' | 'out' = 'in';
+  searchState: 'in' | 'out' = 'out';
+  shouldSearchPageRender = false;
+  searching = false;
 
   _dataSource = new ReplaySubject<PontoAcesso[]>(1);
 
@@ -32,6 +58,7 @@ export class ListarPontosAcessoComponent implements OnInit {
   }
 
   onPaginationChange(event: PageEvent) {
+    this.lastPageEvent = event;
     this.refreshList({ first: event.pageSize, offset: event.pageIndex * event.pageSize });
   }
 
@@ -47,6 +74,41 @@ export class ListarPontosAcessoComponent implements OnInit {
     this.bottomSheet.open(PontoAcessoActionSheetComponent, {
       data: pa
     });
+  }
+
+  toggleUiState() {
+    this.listState = this.listState === 'out' ? 'in' : 'out';
+    this.searchState = this.searchState === 'out' ? 'in' : 'out';
+  }
+
+  openSearchDialog() {
+    this.shouldSearchPageRender = true;
+    this.toggleUiState();
+  }
+
+  onCancelSearch() {
+    this.toggleUiState();
+  }
+
+  doSearch(searchQuery) {
+    console.log(searchQuery);
+    this.toggleUiState();
+    this.paService.buscar(searchQuery)
+      .subscribe(
+        response => {
+          this.searching = true;
+          this._dataSource.next(response);
+          this.totalItensPaginator = response.length;
+        }
+      );
+  }
+
+  clearSearch() {
+    const first = this.lastPageEvent ? this.lastPageEvent.pageSize : this.pageSizeOptions[0];
+    const offset = this.lastPageEvent ? this.lastPageEvent.pageSize * this.lastPageEvent.pageIndex : 0;
+
+    this.refreshList({ first, offset });
+    this.searching = false;
   }
 
 }

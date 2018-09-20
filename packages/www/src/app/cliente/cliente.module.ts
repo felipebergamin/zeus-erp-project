@@ -39,6 +39,7 @@ import { PontoAcessoActionSheetComponent } from './ponto-acesso/ponto-acesso-act
 import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-sinal-onu.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormPesquisaClienteComponent } from './cliente/form-pesquisa-cliente/form-pesquisa-cliente.component';
+import { FormPesquisaPaComponent } from './ponto-acesso/form-pesquisa-pa/form-pesquisa-pa.component';
 
 @NgModule({
   imports: [
@@ -79,6 +80,7 @@ import { FormPesquisaClienteComponent } from './cliente/form-pesquisa-cliente/fo
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,
     FormPesquisaClienteComponent,
+    FormPesquisaPaComponent,
   ],
   entryComponents: [
     ClienteActionSheetComponent,
@@ -87,6 +89,7 @@ import { FormPesquisaClienteComponent } from './cliente/form-pesquisa-cliente/fo
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,
     FormPesquisaClienteComponent,
+    FormPesquisaPaComponent,
   ],
   providers: [
     {

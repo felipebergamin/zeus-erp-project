@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { pickBy, isNil, negate } from 'lodash';
+
+import { clearFalsyProps } from '../../../utils';
 
 @Component({
   selector: 'app-form-pesquisa-cliente',
@@ -15,10 +16,6 @@ export class FormPesquisaClienteComponent implements OnInit {
     private dialogRef: MatDialogRef<FormPesquisaClienteComponent>,
     @Inject(MAT_DIALOG_DATA) private injectedData,
   ) { }
-
-  clearFalsyProps(obj): any {
-    return pickBy(obj, negate(isNil));
-  }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -43,7 +40,7 @@ export class FormPesquisaClienteComponent implements OnInit {
   }
 
   onFormSubmit() {
-    this.dialogRef.close(this.clearFalsyProps(this.form.value));
+    this.dialogRef.close(clearFalsyProps(this.form.value));
   }
 
   cancel() {
