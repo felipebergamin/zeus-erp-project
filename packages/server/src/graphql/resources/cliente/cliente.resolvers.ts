@@ -2,6 +2,7 @@ import { col, fn, Op, Transaction, where } from "sequelize";
 
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { ClienteInstance } from "../../../models/ClienteModel";
+import { applyLikeOp } from "../../../util/sequelize";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
 
@@ -47,19 +48,13 @@ export const clienteResolvers = {
     searchCustomer: compose(...authResolvers)((parent, { values }, context: ResolverContext, info) => {
       let whereCreatedAt = {};
 
-      if (values.nome) {
-        values.nome = {
-          [Op.like]: `%${values.nome}%`
-        };
-      }
+      const likeOptoField = applyLikeOp(values);
+      likeOptoField('nome');
+      likeOptoField('logradouro');
+
       if ('createdAt' in values) {
         whereCreatedAt = where(fn('DATE', col('createdAt')), fn('DATE', values.createdAt));
         delete values.createdAt;
-      }
-      if ('logradouro' in values) {
-        values.logradouro = {
-          [Op.like]: `%${values.logradouro}%`
-        };
       }
 
       return context.db.Cliente.findAll({

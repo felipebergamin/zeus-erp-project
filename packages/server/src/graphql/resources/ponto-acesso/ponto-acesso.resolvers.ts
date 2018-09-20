@@ -1,7 +1,6 @@
-import { Op } from 'sequelize';
-
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { PontoAcessoInstance } from "../../../models/PontoAcessoModel";
+import { applyLikeOp } from '../../../util/sequelize';
 import { throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
@@ -68,11 +67,13 @@ export const pontoAcessoResolvers = {
     }),
 
     buscarPontosAcesso: compose(...authResolvers)((parent, {searchVals}, context: ResolverContext, info) => {
-      if (searchVals.login) {
-        searchVals.login = {
-          [Op.like]: `%${searchVals.login}%`
-        };
-      }
+      const toField = applyLikeOp(searchVals);
+      toField('login');
+      toField('logradouro');
+      toField('cidade');
+      toField('macOnu');
+      toField('bairro');
+
       return context.db.PontoAcesso.findAll({ where: searchVals });
     }),
   },
