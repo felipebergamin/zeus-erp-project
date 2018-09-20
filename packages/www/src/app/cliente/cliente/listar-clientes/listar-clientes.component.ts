@@ -1,16 +1,36 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { PageEvent, MatBottomSheet, MatDialog, MatPaginator } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent, MatBottomSheet } from '@angular/material';
 import { ReplaySubject } from 'rxjs';
+
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 import { ClienteService } from '../../../core/services/cliente/cliente.service';
 import { Cliente } from '../../../core/models/Cliente';
 import { ClienteActionSheetComponent } from '../cliente-action-sheet/cliente-action-sheet.component';
-import { FormPesquisaClienteComponent } from '../form-pesquisa-cliente/form-pesquisa-cliente.component';
 
 @Component({
   selector: 'app-listar-clientes',
   templateUrl: './listar-clientes.component.html',
-  styleUrls: ['./listar-clientes.component.scss']
+  styleUrls: ['./listar-clientes.component.scss'],
+
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ opacity: 1 })),
+      state('out', style({ opacity: 0, display: 'none' })),
+      transition('in => out', [
+        animate('100ms ease-out', style({ opacity: 0 })),
+      ]),
+      transition('out => in', [
+        animate('100ms 100ms ease-in', style({ opacity: 1 })),
+      ]),
+    ])
+  ]
 })
 export class ListarClientesComponent implements OnInit {
   /* paginator */
@@ -21,13 +41,15 @@ export class ListarClientesComponent implements OnInit {
   searching = false;
   searchTerms: any;
 
+  listState: 'in' | 'out' = 'in';
+  searchState: 'in' | 'out' = 'out';
+
   /* data table */
   _dataSource = new ReplaySubject<Cliente[]>(1);
 
   constructor(
     private bottomSheet: MatBottomSheet,
     private clienteService: ClienteService,
-    private dialog: MatDialog,
   ) { }
 
   get dataSource() {
@@ -67,24 +89,7 @@ export class ListarClientesComponent implements OnInit {
   }
 
   openSearchDialog() {
-    this.dialog.open(FormPesquisaClienteComponent, {
-      data: { previousSearchValues: this.searchTerms }
-    })
-      .afterClosed()
-      .subscribe(data => {
-        if (!data) {
-          return;
-        }
-
-        this.searchTerms = data;
-
-        this.clienteService.search(data)
-          .subscribe(result => {
-            this.searching = true;
-            this.totalItensPaginator = result.length;
-            this._dataSource.next(result);
-          });
-      });
+    this.toggleUiState();
   }
 
   clearSearch() {
@@ -110,6 +115,26 @@ export class ListarClientesComponent implements OnInit {
         offset: (this.pageEvent ? this.pageEvent.pageSize * this.pageEvent.pageIndex : null),
       });
     }
+  }
+
+  onDoSearch(searchQuery) {
+    this.toggleUiState();
+
+    this.clienteService.search(searchQuery)
+      .subscribe(result => {
+        this.searching = true;
+        this.totalItensPaginator = result.length;
+        this._dataSource.next(result);
+      });
+  }
+
+  onCancelSearch() {
+    this.toggleUiState();
+  }
+
+  toggleUiState() {
+    this.listState = this.listState === 'in' ? 'out' : 'in';
+    this.searchState = this.searchState === 'in' ? 'out' : 'in';
   }
 
 }

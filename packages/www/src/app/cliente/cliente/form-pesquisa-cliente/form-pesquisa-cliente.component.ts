@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit,  Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { clearFalsyProps } from '../../../utils';
 
@@ -12,10 +11,10 @@ import { clearFalsyProps } from '../../../utils';
 export class FormPesquisaClienteComponent implements OnInit {
   form: FormGroup;
 
-  constructor(
-    private dialogRef: MatDialogRef<FormPesquisaClienteComponent>,
-    @Inject(MAT_DIALOG_DATA) private injectedData,
-  ) { }
+  @Output() doSearch = new EventEmitter();
+  @Output() cancelSearch = new EventEmitter();
+
+  constructor() { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -30,21 +29,16 @@ export class FormPesquisaClienteComponent implements OnInit {
       createdAt: new FormControl(),
       tipoPessoa: new FormControl(),
     });
-
-    if (this.injectedData
-      && this.injectedData.previousSearchValues
-      && typeof this.injectedData.previousSearchValues === typeof {}) {
-
-      this.form.patchValue(this.injectedData.previousSearchValues);
-    }
   }
 
   onFormSubmit() {
-    this.dialogRef.close(clearFalsyProps(this.form.value));
+    if (this.form.valid) {
+      this.doSearch.emit(clearFalsyProps(this.form.value));
+    }
   }
 
   cancel() {
-    this.dialogRef.close(null);
+    this.cancelSearch.emit();
   }
 
 }
