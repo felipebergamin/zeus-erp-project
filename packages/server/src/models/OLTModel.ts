@@ -51,7 +51,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: true,
         field: 'olt',
         name: 'olt',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
   };
 
