@@ -33,3 +33,25 @@ export const CREATE_OLT_MUTATION = gql`
     }
   }
 `;
+
+export const GET_OLT_BY_ID = gql`
+  query getOltById($id: Int!) {
+    getOLTByID(id: $id) {
+      _id
+      ip
+      nome
+      obs
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const UPDATE_OLT_MUTATION = gql`
+  mutation updateOlt($oltid: Int!, $input: OLTInput!) {
+    updateOLT(oltID: $oltid, input: $input) {
+      _id
+      updatedAt
+    }
+  }
+`;
