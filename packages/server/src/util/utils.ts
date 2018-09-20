@@ -38,6 +38,11 @@ export const onListening = (server: Server) => {
 };
 
 export const handleError = (error: Error) => {
+  if (error.name === "SequelizeForeignKeyConstraintError") {
+    throw new Error(
+      'Ops... Ainda bem que o servidor é esperto... ' +
+      'Esse registro é referenciado por outros e não pode ser removido!');
+  }
   const errorMessage: string = `${error.name}: ${error.message}`;
   return Promise.reject(new Error(errorMessage));
 };
