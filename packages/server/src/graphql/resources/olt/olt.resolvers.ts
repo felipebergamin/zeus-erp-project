@@ -1,6 +1,6 @@
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { OLTInstance } from "../../../models/OLTModel";
-import { throwError } from "../../../util/utils";
+import { handleError, throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
 
@@ -43,6 +43,13 @@ export const oltResolvers = {
 
             return olt.update(input, { transaction });
           });
+      });
+    }),
+
+    deleteOLT: compose(...authResolvers)((parent, { oltid }, { db }: ResolverContext, info) => {
+      return db.sequelize.transaction((transaction) => {
+        return db.OLT.destroy({ where: { _id: oltid }, transaction})
+          .catch(handleError);
       });
     }),
   },

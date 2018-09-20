@@ -25,4 +25,5 @@ export const oltQueries = `
 export const oltMutations = `
   createOLT(input: OLTInput!): OLT
   updateOLT(oltID: Int!, input: OLTInput!): OLT
+  deleteOLT(oltid: Int!): Boolean
 `;
