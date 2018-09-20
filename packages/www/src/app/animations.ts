@@ -16,3 +16,11 @@ export const swapComponentsWithFade = trigger('flyInOut', [
     animate('100ms 100ms ease-in', style({ opacity: 1 })),
   ]),
 ]);
+
+export const fadeIn = trigger('fadeIn', [
+  state('in', style({ opacity: 1 })),
+  transition('void => *', [
+    style({ opacity: 0 }),
+    animate(200),
+  ]),
+]);

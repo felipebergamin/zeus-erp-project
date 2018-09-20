@@ -5,7 +5,7 @@ import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-ac
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { PageEvent, MatBottomSheet } from '@angular/material';
 import { PontoAcessoActionSheetComponent } from '../ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
-import { swapComponentsWithFade } from '../../../animations';
+import { fadeIn, swapComponentsWithFade } from '../../../animations';
 
 @Component({
   selector: 'app-listar-pontos-acesso',
@@ -13,6 +13,7 @@ import { swapComponentsWithFade } from '../../../animations';
   styleUrls: ['./listar-pontos-acesso.component.scss'],
 
   animations: [
+    fadeIn,
     swapComponentsWithFade,
   ]
 })
