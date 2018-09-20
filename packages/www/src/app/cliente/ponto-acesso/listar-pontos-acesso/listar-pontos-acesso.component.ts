@@ -5,13 +5,7 @@ import { PontoAcessoService } from '../../../core/services/ponto-acesso/ponto-ac
 import { PontoAcesso } from '../../../core/models/PontoAcesso';
 import { PageEvent, MatBottomSheet } from '@angular/material';
 import { PontoAcessoActionSheetComponent } from '../ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
+import { swapComponentsWithFade } from '../../../animations';
 
 @Component({
   selector: 'app-listar-pontos-acesso',
@@ -19,16 +13,7 @@ import {
   styleUrls: ['./listar-pontos-acesso.component.scss'],
 
   animations: [
-    trigger('flyInOut', [
-      state('in', style({ opacity: 1 })),
-      state('out', style({ opacity: 0, display: 'none' })),
-      transition('in => out', [
-        animate('100ms ease-out', style({ opacity: 0 })),
-      ]),
-      transition('out => in', [
-        animate('100ms 100ms ease-in', style({ opacity: 1 })),
-      ]),
-    ])
+    swapComponentsWithFade,
   ]
 })
 export class ListarPontosAcessoComponent implements OnInit {
