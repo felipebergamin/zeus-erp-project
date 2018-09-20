@@ -2,9 +2,18 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 
-import { LISTAR_OLT_QUERY, ListarOLTQuery, CREATE_OLT_MUTATION, OLTInput, GET_OLT_BY_ID, UPDATE_OLT_MUTATION } from './olt.graphql';
 import { Observable } from 'rxjs';
 import { OLT } from '../../models/OLT';
+import {
+  CREATE_OLT_MUTATION,
+  DELETE_OLT_BY_ID,
+  GET_OLT_BY_ID,
+  LISTAR_OLT_QUERY,
+  UPDATE_OLT_MUTATION,
+
+  OLTInput,
+  ListarOLTQuery,
+} from './olt.graphql';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +58,12 @@ export class OltService {
       mutation: UPDATE_OLT_MUTATION,
       variables: { oltid, input },
     }).pipe(map(res => res.data.updateOLT));
+  }
+
+  deleteOlt(oltid: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: DELETE_OLT_BY_ID,
+      variables: { oltid },
+    }).pipe(map(res => res.data.deleteOLT));
   }
 }

@@ -55,3 +55,9 @@ export const UPDATE_OLT_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_OLT_BY_ID = gql`
+  mutation deleteOLT($oltid: Int!) {
+    deleteOLT(oltid: $oltid)
+  }
+`;

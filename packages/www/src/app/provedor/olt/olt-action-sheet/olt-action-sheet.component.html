@@ -4,5 +4,6 @@
 <mat-menu #menuOlt="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item [routerLink]="olt._id">Alterar</button>
+    <button mat-menu-item (click)="excluir(olt)">Excluir</button>
   </ng-template>
 </mat-menu>
