@@ -2,10 +2,8 @@
   <table mat-table [dataSource]="dataSource | async">
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
-      <td mat-cell *matCellDef="let cli">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
-        </button>
+      <td mat-cell *matCellDef="let olt">
+        <app-olt-action-sheet [olt]="olt"></app-olt-action-sheet>
       </td>
     </ng-container>
 

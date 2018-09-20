@@ -24,7 +24,7 @@
       </div>
 
       <div fxLayout="row" fxLayoutAlign="end">
-        <button type="reset" mat-button>Limpar</button>
+        <button type="reset" mat-button *ngIf="formFunction === 'creating'">Limpar</button>
         <button mat-fab color="accent" class="floating-fab" [disabled]="submitting">
           <mat-icon>check</mat-icon>
         </button>
@@ -34,3 +34,7 @@
 
   </form>
 </div>
+
+<pre>
+  {{ form.value | json }}
+</pre>

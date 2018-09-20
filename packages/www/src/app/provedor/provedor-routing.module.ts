@@ -10,12 +10,21 @@ import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.compone
 import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
 import { MikrotikRoutersListResolver } from '../core/services/mikrotik-router/mikrotik-routers-list-resolver.service';
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
+import { OltByIDResolver } from '../core/services/olt/olt-by-id-resolver.service';
 
 const routes: Routes = [
   {
     path: 'olts/add',
     component: FormOltComponent,
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'olts/:oltid',
+    component: FormOltComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      olt: OltByIDResolver,
+    },
   },
   {
     path: 'olts',

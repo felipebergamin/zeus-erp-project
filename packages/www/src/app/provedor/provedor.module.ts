@@ -9,7 +9,8 @@ import {
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatMenuModule
 } from '@angular/material';
 
 import { ProvedorRoutingModule } from './provedor-routing.module';
@@ -21,6 +22,7 @@ import { ListarPoolsIpComponent } from './pool-ip/listar-pools-ip/listar-pools-i
 import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.component';
 import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
+import { OltActionSheetComponent } from './olt/olt-action-sheet/olt-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -35,6 +37,7 @@ import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mik
     MatInputModule,
     MatSnackBarModule,
     FlexLayoutModule,
+    MatMenuModule,
   ],
   declarations: [
     ListarOltsComponent,
@@ -45,6 +48,7 @@ import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mik
     FormPoolIpComponent,
     MikrotikRoutersListComponent,
     MikrotikRouterFormComponent,
+    OltActionSheetComponent,
   ]
 })
 export class ProvedorModule { }
