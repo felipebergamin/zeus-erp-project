@@ -50,5 +50,11 @@ export const planoResolvers = {
           });
       });
     }),
+
+    deletePlano: compose(...authResolvers)((parent, { id }, context: ResolverContext, info: GraphQLResolveInfo) => {
+      return context.db.sequelize.transaction((transaction: Transaction) => {
+        return context.db.Plano.destroy({ where: { _id: id }, transaction});
+      });
+    }),
   },
 };

@@ -12,7 +12,6 @@ export interface PlanoAttributes {
 
   createdAt?: Date;
   updatedAt?: Date;
-  deletedAt?: Date;
 }
 
 export interface PlanoInstance extends Sequelize.Instance<PlanoAttributes> {}
@@ -50,7 +49,6 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     }
 
   }, {
-    paranoid: true,
     tableName: 'planos',
   });
 

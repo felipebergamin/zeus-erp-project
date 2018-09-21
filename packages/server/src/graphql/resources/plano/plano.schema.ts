@@ -10,7 +10,6 @@ export const planoTypes = `
 
     createdAt: String
     updatedAt: String
-    deletedAt: String
   }
 
   input PlanoInput {
@@ -31,4 +30,5 @@ export const planoQueries = `
 export const planoMutations = `
   createPlano(input: PlanoInput!): Plano
   updatePlano(id: Int!, input: PlanoInput!): Plano
+  deletePlano(id: Int!): Boolean
 `;
