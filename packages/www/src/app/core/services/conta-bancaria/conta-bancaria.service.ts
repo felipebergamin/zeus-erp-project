@@ -9,6 +9,7 @@ import {
   ListarContasBancarias,
   UPDATE_CONTA_BANCARIA_MUTATION,
   GET_CONTA_BANCARIA_BY_ID,
+  EXCLUIR_CONTA_BANCARIA_MUTATION,
 } from './conta-bancaria.graphql';
 import { Observable } from 'rxjs';
 import { ContaBancaria } from '../../models/ContaBancaria';
@@ -55,5 +56,12 @@ export class ContaBancariaService {
       mutation: UPDATE_CONTA_BANCARIA_MUTATION,
       variables: { id, input },
     }).pipe(map(res => res.data.getBankAccountByID));
+  }
+
+  delete(id: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: EXCLUIR_CONTA_BANCARIA_MUTATION,
+      variables: { id },
+    }).pipe(map(res => res.data.deleteBankAccount));
   }
 }

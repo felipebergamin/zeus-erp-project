@@ -77,3 +77,9 @@ export const UPDATE_CONTA_BANCARIA_MUTATION = gql`
     }
   }
 `;
+
+export const EXCLUIR_CONTA_BANCARIA_MUTATION = gql`
+  mutation deleteBankAccount($id: Int!) {
+    deleteBankAccount(id: $id)
+  }
+`;

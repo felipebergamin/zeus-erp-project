@@ -13,6 +13,7 @@ export class ListarContasBancariasComponent implements OnInit {
   displayedColumns = ['menu', 'nome', 'criadaEm'];
   totalItensPaginator = 0;
   pageSizeOptions = [5, 10];
+  lastPageEvent: PageEvent;
   private _rs = new ReplaySubject<ContaBancaria[]>(1);
 
   constructor(
@@ -29,18 +30,26 @@ export class ListarContasBancariasComponent implements OnInit {
   }
 
   onPaginationChange(event: PageEvent) {
+    this.lastPageEvent = event;
     const first = event.pageSize;
     const offset = event.pageSize * event.pageIndex;
 
     this.refreshTable({ first, offset });
   }
 
-  refreshTable({ first = 10, offset = 0, nopaginate = false }) {
+  refreshTable({ first, offset, nopaginate = false }: { first?: number, offset?: number, nopaginate?: boolean } = {}) {
+    first = first || (this.lastPageEvent ? this.lastPageEvent.pageSize : this.pageSizeOptions[0]);
+    offset = offset || (this.lastPageEvent ? this.lastPageEvent.pageSize * this.lastPageEvent.pageIndex : 0);
+
     this.contaBancariaService.list({ first, offset, nopaginate })
       .subscribe(res => {
         this.totalItensPaginator = res.totalBankAccounts;
         this._rs.next(res.listBankAccounts);
       });
+  }
+
+  onRemove() {
+    this.refreshTable();
   }
 
 }

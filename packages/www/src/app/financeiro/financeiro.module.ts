@@ -17,6 +17,7 @@ import {
   MatSlideToggleModule,
   MatAutocompleteModule,
   MatListModule,
+  MatMenuModule,
 } from '@angular/material';
 import { FormContaBancariaComponent } from './conta-bancaria/form-conta-bancaria/form-conta-bancaria.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +30,7 @@ import { ExibirDetalhesRetornoComponent } from './cnab/exibir-detalhes-retorno/e
 import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
 import { DetalharBoletoComponent } from './boletos/detalhar-boleto/detalhar-boleto.component';
 import { SharedModule } from '../shared/shared.module';
+import { ContaBancariaActionSheetComponent } from './conta-bancaria/conta-bancaria-action-sheet/conta-bancaria-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -49,6 +51,7 @@ import { SharedModule } from '../shared/shared.module';
     MatAutocompleteModule,
     MatListModule,
     SharedModule,
+    MatMenuModule,
   ],
   declarations: [
     ListarContasBancariasComponent,
@@ -60,6 +63,7 @@ import { SharedModule } from '../shared/shared.module';
     ExibirDetalhesRetornoComponent,
     ListarRetornoComponent,
     DetalharBoletoComponent,
+    ContaBancariaActionSheetComponent,
   ],
   providers: [
     {

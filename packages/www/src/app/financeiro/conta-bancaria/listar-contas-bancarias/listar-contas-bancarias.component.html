@@ -5,9 +5,7 @@
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Menu</th>
       <td mat-cell *matCellDef="let cb">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
-        </button>
+        <app-conta-bancaria-action-sheet [cb]="cb" (remove)="onRemove($event)"></app-conta-bancaria-action-sheet>
       </td>
     </ng-container>
 
@@ -25,5 +23,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
+  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)"
+    showFirstLastButtons="true"></mat-paginator>
 </div>
