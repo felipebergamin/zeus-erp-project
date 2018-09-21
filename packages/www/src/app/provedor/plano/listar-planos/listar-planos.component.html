@@ -3,7 +3,7 @@
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
       <td mat-cell *matCellDef="let plano">
-        <app-plano-action-sheet [plano]="plano"></app-plano-action-sheet>
+        <app-plano-action-sheet [plano]="plano" (deletePlano)="onDeletePlano($event)"></app-plano-action-sheet>
       </td>
     </ng-container>
 

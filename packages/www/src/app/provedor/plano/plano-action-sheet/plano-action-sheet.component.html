@@ -4,5 +4,6 @@
 <mat-menu #menuPlano="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item [routerLink]="plano._id">Alterar</button>
+    <button mat-menu-item (click)="delete(plano)">Excluir</button>
   </ng-template>
 </mat-menu>

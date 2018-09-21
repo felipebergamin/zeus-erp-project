@@ -13,6 +13,7 @@ export class ListarPlanosComponent implements OnInit {
   displayedColumns = [ 'menu', 'nome', 'valorMensal', 'createdAt' ];
   pageSizeOptions = [ 5, 15, 25, 50 ];
   totalItensPaginator: number;
+  lastPageEvent: PageEvent;
   private _rs = new ReplaySubject<Plano[]>(1);
 
   constructor(private planoService: PlanoService) { }
@@ -27,6 +28,7 @@ export class ListarPlanosComponent implements OnInit {
   }
 
   onPaginationChange(pageEvent: PageEvent) {
+    this.lastPageEvent = pageEvent;
     const { pageSize, pageIndex } = pageEvent;
     this.refreshTable({ first: pageSize, offset: pageSize * pageIndex, nopaginate: false });
   }
@@ -39,6 +41,13 @@ export class ListarPlanosComponent implements OnInit {
           this.totalItensPaginator = res.totalPlanos;
         }
       );
+  }
+
+  onDeletePlano(planoID) {
+    const first = this.lastPageEvent ? this.lastPageEvent.pageSize : this.pageSizeOptions[0];
+    const offset = this.lastPageEvent ? this.lastPageEvent.pageSize * this.lastPageEvent.pageIndex : 0;
+
+    this.refreshTable({ first, offset, nopaginate: false });
   }
 
 }
