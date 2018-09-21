@@ -1,5 +1,5 @@
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
-import { throwError } from "../../../util/utils";
+import { handleError, throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
 
@@ -43,13 +43,8 @@ export const mikrotikRouterResolvers = {
 
     deleteMikrotikRouter: compose(...authResolvers)((parent, { id }, { db }: ResolverContext, info) => {
       return db.sequelize.transaction((transaction) => {
-        return db.MikrotikRouter.findById(id)
-          .then((router) => {
-            throwError(!router, `Roteador com id ${id} não encontrado!`);
-
-            router.destroy({ transaction })
-              .then((destroyed) => !!destroyed);
-          });
+        return db.MikrotikRouter.destroy({ where: { id }, transaction})
+          .catch(handleError);
       });
     }),
   },
