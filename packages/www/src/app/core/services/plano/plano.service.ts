@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { LISTAR_PLANOS_QUERY, ListarPlanosQuery, PlanoInput, CREATE_PLANO_MUTATION } from './plano.graphql';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
 import { Plano } from '../../models/Plano';
+import {
+  CREATE_PLANO_MUTATION,
+  GET_PLANO_BY_ID,
+  LISTAR_PLANOS_QUERY,
+  UPDATE_PLANO_MUTATION,
+
+  ListarPlanosQuery,
+  PlanoInput,
+} from './plano.graphql';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +41,19 @@ export class PlanoService {
     }).pipe(
       map(res => res.data.createPlano)
     );
+  }
+
+  getByID(id: number): Observable<Plano> {
+    return this.apollo.query<any>({
+      query: GET_PLANO_BY_ID,
+      variables: { id },
+    }).pipe(map(res => res.data.getPlanoByID));
+  }
+
+  update(id: number, input: PlanoInput): Observable<Plano> {
+    return this.apollo.mutate({
+      mutation: UPDATE_PLANO_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.updatePlano));
   }
 }

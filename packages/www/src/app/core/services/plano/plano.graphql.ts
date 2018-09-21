@@ -34,3 +34,27 @@ export const CREATE_PLANO_MUTATION = gql`
     }
   }
 `;
+
+export const GET_PLANO_BY_ID = gql`
+  query getPlanoByID($id: Int!) {
+    getPlanoByID(id: $id) {
+      _id
+      descricao
+      nome
+      valorMensal
+      velocidadeDownload
+      velocidadeUpload
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const UPDATE_PLANO_MUTATION = gql`
+  mutation updatePlano($id: Int!, $input: PlanoInput!) {
+    updatePlano(id: $id, input: $input) {
+      _id
+      updatedAt
+    }
+  }
+`;
