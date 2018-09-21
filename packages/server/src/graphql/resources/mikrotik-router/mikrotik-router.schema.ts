@@ -24,12 +24,13 @@ export const mikrotikRouterTypes = `
 `;
 
 export const mikrotikRouterQueries = `
+  mikrotikRouterById(id: Int!): MikrotikRouter
   mikrotikRoutersList(first: Int, offset: Int, nopaginate: Boolean): [ MikrotikRouter! ]!
   mikrotikRoutersCount: Int!
 `;
 
 export const mikrotikRouterMutations = `
-  createMikrotikRouter(input: MikrotikRouterInput): MikrotikRouter
-  updateMikrotikRouter(id: Int, input: MikrotikRouterInput): MikrotikRouter
-  deleteMikrotikRouter(id: Int): Boolean
+  createMikrotikRouter(input: MikrotikRouterInput!): MikrotikRouter
+  updateMikrotikRouter(id: Int!, input: MikrotikRouterInput!): MikrotikRouter
+  deleteMikrotikRouter(id: Int!): Boolean
 `;

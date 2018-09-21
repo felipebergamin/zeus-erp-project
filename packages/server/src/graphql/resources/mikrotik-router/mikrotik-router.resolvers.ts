@@ -16,6 +16,10 @@ export const mikrotikRouterResolvers = {
     mikrotikRoutersCount: compose(...authResolvers)((parent, args, { db }: ResolverContext, info) => {
       return db.MikrotikRouter.count();
     }),
+
+    mikrotikRouterById: compose(...authResolvers)((parent, { id }, { db }: ResolverContext, info) => {
+      return db.MikrotikRouter.findById(id);
+    }),
   },
 
   Mutation: {
