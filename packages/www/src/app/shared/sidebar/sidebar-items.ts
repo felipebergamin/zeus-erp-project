@@ -34,12 +34,8 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/provedor/olts',
       },
       {
-        name: 'Listar Planos',
+        name: 'Planos de Assinatura',
         path: '/provedor/planos',
-      },
-      {
-        name: 'Novo Plano',
-        path: '/provedor/planos/add',
       },
       {
         name: 'IP Pools',
