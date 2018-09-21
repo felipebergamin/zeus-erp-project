@@ -21,6 +21,15 @@ export const mikrotikRouterTypes = `
     systemName: String!
     radiusSecret: String!
   }
+
+  input UpdateMikrotikRouterInput {
+    ipAddress: String
+    username: String
+    password: String
+    apiPort: Int
+    systemName: String
+    radiusSecret: String
+  }
 `;
 
 export const mikrotikRouterQueries = `
@@ -31,6 +40,6 @@ export const mikrotikRouterQueries = `
 
 export const mikrotikRouterMutations = `
   createMikrotikRouter(input: MikrotikRouterInput!): MikrotikRouter
-  updateMikrotikRouter(id: Int!, input: MikrotikRouterInput!): MikrotikRouter
+  updateMikrotikRouter(id: Int!, input: UpdateMikrotikRouterInput!): MikrotikRouter
   deleteMikrotikRouter(id: Int!): Boolean
 `;
