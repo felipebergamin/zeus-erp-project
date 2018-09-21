@@ -46,7 +46,7 @@ export class MikrotikRouterService {
   deleteRouter(id: number): Observable<MikrotikRouter> {
     return this.apollo.mutate({
       mutation: DELETE_MK_ROUTER_MUTATION,
-      variables: id,
+      variables: { id },
     }).pipe(map(res => res.data.deleteMikrotikRouter));
   }
 

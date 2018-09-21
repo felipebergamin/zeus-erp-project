@@ -24,6 +24,7 @@ import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/m
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
 import { OltActionSheetComponent } from './olt/olt-action-sheet/olt-action-sheet.component';
 import { PlanoActionSheetComponent } from './plano/plano-action-sheet/plano-action-sheet.component';
+import { MikrotikActionSheetComponent } from './mikrotik/mikrotik-action-sheet/mikrotik-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { PlanoActionSheetComponent } from './plano/plano-action-sheet/plano-acti
     MikrotikRouterFormComponent,
     OltActionSheetComponent,
     PlanoActionSheetComponent,
+    MikrotikActionSheetComponent,
   ]
 })
 export class ProvedorModule { }

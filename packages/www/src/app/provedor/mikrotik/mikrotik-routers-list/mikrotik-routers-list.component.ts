@@ -15,6 +15,7 @@ export class MikrotikRoutersListComponent implements OnInit, OnDestroy {
   displayedColumns = ['menu', 'systemName', 'ipAddress', 'createdAt'];
   totalItensPaginator = 0;
   pageSizeOptions = [10, 25, 50];
+  lastPageEvent: PageEvent;
 
   dataSource = new Subject<MikrotikRouter[]>();
 
@@ -29,15 +30,23 @@ export class MikrotikRoutersListComponent implements OnInit, OnDestroy {
   }
 
   onPaginationChange(event: PageEvent) {
+    this.lastPageEvent = event;
     this.refreshTable(event.pageSize, event.pageSize * event.pageIndex);
   }
 
-  private refreshTable(first: number = 10, offset: number = 0) {
+  private refreshTable(first?: number, offset?: number) {
+    first = first || (this.lastPageEvent ? this.lastPageEvent.pageSize : this.pageSizeOptions[0]);
+    offset = offset || (this.lastPageEvent ? this.lastPageEvent.pageIndex * this.lastPageEvent.pageSize : 0);
+
     this.mkRouterService.mikrotikRoutersList({ first, offset })
       .pipe(
         tap(res => this.totalItensPaginator = res.mikrotikRoutersCount),
         map(res => res.mikrotikRoutersList),
       ).subscribe(routers => this.dataSource.next(routers));
+  }
+
+  onDeleteRouter() {
+    this.refreshTable();
   }
 
 }

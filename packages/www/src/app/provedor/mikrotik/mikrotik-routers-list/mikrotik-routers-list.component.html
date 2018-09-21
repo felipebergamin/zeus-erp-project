@@ -3,9 +3,7 @@
     <ng-container matColumnDef="menu">
       <th mat-header-cell *matHeaderCellDef>Opções</th>
       <td mat-cell *matCellDef="let router">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
-        </button>
+        <app-mikrotik-action-sheet [mkrouter]="router" (deleteRouter)="onDeleteRouter($event)"></app-mikrotik-action-sheet>
       </td>
     </ng-container>
 
