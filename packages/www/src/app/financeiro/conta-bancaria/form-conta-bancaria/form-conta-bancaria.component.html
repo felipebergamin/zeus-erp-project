@@ -74,7 +74,7 @@
       </div>
 
       <div fxLayout="row" fxLayoutAlign="end">
-        <button type="reset" mat-button>Limpar</button>
+        <button type="reset" mat-button *ngIf="formFunction === 'create'">Limpar</button>
         <button mat-fab class="floating-fab">
           <mat-icon>check</mat-icon>
         </button>

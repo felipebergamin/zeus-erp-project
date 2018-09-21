@@ -11,12 +11,21 @@ import { UploadRetornoComponent } from './cnab/upload-retorno/upload-retorno.com
 import { ListarRetornoComponent } from './cnab/listar-retorno/listar-retorno.component';
 import { DetalharBoletoComponent } from './boletos/detalhar-boleto/detalhar-boleto.component';
 import { BoletoByIdResolver } from '../core/services/boleto/boleto-by-id-resolver.service';
+import { ContaBancariaByIdResolver } from '../core/services/conta-bancaria/conta-bancaria-by-id-resolver.service';
 
 const routes: Routes = [
   {
     path: 'contasbancarias/add',
     component: FormContaBancariaComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'contasbancarias/:idcontabancaria',
+    component: FormContaBancariaComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      contabancaria: ContaBancariaByIdResolver,
+    },
   },
   {
     path: 'contasbancarias',
