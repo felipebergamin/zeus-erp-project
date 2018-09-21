@@ -12,6 +12,7 @@ import {
 
   ListarPlanosQuery,
   PlanoInput,
+  DELETE_PLANO_MUTATION,
 } from './plano.graphql';
 
 @Injectable({
@@ -55,5 +56,12 @@ export class PlanoService {
       mutation: UPDATE_PLANO_MUTATION,
       variables: { id, input },
     }).pipe(map(res => res.data.updatePlano));
+  }
+
+  deletePlano(id: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: DELETE_PLANO_MUTATION,
+      variables: { id },
+    }).pipe(map(res => res.data.deletePlano));
   }
 }

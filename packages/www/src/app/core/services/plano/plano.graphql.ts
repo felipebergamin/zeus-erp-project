@@ -58,3 +58,9 @@ export const UPDATE_PLANO_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_PLANO_MUTATION = gql`
+  mutation deletePlano($id: Int!) {
+    deletePlano(id: $id)
+  }
+`;
