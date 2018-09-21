@@ -23,6 +23,7 @@ import { FormPoolIpComponent } from './pool-ip/form-pool-ip/form-pool-ip.compone
 import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/mikrotik-routers-list.component';
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
 import { OltActionSheetComponent } from './olt/olt-action-sheet/olt-action-sheet.component';
+import { PlanoActionSheetComponent } from './plano/plano-action-sheet/plano-action-sheet.component';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { OltActionSheetComponent } from './olt/olt-action-sheet/olt-action-sheet
     MikrotikRoutersListComponent,
     MikrotikRouterFormComponent,
     OltActionSheetComponent,
+    PlanoActionSheetComponent,
   ]
 })
 export class ProvedorModule { }

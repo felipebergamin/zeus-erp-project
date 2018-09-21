@@ -1,0 +1,8 @@
+<button [disabled]="disabled" mat-icon-button [matMenuTriggerFor]="menuPlano">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menuPlano="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="plano._id">Alterar</button>
+  </ng-template>
+</mat-menu>

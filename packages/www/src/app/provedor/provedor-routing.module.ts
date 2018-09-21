@@ -11,6 +11,7 @@ import { MikrotikRoutersListComponent } from './mikrotik/mikrotik-routers-list/m
 import { MikrotikRoutersListResolver } from '../core/services/mikrotik-router/mikrotik-routers-list-resolver.service';
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
 import { OltByIDResolver } from '../core/services/olt/olt-by-id-resolver.service';
+import { PlanoByIDResolver } from '../core/services/plano/plano-by-id-resolver.service';
 
 const routes: Routes = [
   {
@@ -35,6 +36,14 @@ const routes: Routes = [
     path: 'planos/add',
     component: FormPlanoComponent,
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'planos/:idplano',
+    component: FormPlanoComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      plano: PlanoByIDResolver,
+    },
   },
   {
     path: 'planos',
