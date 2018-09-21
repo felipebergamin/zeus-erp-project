@@ -21,9 +21,9 @@ export interface ContaBancariaAttributes {
   nossoNumero: number;
   proximaRemessa: number;
 
+  version?: number;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt: Date;
 }
 
 export interface ContaBancariaInstance extends Sequelize.Instance<ContaBancariaAttributes> {
@@ -95,8 +95,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
     }
 
   }, {
-    paranoid: true,
     tableName: 'contasbancarias',
+    version: true,
   });
 
   contaBancaria.associate = (models: ModelsInterface): void => {
@@ -105,7 +105,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: false,
         field: 'contaBancaria',
         name: 'contaBancaria',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
 
     contaBancaria.hasMany(models.Boleto, {
@@ -113,7 +114,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: false,
         field: 'contaBancaria',
         name: 'contaBancaria',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
 
     contaBancaria.hasMany(models.ArquivoRemessa, {
@@ -121,7 +123,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: false,
         field: 'contaBancaria',
         name: 'contaBancaria',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
 
     contaBancaria.hasMany(models.ArquivoRetorno, {
@@ -129,7 +132,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: false,
         field: 'contaBancaria',
         name: 'contaBancaria',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
   };
 
