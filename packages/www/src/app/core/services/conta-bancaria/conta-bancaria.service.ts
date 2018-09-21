@@ -7,6 +7,8 @@ import {
   LISTAR_CONTAS_BANCARIAS,
   ContaBancariaInput,
   ListarContasBancarias,
+  UPDATE_CONTA_BANCARIA_MUTATION,
+  GET_CONTA_BANCARIA_BY_ID,
 } from './conta-bancaria.graphql';
 import { Observable } from 'rxjs';
 import { ContaBancaria } from '../../models/ContaBancaria';
@@ -39,5 +41,19 @@ export class ContaBancariaService {
     }).pipe(
       map(res => res.data.createBankAccount)
     );
+  }
+
+  getByID(id: number): Observable<ContaBancaria> {
+    return this.apollo.query<any>({
+      query: GET_CONTA_BANCARIA_BY_ID,
+      variables: { id },
+    }).pipe(map(res => res.data.getBankAccountByID));
+  }
+
+  update(id: number, input: any): Observable<ContaBancaria> {
+    return this.apollo.mutate({
+      mutation: UPDATE_CONTA_BANCARIA_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.getBankAccountByID));
   }
 }

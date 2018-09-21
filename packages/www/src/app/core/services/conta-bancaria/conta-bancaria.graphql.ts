@@ -25,8 +25,8 @@ export interface ContaBancariaInput {
 }
 
 export const LISTAR_CONTAS_BANCARIAS = gql`
-  query listarContasBancarias($first: Int, $offset: Int, $excluded: Boolean, $nopaginate: Boolean) {
-    listBankAccounts(first: $first, offset: $offset, excluded: $excluded, nopaginate: $nopaginate) {
+  query listarContasBancarias($first: Int, $offset: Int, $nopaginate: Boolean) {
+    listBankAccounts(first: $first, offset: $offset, nopaginate: $nopaginate) {
       _id
       nome
       createdAt
@@ -40,6 +40,40 @@ export const CRIAR_CONTA_BANCARIA_MUTATION = gql`
     createBankAccount(input: $input) {
       _id
       createdAt
+    }
+  }
+`;
+
+export const GET_CONTA_BANCARIA_BY_ID = gql`
+  query contaBancariaByID($id: Int!) {
+    getBankAccountByID(id: $id) {
+      _id
+      digitoAgencia
+      numeroAgencia
+      carteira
+      cedente
+      codigoCedente
+      digitoConta
+      numeroConta
+      multaDia
+      multaVencimento
+      nome
+      nossoNumero
+      proximaRemessa
+      version
+
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const UPDATE_CONTA_BANCARIA_MUTATION = gql`
+  mutation updateCB($id: Int!, $input: ContaBancariaUpdateInput!) {
+    updateBankAccount(id: $id, input: $input) {
+      _id
+      version
+      updatedAt
     }
   }
 `;
