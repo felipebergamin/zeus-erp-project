@@ -37,9 +37,9 @@ export const CREATE_MK_ROUTER_MUTATION = gql`
 `;
 
 export const UPDATE_MK_ROUTER_MUTATION = gql`
-  mutation updateMikrotikRouter(id: Int!, input: MikrotikRouterInput!) {
+  mutation updateMikrotikRouter($id: Int!, $input: UpdateMikrotikRouterInput!) {
     updateMikrotikRouter(id: $id, input: $input) {
-      _id
+      id
       updatedAt
     }
   }

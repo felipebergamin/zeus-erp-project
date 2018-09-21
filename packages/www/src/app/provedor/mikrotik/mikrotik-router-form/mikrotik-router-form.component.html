@@ -1,7 +1,7 @@
 <div class="mat-elevation-z6">
   <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
 
-    <div fxLayout="column">
+    <div fxLayout="column" fxLayoutGap="1em">
       <mat-form-field>
         <input type="text" matInput placeholder="Nome do Dispositivo" formControlName="systemName">
         <mat-hint>Nome do roteador. Considere usar o valor "identity" do dispositivo</mat-hint>

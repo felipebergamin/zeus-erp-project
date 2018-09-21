@@ -12,6 +12,7 @@ import { MikrotikRoutersListResolver } from '../core/services/mikrotik-router/mi
 import { MikrotikRouterFormComponent } from './mikrotik/mikrotik-router-form/mikrotik-router-form.component';
 import { OltByIDResolver } from '../core/services/olt/olt-by-id-resolver.service';
 import { PlanoByIDResolver } from '../core/services/plano/plano-by-id-resolver.service';
+import { MikrotikRouterByIDResolver } from '../core/services/mikrotik-router/mikrotik-router-by-id-resolver.service';
 
 const routes: Routes = [
   {
@@ -69,6 +70,14 @@ const routes: Routes = [
     path: 'mikrotiks/add',
     component: MikrotikRouterFormComponent,
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'mikrotiks/:idrouter',
+    component: MikrotikRouterFormComponent,
+    canActivate: [ AuthGuard ],
+    resolve: {
+      mkrouter: MikrotikRouterByIDResolver,
+    }
   },
 ];
 
