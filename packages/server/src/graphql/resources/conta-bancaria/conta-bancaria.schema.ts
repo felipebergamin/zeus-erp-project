@@ -13,10 +13,10 @@ export const contaBancariaTypes = `
     nome: String!
     nossoNumero: LongInt!
     proximaRemessa: Int!
+    version: Int!
 
     createdAt: String
     updatedAt: String
-    deletedAt: String
   }
 
   input ContaBancariaInput {
@@ -33,16 +33,33 @@ export const contaBancariaTypes = `
     nossoNumero: LongInt!
     proximaRemessa: Int!
   }
+
+  input ContaBancariaUpdateInput {
+    digitoAgencia: String
+    numeroAgencia: String
+    carteira: String
+    cedente: String
+    codigoCedente: String
+    digitoConta: String
+    numeroConta: String
+    multaDia: Float
+    multaVencimento: Float
+    nome: String
+    nossoNumero: LongInt
+    proximaRemessa: Int
+
+    version: Int!
+  }
 `;
 
 export const contaBancariaQueries = `
-  listBankAccounts(first: Int, offset: Int, excluded: Boolean, nopaginate: Boolean): [ ContaBancaria! ]!
+  listBankAccounts(first: Int, offset: Int, nopaginate: Boolean): [ ContaBancaria! ]!
+  getBankAccountByID(id: Int!): ContaBancaria
   totalBankAccounts: Int
 `;
 
 export const contaBancariaMutations = `
   createBankAccount(input: ContaBancariaInput!): ContaBancaria
-  updateBankAccount(id: Int!, input: ContaBancariaInput!): ContaBancaria
+  updateBankAccount(id: Int!, input: ContaBancariaUpdateInput!): ContaBancaria
   deleteBankAccount(id: Int!): Boolean
-  restoreBankAccount(id: Int!): Boolean
 `;
