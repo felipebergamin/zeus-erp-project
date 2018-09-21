@@ -138,7 +138,8 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
         allowNull: false,
         field: 'plano',
         name: 'plano',
-      }
+      },
+      onDelete: 'RESTRICT',
     });
   };
 
