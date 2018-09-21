@@ -35,3 +35,33 @@ export const CREATE_MK_ROUTER_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_MK_ROUTER_MUTATION = gql`
+  mutation updateMikrotikRouter(id: Int!, input: MikrotikRouterInput!) {
+    updateMikrotikRouter(id: $id, input: $input) {
+      _id
+      updatedAt
+    }
+  }
+`;
+
+export const DELETE_MK_ROUTER_MUTATION = gql`
+  mutation deleteMkRouter($id: Int!) {
+    deleteMikrotikRouter(id: $id)
+  }
+`;
+
+export const MK_ROUTER_BY_ID_QUERY = gql`
+  query mikrotikRouterById($id: Int!) {
+    mikrotikRouterById(id: $id) {
+      id
+      ipAddress
+      username
+      apiPort
+      systemName
+      radiusSecret
+      createdAt
+      updatedAt
+    }
+  }
+`;
