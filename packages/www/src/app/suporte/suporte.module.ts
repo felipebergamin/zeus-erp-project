@@ -19,6 +19,7 @@ import {
   MatDatepickerModule,
   MAT_DATE_FORMATS,
   MatSlideToggleModule,
+  MatMenuModule,
 } from '@angular/material';
 
 import { SuporteRoutingModule } from './suporte-routing.module';
@@ -52,6 +53,7 @@ import { CancelarChamadoFormComponent } from './chamado/cancelar-chamado-form/ca
     MatBottomSheetModule,
     MatDatepickerModule,
     MatSlideToggleModule,
+    MatMenuModule,
   ],
   declarations: [
     FormProblemaChamadoComponent,

@@ -1,13 +1,9 @@
-<mat-nav-list>
-  <a mat-list-item (click)="print()">
-    <mat-icon mat-list-icon>print</mat-icon>
-    <h4 mat-line>Imprimir</h4>
-    <p mat-line>Imprimir o Chamado</p>
-  </a>
-
-  <a mat-list-item (click)="cancelar()">
-    <mat-icon mat-list-icon>cancel</mat-icon>
-    <h4 mat-line>Cancelar</h4>
-    <p mat-line>Cancelar o Chamado</p>
-  </a>
-</mat-nav-list>
+<button [disabled]="disabled" mat-icon-button [matMenuTriggerFor]="menuChamado">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menuChamado="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="print()">Imprimir</button>
+    <button mat-menu-item (click)="cancelar()">Cancelar</button>
+  </ng-template>
+</mat-menu>

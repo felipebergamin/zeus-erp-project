@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
-import { Chamado } from '../../../core/models/Chamado';
 import { ChamadoService } from '../../../core/services/chamado/chamado.service';
 import { CancelarChamadoFormComponent } from '../cancelar-chamado-form/cancelar-chamado-form.component';
+import { Chamado } from '../../../core/models/Chamado';
 
 @Component({
   selector: 'app-chamado-action-sheet',
@@ -11,11 +11,12 @@ import { CancelarChamadoFormComponent } from '../cancelar-chamado-form/cancelar-
   styleUrls: ['./chamado-action-sheet.component.scss']
 })
 export class ChamadoActionSheetComponent implements OnInit {
+  @Input() chamado: Chamado;
+
+  @Output() chamadoCancelado = new EventEmitter(true);
 
   constructor(
-    @Inject(MAT_BOTTOM_SHEET_DATA) private chamado: Chamado,
     private _service: ChamadoService,
-    private sheet: MatBottomSheetRef<ChamadoActionSheetComponent>,
     private dialog: MatDialog,
   ) { }
 
@@ -26,13 +27,19 @@ export class ChamadoActionSheetComponent implements OnInit {
     this._service.getPrintURL(this.chamado)
       .subscribe(
         url => window.open(url, 'download_remessa', 'location=no').print(),
-        null,
-        () => this.sheet.dismiss(),
       );
   }
 
   cancelar() {
-    this.dialog.open(CancelarChamadoFormComponent, { data: this.chamado });
+    this.dialog.open(CancelarChamadoFormComponent, { data: this.chamado })
+      .afterClosed()
+      .subscribe(
+        result => {
+          if (result) {
+            this.chamadoCancelado.emit(result);
+          }
+        }
+      );
   }
 
 }
