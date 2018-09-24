@@ -55,15 +55,11 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
     name: 'Financeiro',
     items: [
       {
-        name: 'Listar Contas Bancárias',
+        name: 'Contas Bancárias',
         path: '/financeiro/contasbancarias',
       },
       {
-        name: 'Nova Conta Bancária',
-        path: '/financeiro/contasbancarias/add',
-      },
-      {
-        name: 'Listar Boletos',
+        name: 'Boletos',
         path: '/financeiro/boletos',
       },
       {
