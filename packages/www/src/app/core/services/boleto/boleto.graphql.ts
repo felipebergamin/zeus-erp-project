@@ -138,3 +138,12 @@ export const CANCELAR_PEDIDO_BAIXA_MUTATION = gql`
     cancelarPedidoBaixa(boleto: $boleto)
   }
 `;
+
+export const UPDATE_BOLETO_MUTATION = gql`
+  mutation updateBoleto($id: Int!, $input: UpdateBoletoInput!) {
+    updateBoleto(id: $id, input: $input) {
+      _id
+      updatedAt
+    }
+  }
+`;

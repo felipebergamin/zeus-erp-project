@@ -4,8 +4,9 @@ import { Boleto } from '../../../core/models/Boleto';
 import { Router } from '@angular/router';
 import { CarneService } from '../../../core/services/carne/carne.service';
 import { Carne } from '../../../core/models/Carne';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { BoletoService } from '../../../core/services/boleto/boleto.service';
+import { FormBoletoComponent } from '../../boleto/form-boleto/form-boleto.component';
 
 @Component({
   selector: 'app-boleto-action-sheet',
@@ -16,6 +17,7 @@ export class BoletoActionSheetComponent implements OnInit {
   @Input('boleto') boleto: Boleto;
   @Input('disabled') disabled = false;
 
+  /** emite eventos com o objeto Boleto que foi atualizado */
   @Output('updateBoleto') updateBoleto = new EventEmitter();
 
   carnes: Carne[];
@@ -25,6 +27,7 @@ export class BoletoActionSheetComponent implements OnInit {
     private carneService: CarneService,
     private router: Router,
     private snackbar: MatSnackBar,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -77,6 +80,18 @@ export class BoletoActionSheetComponent implements OnInit {
           { duration: 4000 },
         );
       });
+  }
+
+  alterar(boleto: Boleto) {
+    this.dialog.open(FormBoletoComponent, { data: { boleto } })
+      .afterClosed()
+      .subscribe(
+        result => {
+          if (result) {
+            this.updateBoleto.emit(result);
+          }
+        }
+      );
   }
 
   onMenuOpened() {

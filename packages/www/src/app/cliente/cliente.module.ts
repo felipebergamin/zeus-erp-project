@@ -22,7 +22,6 @@ import {
   MatExpansionModule,
   MatDividerModule,
   MatTooltipModule,
-  MatSidenavModule,
 } from '@angular/material';
 
 import { ClienteRoutingModule } from './cliente-routing.module';
@@ -33,7 +32,6 @@ import { ClienteActionSheetComponent } from './cliente/cliente-action-sheet/clie
 import { FormPontoAcessoComponent } from './ponto-acesso/form-ponto-acesso/form-ponto-acesso.component';
 import { ListarPontosAcessoComponent } from './ponto-acesso/listar-pontos-acesso/listar-pontos-acesso.component';
 import { DetalhesClienteComponent } from './cliente/detalhes-cliente/detalhes-cliente.component';
-import { LancarBoletoComponent } from './cliente/lancar-boleto/lancar-boleto.component';
 import { LancarCarneComponent } from './cliente/lancar-carne/lancar-carne.component';
 import { PontoAcessoActionSheetComponent } from './ponto-acesso/ponto-acesso-action-sheet/ponto-acesso-action-sheet.component';
 import { ExibirSinalOnuComponent } from './ponto-acesso/exibir-sinal-onu/exibir-sinal-onu.component';
@@ -75,7 +73,6 @@ import { FormPesquisaPaComponent } from './ponto-acesso/form-pesquisa-pa/form-pe
     FormPontoAcessoComponent,
     ClienteActionSheetComponent,
     DetalhesClienteComponent,
-    LancarBoletoComponent,
     LancarCarneComponent,
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,
@@ -84,7 +81,6 @@ import { FormPesquisaPaComponent } from './ponto-acesso/form-pesquisa-pa/form-pe
   ],
   entryComponents: [
     ClienteActionSheetComponent,
-    LancarBoletoComponent,
     LancarCarneComponent,
     PontoAcessoActionSheetComponent,
     ExibirSinalOnuComponent,

@@ -13,6 +13,7 @@ import {
   GetBoletoByIDQuery,
   PEDIDO_BAIXA_MUTATION,
   CANCELAR_PEDIDO_BAIXA_MUTATION,
+  UPDATE_BOLETO_MUTATION,
 } from './boleto.graphql';
 import { map } from 'rxjs/operators';
 
@@ -74,5 +75,12 @@ export class BoletoService {
       mutation: CANCELAR_PEDIDO_BAIXA_MUTATION,
       variables: { boleto },
     }).pipe(map(res => res.data.cancelarPedidoBaixa));
+  }
+
+  update(id: number, input: any): Observable<Boleto> {
+    return this.apollo.mutate({
+      mutation: UPDATE_BOLETO_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.updateBoleto));
   }
 }

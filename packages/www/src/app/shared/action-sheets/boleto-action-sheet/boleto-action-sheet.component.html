@@ -4,7 +4,7 @@
 <mat-menu #menuBoleto="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item (click)="detalhesBoleto()">Detalhes</button>
-    <button [disabled]="boleto.lock" mat-menu-item>Alterar</button>
+    <button [disabled]="boleto.lock" mat-menu-item  (click)="alterar(boleto)">Alterar</button>
 
     <button [disabled]="boleto.lock" mat-menu-item [matMenuTriggerFor]="cnabSubmenu">CNAB</button>
     <button mat-menu-item [matMenuTriggerFor]="carneSubmenu">Carnê</button>
