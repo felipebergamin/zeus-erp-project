@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatToolbarModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatButtonModule, MatToolbarModule, MatIconModule, MatMenuModule, MatDatepickerModule, MatInputModule } from '@angular/material';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { RouterModule } from '@angular/router';
 
@@ -10,6 +10,9 @@ import { ComponentPageTitle } from './page-title/page-title';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TableToolbarComponent } from './table-toolbar/table-toolbar.component';
 import { BoletoActionSheetComponent } from './action-sheets/boleto-action-sheet/boleto-action-sheet.component';
+import { FormBoletoComponent } from './boleto/form-boleto/form-boleto.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -20,6 +23,10 @@ import { BoletoActionSheetComponent } from './action-sheets/boleto-action-sheet/
     CdkAccordionModule,
     RouterModule,
     MatMenuModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    FlexLayoutModule,
   ],
   declarations: [
     NavbarComponent,
@@ -27,6 +34,7 @@ import { BoletoActionSheetComponent } from './action-sheets/boleto-action-sheet/
     SidebarComponent,
     TableToolbarComponent,
     BoletoActionSheetComponent,
+    FormBoletoComponent,
   ],
   providers: [
     ComponentPageTitle
@@ -40,6 +48,7 @@ import { BoletoActionSheetComponent } from './action-sheets/boleto-action-sheet/
   ],
   entryComponents: [
     BoletoActionSheetComponent,
+    FormBoletoComponent,
   ],
 })
 export class SharedModule { }
