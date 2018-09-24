@@ -12,7 +12,9 @@ import {
   AbrirChamadoInput,
   ABRIR_CHAMADO_MUTATION,
   ListarChamadosAbertos,
-  LISTAR_CHAMADOS_ABERTOS
+  LISTAR_CHAMADOS_ABERTOS,
+  CancelarChamadoInput,
+  CANCELAR_CHAMADO_MUTATION
 } from './chamado.graphql';
 
 @Injectable({
@@ -23,7 +25,6 @@ export class ChamadoService {
   constructor(private apollo: Apollo, private auth: AuthService) { }
 
   buscar(searchValues): Observable<Chamado[]> {
-    console.log(searchValues);
     return this.apollo.query<BuscarChamadosQuery>({
       query: BUSCAR_CHAMADOS_QUERY,
       variables: { searchValues },
@@ -51,5 +52,12 @@ export class ChamadoService {
   getPrintURL(chamado: Chamado): Observable<string> {
     const uri = `${environment.serverURI}/chamado/${chamado._id}`;
     return this.auth.signUri(uri);
+  }
+
+  cancelar(id: number, input: CancelarChamadoInput): Observable<Chamado> {
+    return this.apollo.mutate({
+      mutation: CANCELAR_CHAMADO_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.cancelarChamado));
   }
 }

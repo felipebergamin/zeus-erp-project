@@ -19,6 +19,10 @@ export interface ListarChamadosAbertos {
   totalChamadosAbertos: number;
 }
 
+export interface CancelarChamadoInput {
+  motivoCancelamento: string;
+}
+
 export const BUSCAR_CHAMADOS_QUERY = gql`
   query buscarChamados($searchValues: BuscarChamadosInput!) {
     buscarChamados(searchValues: $searchValues) {
@@ -68,5 +72,14 @@ export const LISTAR_CHAMADOS_ABERTOS = gql`
       createdAt
     }
     totalChamadosAbertos
+  }
+`;
+
+export const CANCELAR_CHAMADO_MUTATION = gql`
+  mutation cancelarChamado($id: Int!, $input: CancelarChamadoInput!) {
+    cancelarChamado(id: $id, input: $input) {
+      _id
+      cancelado
+    }
   }
 `;
