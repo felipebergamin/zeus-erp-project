@@ -35,6 +35,12 @@ export const boletoTypes = `
     carne: Int
   }
 
+  input UpdateBoletoInput {
+    dataVencimento: String
+    valorCobranca: Float
+    carne: Int
+  }
+
   input PesquisaBoletoInput {
     dataBaixa: String
     dataCredito: String
@@ -71,7 +77,7 @@ export const boletoQueries = `
 
 export const boletoMutations = `
   addBoleto(input: BoletoInput!): Boleto
-  updateBoleto(id: Int!, input: BoletoInput!): Boleto
+  updateBoleto(id: Int!, input: UpdateBoletoInput!): Boleto
   pedidoBaixa(boleto: Int!): Boolean
   cancelarPedidoBaixa(boleto: Int!): Boolean
 `;
