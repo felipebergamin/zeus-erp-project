@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 
 import { Chamado } from '../../../core/models/Chamado';
 import { ChamadoService } from '../../../core/services/chamado/chamado.service';
+import { CancelarChamadoFormComponent } from '../cancelar-chamado-form/cancelar-chamado-form.component';
 
 @Component({
   selector: 'app-chamado-action-sheet',
@@ -15,6 +16,7 @@ export class ChamadoActionSheetComponent implements OnInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) private chamado: Chamado,
     private _service: ChamadoService,
     private sheet: MatBottomSheetRef<ChamadoActionSheetComponent>,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -27,6 +29,10 @@ export class ChamadoActionSheetComponent implements OnInit {
         null,
         () => this.sheet.dismiss(),
       );
+  }
+
+  cancelar() {
+    this.dialog.open(CancelarChamadoFormComponent, { data: this.chamado });
   }
 
 }

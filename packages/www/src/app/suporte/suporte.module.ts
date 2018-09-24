@@ -29,6 +29,7 @@ import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-ab
 import { ChamadoActionSheetComponent } from './chamado/chamado-action-sheet/chamado-action-sheet.component';
 import { AbrirInstalacaoComponent } from './abrir-instalacao/abrir-instalacao.component';
 import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalacoes.component';
+import { CancelarChamadoFormComponent } from './chamado/cancelar-chamado-form/cancelar-chamado-form.component';
 
 @NgModule({
   imports: [
@@ -60,9 +61,11 @@ import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalac
     ChamadoActionSheetComponent,
     AbrirInstalacaoComponent,
     ListarInstalacoesComponent,
+    CancelarChamadoFormComponent,
   ],
   entryComponents: [
     ChamadoActionSheetComponent,
+    CancelarChamadoFormComponent,
   ],
   providers: [
     {
