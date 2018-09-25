@@ -9,12 +9,21 @@ import { ListaTecnicosResolver } from '../core/services/usuario/lista-tecnicos-r
 import { PontoAcessoByIdResolver } from '../core/services/ponto-acesso/ponto-acesso-by-id-resolver.service';
 import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalacoes.component';
 import { ListarChamadosComponent } from './chamado/listar-chamados/listar-chamados.component';
+import { ProblemaChamadoByIDResolver } from '../core/services/problema-chamado/problema-chamado-by-id-resolver.service';
 
 const routes: Routes = [
   {
     path: 'problemas/add',
     component: FormProblemaChamadoComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'problemas/:idproblema',
+    component: FormProblemaChamadoComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      problemaChamado: ProblemaChamadoByIDResolver,
+    },
   },
   {
     path: 'problemas',
