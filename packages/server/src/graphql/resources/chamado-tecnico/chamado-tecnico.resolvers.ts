@@ -1,5 +1,6 @@
 import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 import { ChamadoInstance } from "../../../models/ChamadoModel";
+import { applyLikeOp } from "../../../util/sequelize";
 import { throwError } from "../../../util/utils";
 import { authResolvers } from "../../composable/auth.resolver";
 import { compose } from "../../composable/composable.resolver";
@@ -45,10 +46,10 @@ export const chamadoResolvers = {
 
     listarChamadosAbertos: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
       return context.db.Chamado.findAll({
-        where: { finalizado: false, cancelado: false },
         limit: first,
         offset,
-      })
+        where: { finalizado: false, cancelado: false },
+      });
     }),
 
     totalChamadosAbertos: compose(...authResolvers)((parent, { first = 10, offset = 0 }, context: ResolverContext, info) => {
@@ -62,6 +63,9 @@ export const chamadoResolvers = {
     }),
 
     buscarChamados: compose(...authResolvers)((parent, { searchValues }, context: ResolverContext, info) => {
+      const toField = applyLikeOp(searchValues);
+      toField('protocolo');
+
       return context.db.Chamado.findAll({ where: searchValues });
     }),
   },
