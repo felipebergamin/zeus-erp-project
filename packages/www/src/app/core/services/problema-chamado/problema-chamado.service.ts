@@ -11,6 +11,7 @@ import {
 
   ListarProblemasChamadoQuery,
   ProblemaChamadoInput,
+  UPDATE_PROBLEMA_CHAMADO_MUTATION,
 } from './problema-chamado.graphql';
 
 @Injectable({
@@ -43,5 +44,12 @@ export class ProblemaChamadoService {
       query: GET_PROBLEMA_BY_ID,
       variables: { id },
     }).pipe(map(res => res.data.problemaChamadoByID));
+  }
+
+  update(id: number, input: ProblemaChamadoInput): Observable<ProblemaChamado> {
+    return this.apollo.mutate({
+      mutation: UPDATE_PROBLEMA_CHAMADO_MUTATION,
+      variables: { id, input },
+    }).pipe(map(res => res.data.updateProblemaChamado));
   }
 }

@@ -1,10 +1,10 @@
 <div class="mat-elevation-z6">
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="menu">
-      <th mat-header-cell *matHeaderCellDef>Opções</th>
+      <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
       <td mat-cell *matCellDef="let problema">
-        <button mat-icon-button>
-          <mat-icon aria-label="Options">menu</mat-icon>
+        <button mat-icon-button [routerLink]="problema._id">
+          <mat-icon aria-label="Editar">edit</mat-icon>
         </button>
       </td>
     </ng-container>

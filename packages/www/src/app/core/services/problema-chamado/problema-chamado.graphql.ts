@@ -45,3 +45,12 @@ export const GET_PROBLEMA_BY_ID = gql`
     }
   }
 `;
+
+export const UPDATE_PROBLEMA_CHAMADO_MUTATION = gql`
+  mutation updateProblemaChamado($id: Int!, $input: ProblemaChamadoInput!) {
+    updateProblemaChamado(id: $id, input: $input) {
+      _id
+      updatedAt
+    }
+  }
+`;
