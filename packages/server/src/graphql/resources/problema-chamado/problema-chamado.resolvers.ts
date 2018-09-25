@@ -12,6 +12,10 @@ export const problemaChamadoResolvers = {
         offset
       });
     }),
+
+    problemaChamadoByID: compose(...authResolvers)((parent, { id }, { db }: ResolverContext, info) => {
+      return db.ProblemaChamado.findById(id);
+    }),
   },
 
   Mutation: {

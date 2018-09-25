@@ -18,6 +18,7 @@ export const problemaChamadoTypes = `
 
 export const problemaChamadoQueries = `
   listarProblemasChamado(first: Int, offset: Int): [ ProblemaChamado! ]!
+  problemaChamadoByID(id: Int!): ProblemaChamado
 `;
 
 export const problemaChamadoMutations = `
