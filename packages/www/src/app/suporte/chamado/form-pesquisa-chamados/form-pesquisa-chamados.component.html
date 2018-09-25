@@ -1,0 +1,43 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <div fxLayout="column">
+
+    <mat-form-field>
+      <mat-select placeholder="Tipo de Lista" formControlName="tipoLista">
+        <mat-option *ngFor="let tipo of tiposLista" [value]="tipo.value">
+          {{ tipo.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Protocolo" formControlName="protocolo">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Técnico" formControlName="tecnico">
+        <mat-option [value]="null">
+          Todos
+        </mat-option>
+        <mat-option *ngFor="let tecnico of listaTecnicos" [value]="tecnico._id">
+          {{ tecnico.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Aberto Por" formControlName="abertoPor">
+        <mat-option [value]="null">
+          Todos
+        </mat-option>
+        <mat-option *ngFor="let atendente of listaAtendentes" [value]="atendente._id">
+          {{ atendente.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button type="button" color="danger" mat-button (click)="cancel()">Cancelar</button>
+      <button type="submit" mat-stroked-button>Pesquisar</button>
+    </div>
+  </div>
+</form>
