@@ -32,3 +32,16 @@ export const LISTAR_PROBLEMAS_CHAMADO_QUERY = gql`
     }
   }
 `;
+
+export const GET_PROBLEMA_BY_ID = gql`
+  query problemaChamadoByID($id: Int!) {
+    problemaChamadoByID(id: $id) {
+      _id
+      descricao
+      geraCobranca
+      valorCobrado
+      createdAt
+      updatedAt
+    }
+  }
+`;
