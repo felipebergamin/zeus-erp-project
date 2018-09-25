@@ -101,8 +101,8 @@ export const SIDEBAR_ITEMS: SidebarCategory[] = [
         path: '/suporte/chamado/abrir',
       },
       {
-        name: 'Chamados Abertos',
-        path: '/suporte/chamado/aberto',
+        name: 'Chamados',
+        path: '/suporte/chamado',
       },
       {
         name: 'Problemas De Chamado',

@@ -20,17 +20,20 @@ import {
   MAT_DATE_FORMATS,
   MatSlideToggleModule,
   MatMenuModule,
+  MatRadioModule,
 } from '@angular/material';
 
 import { SuporteRoutingModule } from './suporte-routing.module';
 import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-chamado/form-problema-chamado.component';
 import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
 import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-chamado.component';
-import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-abertos.component';
 import { ChamadoActionSheetComponent } from './chamado/chamado-action-sheet/chamado-action-sheet.component';
 import { AbrirInstalacaoComponent } from './abrir-instalacao/abrir-instalacao.component';
 import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalacoes.component';
 import { CancelarChamadoFormComponent } from './chamado/cancelar-chamado-form/cancelar-chamado-form.component';
+import { ListarChamadosComponent } from './chamado/listar-chamados/listar-chamados.component';
+import { SharedModule } from '../shared/shared.module';
+import { FormPesquisaChamadosComponent } from './chamado/form-pesquisa-chamados/form-pesquisa-chamados.component';
 
 @NgModule({
   imports: [
@@ -54,16 +57,19 @@ import { CancelarChamadoFormComponent } from './chamado/cancelar-chamado-form/ca
     MatDatepickerModule,
     MatSlideToggleModule,
     MatMenuModule,
+    MatRadioModule,
+    SharedModule,
   ],
   declarations: [
     FormProblemaChamadoComponent,
     ListarProblemasChamadoComponent,
     AberturaChamadoComponent,
-    ChamadosAbertosComponent,
     ChamadoActionSheetComponent,
     AbrirInstalacaoComponent,
     ListarInstalacoesComponent,
     CancelarChamadoFormComponent,
+    ListarChamadosComponent,
+    FormPesquisaChamadosComponent,
   ],
   entryComponents: [
     ChamadoActionSheetComponent,

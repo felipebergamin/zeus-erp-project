@@ -27,19 +27,22 @@ export const BUSCAR_CHAMADOS_QUERY = gql`
   query buscarChamados($searchValues: BuscarChamadosInput!) {
     buscarChamados(searchValues: $searchValues) {
       _id
-      createdAt
+      protocolo
       motivoAbertura
-      finalizadoEm
-      abertoPor {
-        login
-      }
-      tecnico {
+      sinalOnuAbertura
+      prioridade
+      pontoAcesso {
         _id
         login
       }
-      problema {
-        descricao
+      abertoPor {
+        _id
+        login
       }
+
+      finalizado
+      cancelado
+      createdAt
     }
   }
 `;
@@ -61,9 +64,11 @@ export const LISTAR_CHAMADOS_ABERTOS = gql`
       motivoAbertura
       prioridade
       pontoAcesso {
+        _id
         login
       }
       abertoPor {
+        _id
         login
       }
 

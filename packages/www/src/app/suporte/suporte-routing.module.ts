@@ -4,11 +4,11 @@ import { FormProblemaChamadoComponent } from './problema-chamado/form-problema-c
 import { AuthGuard } from '../auth/auth.guard';
 import { ListarProblemasChamadoComponent } from './problema-chamado/listar-problemas-chamado/listar-problemas-chamado.component';
 import { AberturaChamadoComponent } from './chamado/abertura-chamado/abertura-chamado.component';
-import { ChamadosAbertosComponent } from './chamado/chamados-abertos/chamados-abertos.component';
 import { AbrirInstalacaoComponent } from './abrir-instalacao/abrir-instalacao.component';
 import { ListaTecnicosResolver } from '../core/services/usuario/lista-tecnicos-resolver.service';
 import { PontoAcessoByIdResolver } from '../core/services/ponto-acesso/ponto-acesso-by-id-resolver.service';
 import { ListarInstalacoesComponent } from './listar-instalacoes/listar-instalacoes.component';
+import { ListarChamadosComponent } from './chamado/listar-chamados/listar-chamados.component';
 
 const routes: Routes = [
   {
@@ -27,8 +27,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'chamado/aberto',
-    component: ChamadosAbertosComponent,
+    path: 'chamado',
+    component: ListarChamadosComponent,
     canActivate: [AuthGuard],
   },
   {
