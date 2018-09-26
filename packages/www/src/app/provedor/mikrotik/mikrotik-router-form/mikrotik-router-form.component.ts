@@ -29,7 +29,7 @@ export class MikrotikRouterFormComponent implements OnInit {
       ipAddress: new FormControl(null, [Validators.required, isValidIPAddress]),
       username: new FormControl(null, Validators.required),
       password: new FormControl(null),
-      apiPort: new FormControl(null, [Validators.min(1), Validators.max(65535)]),
+      apiPort: new FormControl(8728, [Validators.required, Validators.min(1), Validators.max(65535)]),
       systemName: new FormControl(null, Validators.required),
       radiusSecret: new FormControl(null, Validators.required),
     });
