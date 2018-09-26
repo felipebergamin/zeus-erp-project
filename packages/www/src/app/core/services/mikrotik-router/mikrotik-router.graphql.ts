@@ -28,7 +28,7 @@ export const LIST_MK_ROUTERS_QUERY = gql`
 `;
 
 export const CREATE_MK_ROUTER_MUTATION = gql`
-  mutation createMkRouter($input: MikrotikRouterInput) {
+  mutation createMkRouter($input: MikrotikRouterInput!) {
     createMikrotikRouter(input: $input) {
       id
       createdAt
