@@ -1,0 +1,18 @@
+<div class="docs-component-viewer-nav">
+  <div class="docs-component-viewer-nav-content">
+    <nav *ngFor="let category of items">
+      <button cdkAccordionItem #panel="cdkAccordionItem" (click)="panel.toggle()" expanded="false" class="docs-nav-content-btn">
+        {{category.name}}
+        <mat-icon>{{panel.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+      </button>
+      <ul [@bodyExpansion]="panel.expanded ? 'expanded' : 'collapsed'">
+        <li *ngFor="let item of category.items">
+          <a [routerLink]="item.path" (click)="updatePageTitle(item)">
+            {{item.name}}
+          </a>
+        </li>
+      </ul>
+      <hr/>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<mat-list>
+  <mat-list-item>
+    <strong>RxPower: &nbsp;</strong>
+    {{ sinal?.RxPower }} - <i>{{ sinal?.TxPowerR }}</i>
+  </mat-list-item>
+
+  <mat-list-item>
+    <strong>TxPower: &nbsp;</strong>
+    {{ sinal?.TxPower }} - <i>{{ sinal?.RxPowerR }}</i>
+  </mat-list-item>
+
+  <mat-list-item>
+    <strong>Temperatura: &nbsp;</strong>
+    {{ sinal?.Temperature }} &deg; - <i>{{ sinal?.TemperatureR }}</i>
+  </mat-list-item>
+
+  <mat-list-item>
+    <strong>Voltagem: &nbsp;</strong>
+    {{ sinal?.Voltage }} - <i>{{ sinal?.VoltageR }}</i>
+  </mat-list-item>
+</mat-list>
+
+<div fxLayout="row" fxLayoutAlign="end">
+  <button mat-button (click)="fechar()">Fechar</button>
+  <button mat-stroked-button (click)="verificar()" [disabled]="disableButton">Atualizar</button>
+</div>

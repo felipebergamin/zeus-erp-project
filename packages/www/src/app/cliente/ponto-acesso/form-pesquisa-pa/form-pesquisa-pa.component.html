@@ -1,0 +1,93 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <div fxLayout="column">
+
+    <mat-form-field>
+      <input matInput placeholder="Login" formControlName="login">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Endereço IP" formControlName="ipAddress">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="MAC Onu" formControlName="macOnu">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Slot Nº" formControlName="slotNo">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Pon Nº" formControlName="ponNo">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Incluso em Cobrança" formControlName="incluirNaCobranca">
+        <mat-option [value]="null">
+          Todos
+        </mat-option>
+        <mat-option [value]="true">
+          Sim
+        </mat-option>
+        <mat-option [value]="false">
+          Não
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="1em">
+      <mat-form-field fxFlex="75%">
+        <input matInput placeholder="Endereço" formControlName="logradouro">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="25%">
+        <input matInput placeholder="Número" formControlName="numero">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <input matInput placeholder="Bairro" formControlName="bairro">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Cidade" formControlName="cidade">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="OLT" formControlName="olt">
+        <mat-option [value]="null">Todas</mat-option>
+        <mat-option *ngFor="let olt of oltList$ | async" [value]="olt._id">
+          {{olt.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Plano" formControlName="plano">
+        <mat-option [value]="null">
+          Todos
+        </mat-option>
+        <mat-option *ngFor="let plano of planosList$ | async" [value]="plano._id">
+          {{ plano.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Pool" formControlName="pool">
+        <mat-option [value]="null">
+          Todos
+        </mat-option>
+        <mat-option *ngFor="let pool of poolsList$ | async" [value]="pool._id">
+          {{ pool.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button type="button" color="danger" mat-button (click)="cancel()">Cancelar</button>
+      <button type="reset" mat-button>Limpar Valores</button>
+      <button type="submit" mat-stroked-button>Pesquisar</button>
+    </div>
+  </div>
+</form>

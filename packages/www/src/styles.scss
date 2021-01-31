@@ -1,0 +1,40 @@
+@import '~@angular/material/theming';
+@import './app-theme';
+@import './floating-fab';
+
+// Include material core styles.
+@include mat-core();
+
+app-navbar {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  // bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.app-container {
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+body {
+  margin: 0 0;
+  height: 100%;
+}
+/* 
+mat-sidenav-container {
+  height: 100%;
+} */
+
+// Define the light theme.
+$primary: mat-palette($mat-indigo);
+$accent:  mat-palette($mat-pink, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);
+@include material-docs-app-theme($theme);

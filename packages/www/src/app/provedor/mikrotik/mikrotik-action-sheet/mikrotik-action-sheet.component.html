@@ -1,0 +1,9 @@
+<button [disabled]="disabled" mat-icon-button [matMenuTriggerFor]="menuMikrotik">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menuMikrotik="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="mkrouter.id">Alterar</button>
+    <button mat-menu-item (click)="excluir(mkrouter)">Excluir</button>
+  </ng-template>
+</mat-menu>

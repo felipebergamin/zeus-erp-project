@@ -1,0 +1,48 @@
+<div class="mat-elevation-z6">
+
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="menu">
+      <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
+      <td mat-cell *matCellDef="let remessa">
+        <button mat-icon-button (click)="downloadRemessa(remessa)">
+          <mat-icon aria-label="Download Remessa">cloud_download</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa._id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="contaBancaria">
+      <th mat-header-cell *matHeaderCellDef>Conta Bancária</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa.contaBancaria.nome }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nomeArquivo">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa.nomeArquivo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="qtdeOperacoes">
+      <th mat-header-cell *matHeaderCellDef>Qtde. Operações</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa.quantidadeOperacoes }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="geradoEm">
+      <th mat-header-cell *matHeaderCellDef>Gerado Em</th>
+      <td mat-cell *matCellDef="let remessa">{{ remessa.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)" showFirstLastButtons="true"></mat-paginator>
+</div>
+
+<button mat-fab class="floating-fab hover-rotate" routerLink="gerar">
+  <mat-icon>add</mat-icon>
+</button>

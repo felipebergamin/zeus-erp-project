@@ -1,0 +1,143 @@
+<mat-card>
+  <mat-card-title>
+    Carnês
+  </mat-card-title>
+
+  <mat-card-content>
+
+    <mat-expansion-panel *ngFor="let carne of carnes">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Carnê {{ carne.descricao }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-list>
+        <mat-list-item *ngFor="let boleto of getBoletosOfCarne(carne)">
+          <app-boleto-action-sheet
+            [boleto]="boleto"
+            [disabled]="boleto.lock"
+            (updateBoleto)="onUpdateBoleto($event)"></app-boleto-action-sheet>
+
+          <div class="spacer"></div>
+          <small>Nº &nbsp;</small>
+          {{ boleto._id }}
+
+          <div class="spacer"></div>
+          <small>Cobrado: &nbsp;</small>
+          {{ boleto.valorCobranca | currency:'BRL' }}
+
+          <div class="spacer"></div>
+          <small>Pago: &nbsp;</small>
+          {{ boleto.pago ? 'sim' : 'não' }}
+
+          <div class="spacer"></div>
+          <small>Valor Pago: &nbsp;</small>
+          {{ boleto.valorPago | currency:'BRL' }}
+
+          <div class="spacer"></div>
+          <small>Vencimento &nbsp;</small>
+          {{ boleto.dataVencimento | date:'dd/MM/yy' }}
+
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button (click)="novoCarne(cliente)">Novo Carnê</button>
+  </mat-card-actions>
+</mat-card>
+
+<br>
+<br>
+
+<mat-card>
+  <mat-card-title>
+    Boletos em Aberto
+  </mat-card-title>
+
+  <mat-card-content>
+
+    <table mat-table [dataSource]="getBoletosWithoutCarne()">
+      <ng-container matColumnDef="menu">
+        <th mat-header-cell *matHeaderCellDef>Opções</th>
+        <td mat-cell *matCellDef="let boleto">
+            <app-boleto-action-sheet [boleto]="boleto" [disabled]="boleto.lock" (updateBoleto)="onUpdateBoleto($event)"></app-boleto-action-sheet>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef>Número</th>
+        <td mat-cell *matCellDef="let boleto"> {{ boleto._id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef>Valor</th>
+        <td mat-cell *matCellDef="let boleto"> {{ boleto.valorCobranca | currency:'R$ ' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vencimento">
+        <th mat-header-cell *matHeaderCellDef>Vencimento</th>
+        <td mat-cell *matCellDef="let boleto"> {{ boleto.dataVencimento | date:'dd/MM/yyyy' }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button (click)="novoBoleto(cliente)">Novo Boleto</button>
+  </mat-card-actions>
+</mat-card>
+
+<br>
+<br>
+
+<mat-card>
+  <mat-card-title>
+    Pontos de Acesso
+  </mat-card-title>
+
+  <mat-card-content>
+
+    <table mat-table [dataSource]="pontosAcesso">
+      <ng-container matColumnDef="paMenu">
+        <th mat-header-cell *matHeaderCellDef>Opções</th>
+        <td mat-cell *matCellDef="let pa">
+          <button mat-icon-button (click)="openBottomSheetForPA(pa)">
+            <mat-icon aria-label="Options">menu</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paLogin">
+        <th mat-header-cell *matHeaderCellDef>Login</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.login }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paPlano">
+        <th mat-header-cell *matHeaderCellDef>Plano</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.plano.nome }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paEndereco">
+        <th mat-header-cell *matHeaderCellDef>Endereco</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.logradouro }}, {{ pa.numero }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsForPAs"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsForPAs;"></tr>
+    </table>
+
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button [routerLink]="['/', 'cliente', 'pa', 'novo', cliente?._id]">Novo PA</button>
+  </mat-card-actions>
+
+</mat-card>

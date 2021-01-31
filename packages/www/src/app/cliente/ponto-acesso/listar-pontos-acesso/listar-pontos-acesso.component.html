@@ -1,0 +1,51 @@
+<div style="display: flex; flex-direction: row; position: relative;">
+  <div class="mat-elevation-z6" [@flyInOut]="listState" style="width: 100%; position: absolute;">
+    <app-table-toolbar fxLayout="row" fxLayoutAlign="end" fxLayoutGap="1em">
+      <button mat-icon-button matTooltip="Limpar Pesquisa" (click)="clearSearch()" *ngIf="searching">
+        <mat-icon>clear</mat-icon>
+      </button>
+
+      <button mat-icon-button matTooltip="Pesquisar" (click)="openSearchDialog()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </app-table-toolbar>
+
+    <table mat-table [dataSource]="dataSource | async">
+      <ng-container matColumnDef="menu">
+        <th mat-header-cell *matHeaderCellDef>Opções</th>
+        <td mat-cell *matCellDef="let pa">
+          <button mat-icon-button (click)="openBottomSheet(pa)">
+            <mat-icon aria-label="Options">menu</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nomeCliente">
+        <th mat-header-cell *matHeaderCellDef>Cliente</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.cliente.nome }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nomePlano">
+        <th mat-header-cell *matHeaderCellDef>Plano</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.plano.nome }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="login">
+        <th mat-header-cell *matHeaderCellDef>Login</th>
+        <td mat-cell *matCellDef="let pa"> {{ pa.login }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [@fadeIn]="'in'"></tr>
+    </table>
+
+    <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)"
+      showFirstLastButtons="true"></mat-paginator>
+  </div>
+
+  <div class="mat-elevation-z6" [@flyInOut]="searchState" style="width: 100%; position: absolute;">
+    <app-form-pesquisa-pa (cancelSearch)="onCancelSearch()" (doSearch)="doSearch($event)" *ngIf="shouldSearchPageRender"></app-form-pesquisa-pa>
+  </div>
+
+</div>

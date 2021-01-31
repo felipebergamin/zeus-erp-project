@@ -1,0 +1,9 @@
+<button [disabled]="disabled" mat-icon-button [matMenuTriggerFor]="menuChamado">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menuChamado="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="print()">Imprimir</button>
+    <button mat-menu-item (click)="cancelar()">Cancelar</button>
+  </ng-template>
+</mat-menu>

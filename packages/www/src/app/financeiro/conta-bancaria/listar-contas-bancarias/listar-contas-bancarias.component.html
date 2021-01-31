@@ -1,0 +1,32 @@
+<div class="mat-elevation-z6">
+
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="menu">
+      <th mat-header-cell *matHeaderCellDef>Menu</th>
+      <td mat-cell *matCellDef="let cb">
+        <app-conta-bancaria-action-sheet [cb]="cb" (remove)="onRemove($event)"></app-conta-bancaria-action-sheet>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let cb">{{ cb.nome }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="criadaEm">
+      <th mat-header-cell *matHeaderCellDef>Criada Em</th>
+      <td mat-cell *matCellDef="let cb">{{ cb.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [length]="totalItensPaginator" [pageSizeOptions]="pageSizeOptions" (page)="onPaginationChange($event)"
+    showFirstLastButtons="true"></mat-paginator>
+</div>
+
+<button mat-fab class="floating-fab hover-rotate" routerLink="add">
+  <mat-icon>add</mat-icon>
+</button>

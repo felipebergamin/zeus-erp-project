@@ -1,0 +1,11 @@
+form {
+  margin: 0 auto;
+  padding: 2em 3em;
+  max-width: 360px;
+}
+
+button.floating-fab {
+  position: fixed;
+  bottom: 2em;
+  right: 4em;
+}

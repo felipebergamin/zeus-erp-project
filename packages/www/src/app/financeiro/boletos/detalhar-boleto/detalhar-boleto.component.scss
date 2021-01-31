@@ -1,0 +1,29 @@
+.container {
+  margin: 0 auto;
+  padding: 2em 3em;
+}
+
+table {
+  width: 100%;
+
+  &.custom-table {
+    tr {
+      line-height: 2em;
+    }
+    th {
+      text-align: right;
+    }
+    td {
+      text-align: left;
+    }
+  
+    &.hover-effect {
+      th,td {
+        transition: background-color .2s ease-out;
+        &:hover {
+          background-color: rgb(219, 218, 218);
+        }
+      }
+    }
+  }
+}

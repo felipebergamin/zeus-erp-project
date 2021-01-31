@@ -1,0 +1,131 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <mat-tab-group>
+      <mat-tab label="Geral">
+        <div fxLayout="column" fxLayoutGap="1em" class="padded-container">
+
+          <div fxLayout="row">
+
+            <mat-form-field fxFlex="100%">
+              <input matInput placeholder="Nome" formControlName="nome">
+            </mat-form-field>
+
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="1em">
+            <mat-slide-toggle formControlName="leitura">Leitura</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="escrita">Escrita</mat-slide-toggle>
+          </div>
+
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Clientes">
+        <div fxLayout="column" fxLayoutGap="2em" class="padded-container">
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="alterarClientes">Alterar</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="bloquearClientes">Bloquear</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="criarClientes">Criar</mat-slide-toggle>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="desativarClientes">Desativar</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="desbloquearClientes">Desbloquear</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarClientes">Visualizar</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Boletos">
+        <div fxLayout="column" fxLayoutGap="2em" class="padded-container">
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="alterarBoletos">Alterar</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="criarBoletos">Criar</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="pedirBaixaBoleto">Pedido de Baixa</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarBoletos">Visualizar Boletos</mat-slide-toggle>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="gerarRemessa">Gerar Remessa</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="importarRetorno">Importar Retorno</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Segurança">
+        <div fxLayout="column" fxLayoutGap="2em" class="padded-container">
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="alterarUsuarios">Alterar Usuários</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="criarUsuarios">Criar Usuários</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="removerUsuarios">Remover Usuários</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarUsuarios">Visualizar Usuários</mat-slide-toggle>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="acessaAppTecnico">Acessa App Técnico</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="acessoTelegram">Acessa Bot Telegram</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="acessoWeb">Acessa Interface Web</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarLogs">Visualiza Logs</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Chamados">
+        <div fxLayout="column" fxLayoutGap="2em" class="padded-container">
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="abrirChamadoTecnico">Abrir Chamado</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="alterarChamadoTecnico">Alterar Chamado</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="cancelarChamadoTecnico">Cancelar Chamado</mat-slide-toggle>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="fecharChamadoTecnico">Fechar Chamado</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarChamados">Visualizar Chamados</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Instalações">
+        <div fxLayout="column" fxLayoutGap="2em" class="padded-container">
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="abrirInstalacao">Abrir Instalação</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="cancelarInstalacao">Cancelar Instalação</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="finalizarInstalacao">Finalizar Instalação</mat-slide-toggle>
+          </div>
+          
+          <div fxLayout="row" fxLayoutAlign="space-around">
+            <mat-slide-toggle formControlName="alterarInstalacao">Alterar Instalação</mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="visualizarInstalacao">Visualizar Instalação</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+    <button mat-fab class="floating-fab">
+      <mat-icon>check</mat-icon>
+    </button>
+
+  </form>
+</div>

@@ -1,0 +1,30 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (submit)="onFormSubmit(fileInput.files)">
+
+    <div fxLayout="column">
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <mat-select placeholder="Conta Bancária" formControlName="contaBancaria">
+            <mat-option *ngFor="let conta of contasBancarias" [value]="conta._id">
+              {{conta.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <input type="file" fxFlex="100%" #fileInput>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <button type="submit" mat-fab class="floating-fab">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <app-exibir-detalhes-retorno *ngIf="arquivoRetorno" [arquivoProcessado]="arquivoRetorno"></app-exibir-detalhes-retorno>
+</div>

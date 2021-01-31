@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+
+  <div fxLayout="column">
+    <p>
+      <strong>Atenção:</strong>
+      Você está cancelando o chamado {{ chamado.protocolo }}
+    </p>
+    <p>
+      Esse evento ficará registrado e é irreversível!
+    </p>
+
+    <br>
+
+    <mat-form-field>
+      <input matInput placeholder="Motivo do Cancelamento" formControlName="motivoCancelamento">
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
+      <button type="submit" mat-stroked-button>Confirmar</button>
+    </div>
+  </div>
+</form>

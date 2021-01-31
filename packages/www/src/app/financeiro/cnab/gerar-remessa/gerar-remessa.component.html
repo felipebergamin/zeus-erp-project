@@ -1,0 +1,64 @@
+<div class="mat-elevation-z6">
+  <form [formGroup]="form" (submit)="onFormSubmit()">
+
+    <div fxLayout="column">
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <mat-select placeholder="Conta Bancária" formControlName="contaBancaria">
+            <mat-option *ngFor="let conta of contasBancarias" [value]="conta._id">
+              {{conta.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="100%">
+          <input type="text" #autoCompleteInput placeholder="Cliente" matInput [formControl]="autoCompleteControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectClient($event)">
+            <mat-option *ngFor="let cliente of clientes$ | async" [value]="cliente">
+              {{cliente.nome}} - {{cliente.cidade}}
+            </mat-option>
+          </mat-autocomplete>
+          <button type="button" mat-button matSuffix mat-icon-button aria-label="Limpar" (click)="clearSelectedClient(autoCompleteInput)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="1em">
+
+        <mat-form-field fxFlex="50%">
+          <input matInput [matDatepicker]="pickerDataInicio" [min]="today" placeholder="Data Início" formControlName="dataInicio">
+          <mat-datepicker-toggle matSuffix [for]="pickerDataInicio"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDataInicio></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <input matInput [matDatepicker]="pickerDataFim" [min]="today" placeholder="Data Fim" formControlName="dataFim">
+          <mat-datepicker-toggle matSuffix [for]="pickerDataFim"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDataFim></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-around">
+        <mat-slide-toggle formControlName="enviarPedidoBaixa">Enviar Pedido Baixa</mat-slide-toggle>
+        <mat-slide-toggle formControlName="enviarAtualizacaoValor">Enviar Atualização de Valor</mat-slide-toggle>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-around">
+        <mat-slide-toggle formControlName="enviarAtualizacaoVencimento">Enviar Atualização de Vencimento</mat-slide-toggle>
+        <mat-slide-toggle formControlName="reenviarRemetidos">Reenviar já Remetidos</mat-slide-toggle>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button type="reset" mat-button>Limpar</button>
+        <button type="submit" mat-fab class="floating-fab">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
